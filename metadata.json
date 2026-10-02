@@ -1,0 +1,6 @@
+{
+  "name": "LifeHub - Personal Logistics & Lifecycle Manager",
+  "description": "A calm, high-trust personal logistics manager for vehicles, scheduled loans & installments, smart reminders, and reusable checklists.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
