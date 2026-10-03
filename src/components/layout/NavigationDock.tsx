@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { AppIcon } from "@/components/ui/app-icon";
 import { useLifeHub } from "@/store/LifeHubContext";
 import { faNum } from "@/lib/format";
 
@@ -55,12 +56,7 @@ export function NavigationDock() {
         }`}
       >
         <span className="relative">
-          <span
-            className="material-symbols-outlined text-[22px]"
-            style={{ fontVariationSettings: active ? "'FILL' 1" : "'FILL' 0" }}
-          >
-            {tab.icon}
-          </span>
+          <AppIcon name={tab.icon} className="size-[22px]" filled={active} />
           {withBadge && pendingTasksCount > 0 && (
             <span className="absolute -top-1 -left-2 px-1 text-[9px] font-bold rounded-full bg-[#ba1a1a] text-white">
               {faNum(pendingTasksCount)}
@@ -92,7 +88,7 @@ export function NavigationDock() {
             aria-label="ایجاد مورد جدید"
             className="w-12 h-12 -mt-6 rounded-full bg-[#4f46e5] text-white flex items-center justify-center shadow-[0_8px_20px_rgba(79,70,229,0.38)] hover:bg-[#3525cd] active:scale-95 transition-all ring-4 ring-white"
           >
-            <span className="material-symbols-outlined text-[26px]">add</span>
+            <AppIcon name="add" className="size-[26px]" />
           </button>
         </div>
 

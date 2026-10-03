@@ -34,8 +34,13 @@ export function useVehicleServices(vehicleId: string | null) {
 export function useCreateVehicleService() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ vehicleId, input }: { vehicleId: string; input: CreateServiceInput }) =>
-      createVehicleService(vehicleId, input),
+    mutationFn: ({
+      vehicleId,
+      input,
+    }: {
+      vehicleId: string;
+      input: CreateServiceInput;
+    }) => createVehicleService(vehicleId, input),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: vehicleKeys.services(variables.vehicleId),
@@ -76,8 +81,13 @@ export function useUpdateVehicleService() {
 export function useDeleteVehicleService() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ vehicleId, serviceId }: { vehicleId: string; serviceId: string }) =>
-      deleteVehicleService(vehicleId, serviceId),
+    mutationFn: ({
+      vehicleId,
+      serviceId,
+    }: {
+      vehicleId: string;
+      serviceId: string;
+    }) => deleteVehicleService(vehicleId, serviceId),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: vehicleKeys.services(variables.vehicleId),

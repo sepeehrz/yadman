@@ -26,7 +26,9 @@ export async function getVehicle(vehicleId: string): Promise<Vehicle> {
   return data;
 }
 
-export async function createVehicle(input: CreateVehicleInput): Promise<Vehicle> {
+export async function createVehicle(
+  input: CreateVehicleInput,
+): Promise<Vehicle> {
   const { data } = await apiClient.post<Vehicle>("/vehicles", input);
   return data;
 }
@@ -35,7 +37,10 @@ export async function updateVehicle(
   vehicleId: string,
   input: UpdateVehicleInput,
 ): Promise<Vehicle> {
-  const { data } = await apiClient.patch<Vehicle>(`/vehicles/${vehicleId}`, input);
+  const { data } = await apiClient.patch<Vehicle>(
+    `/vehicles/${vehicleId}`,
+    input,
+  );
   return data;
 }
 
@@ -44,12 +49,18 @@ export async function deleteVehicle(vehicleId: string): Promise<void> {
 }
 
 export async function getServiceCategories(): Promise<ServiceCategory[]> {
-  const { data } = await apiClient.get<ServiceCategory[]>("/service-categories");
+  const { data } = await apiClient.get<ServiceCategory[]>(
+    "/service-categories",
+  );
   return data;
 }
 
-export async function getVehicleServices(vehicleId: string): Promise<VehicleService[]> {
-  const { data } = await apiClient.get<VehicleService[]>(`/vehicles/${vehicleId}/services`);
+export async function getVehicleServices(
+  vehicleId: string,
+): Promise<VehicleService[]> {
+  const { data } = await apiClient.get<VehicleService[]>(
+    `/vehicles/${vehicleId}/services`,
+  );
   return data;
 }
 
@@ -84,7 +95,9 @@ export async function deleteVehicleService(
 }
 
 export async function getInsurances(vehicleId: string): Promise<Insurance[]> {
-  const { data } = await apiClient.get<Insurance[]>(`/vehicles/${vehicleId}/insurances`);
+  const { data } = await apiClient.get<Insurance[]>(
+    `/vehicles/${vehicleId}/insurances`,
+  );
   return data;
 }
 
@@ -111,7 +124,10 @@ export async function updateInsurance(
   return data;
 }
 
-export async function deleteInsurance(vehicleId: string, insuranceId: string): Promise<void> {
+export async function deleteInsurance(
+  vehicleId: string,
+  insuranceId: string,
+): Promise<void> {
   await apiClient.delete(`/vehicles/${vehicleId}/insurances/${insuranceId}`);
 }
 
@@ -120,8 +136,14 @@ export async function getTolls(vehicleId: string): Promise<Toll[]> {
   return data;
 }
 
-export async function createToll(vehicleId: string, input: CreateTollInput): Promise<Toll> {
-  const { data } = await apiClient.post<Toll>(`/vehicles/${vehicleId}/tolls`, input);
+export async function createToll(
+  vehicleId: string,
+  input: CreateTollInput,
+): Promise<Toll> {
+  const { data } = await apiClient.post<Toll>(
+    `/vehicles/${vehicleId}/tolls`,
+    input,
+  );
   return data;
 }
 
@@ -130,11 +152,17 @@ export async function updateToll(
   tollId: string,
   input: UpdateTollInput,
 ): Promise<Toll> {
-  const { data } = await apiClient.patch<Toll>(`/vehicles/${vehicleId}/tolls/${tollId}`, input);
+  const { data } = await apiClient.patch<Toll>(
+    `/vehicles/${vehicleId}/tolls/${tollId}`,
+    input,
+  );
   return data;
 }
 
-export async function deleteToll(vehicleId: string, tollId: string): Promise<void> {
+export async function deleteToll(
+  vehicleId: string,
+  tollId: string,
+): Promise<void> {
   await apiClient.delete(`/vehicles/${vehicleId}/tolls/${tollId}`);
 }
 
@@ -146,6 +174,8 @@ export async function getExpiringReminders(
   if (vehicleId) {
     params.set("vehicleId", vehicleId);
   }
-  const { data } = await apiClient.get<ExpiringReminder[]>(`/vehicles/expiring?${params}`);
+  const { data } = await apiClient.get<ExpiringReminder[]>(
+    `/vehicles/expiring?${params}`,
+  );
   return data;
 }

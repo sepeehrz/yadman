@@ -13,6 +13,7 @@ import { ErrorState } from "./error-state";
 import { LoadingSkeleton } from "./loading-skeleton";
 import { ServiceFormDialog } from "./service-form-dialog";
 import { ServiceHistoryList } from "./service-history-list";
+import { AppIcon } from "@/components/ui/app-icon";
 
 interface IProps {
   vehicleId: string;
@@ -27,7 +28,10 @@ export function ServiceTab({ vehicleId, defaultOdometer }: IProps) {
   const deleteService = useDeleteVehicleService();
 
   function handleSubmit(input: CreateServiceInput): void {
-    createService.mutate({ vehicleId, input }, { onSuccess: () => setDialogOpen(false) });
+    createService.mutate(
+      { vehicleId, input },
+      { onSuccess: () => setDialogOpen(false) },
+    );
   }
 
   return (
@@ -38,14 +42,17 @@ export function ServiceTab({ vehicleId, defaultOdometer }: IProps) {
           onClick={() => setDialogOpen(true)}
           className="px-3 py-1.5 rounded-lg bg-[#4f46e5] text-white text-xs font-bold flex items-center gap-1 shadow-xs hover:bg-[#3525cd]"
         >
-          <span className="material-symbols-outlined text-[14px]">add</span>
+          <AppIcon name="add" className="size-3.5" />
           ثبت سرویس
         </button>
       </div>
 
       {services.isPending ? <LoadingSkeleton rows={3} /> : null}
       {services.isError ? (
-        <ErrorState message="بارگذاری سرویس‌ها ناموفق بود" onRetry={() => services.refetch()} />
+        <ErrorState
+          message="بارگذاری سرویس‌ها ناموفق بود"
+          onRetry={() => services.refetch()}
+        />
       ) : null}
       {services.data && services.data.length === 0 ? (
         <EmptyState
@@ -58,7 +65,9 @@ export function ServiceTab({ vehicleId, defaultOdometer }: IProps) {
         <ServiceHistoryList
           services={services.data}
           deleting={deleteService.isPending}
-          onDelete={(serviceId) => deleteService.mutate({ vehicleId, serviceId })}
+          onDelete={(serviceId) =>
+            deleteService.mutate({ vehicleId, serviceId })
+          }
         />
       ) : null}
 

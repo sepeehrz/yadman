@@ -2,6 +2,7 @@
 
 import { ASSETS } from "@/lib/mock-data";
 import { useLifeHub } from "@/store/LifeHubContext";
+import { AppIcon } from "@/components/ui/app-icon";
 
 export function Header({ title }: { title: string }) {
   const { setSearchOpen, setNotificationsOpen, setProfileOpen } = useLifeHub();
@@ -31,7 +32,7 @@ export function Header({ title }: { title: string }) {
             aria-label="جست‌وجو"
             className="w-10 h-10 flex items-center justify-center rounded-full text-[#545f73] hover:text-[#0b1c30] hover:bg-[#dce9ff]/50 active:scale-95 transition-all"
           >
-            <span className="material-symbols-outlined text-[22px]">search</span>
+            <AppIcon name="search" className="size-5.5" />
           </button>
 
           <button
@@ -39,7 +40,7 @@ export function Header({ title }: { title: string }) {
             aria-label="مشاهده اعلان‌ها"
             className="w-10 h-10 flex items-center justify-center rounded-full text-[#545f73] hover:text-[#0b1c30] hover:bg-[#dce9ff]/50 active:scale-95 transition-all relative"
           >
-            <span className="material-symbols-outlined text-[22px]">notifications</span>
+            <AppIcon name="notifications" className="size-5.5" />
             <span className="absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-[#4f46e5] ring-2 ring-[#f8f9ff] animate-pulse" />
           </button>
 

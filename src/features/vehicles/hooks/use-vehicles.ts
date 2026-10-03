@@ -47,11 +47,18 @@ export function useCreateVehicle() {
 export function useUpdateVehicle() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ vehicleId, input }: { vehicleId: string; input: UpdateVehicleInput }) =>
-      updateVehicle(vehicleId, input),
+    mutationFn: ({
+      vehicleId,
+      input,
+    }: {
+      vehicleId: string;
+      input: UpdateVehicleInput;
+    }) => updateVehicle(vehicleId, input),
     onSuccess: (vehicle) => {
       queryClient.invalidateQueries({ queryKey: vehicleKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: vehicleKeys.detail(vehicle.id) });
+      queryClient.invalidateQueries({
+        queryKey: vehicleKeys.detail(vehicle.id),
+      });
       toast.success("مشخصات خودرو به‌روزرسانی شد");
     },
     onError: (error: unknown) => {

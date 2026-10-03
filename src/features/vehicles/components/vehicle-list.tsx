@@ -2,6 +2,7 @@
 
 import { faKm } from "@/lib/format";
 import type { Vehicle } from "../types";
+import { AppIcon } from "@/components/ui/app-icon";
 
 interface IProps {
   vehicles: Vehicle[];
@@ -19,9 +20,7 @@ export function VehicleList({ vehicles, selectedId, onSelect, onAdd }: IProps) {
           onClick={onAdd}
           className="flex items-center gap-1 text-xs font-bold text-[#3525cd] hover:underline"
         >
-          <span className="material-symbols-outlined text-[16px]">
-            add_circle
-          </span>
+          <AppIcon name="add_circle" className="size-[16px]" />
           خودرو جدید
         </button>
       </div>
@@ -46,9 +45,7 @@ export function VehicleList({ vehicles, selectedId, onSelect, onAdd }: IProps) {
                   : "bg-[#eff4ff] text-[#3525cd]"
               }`}
             >
-              <span className="material-symbols-outlined text-[24px]">
-                directions_car
-              </span>
+              <AppIcon name="directions_car" className="size-[24px]" />
             </span>
             <span className="flex-1 min-w-0">
               <span className="font-bold text-sm text-[#0b1c30] block truncate">

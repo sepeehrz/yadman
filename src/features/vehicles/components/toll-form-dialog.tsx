@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { BaseDialog } from "@/components/ui/dialog";
 import type { CreateTollInput } from "../types";
 import { parseTollForm, type CreateTollForm } from "../validations/toll-schema";
 import type { FieldErrors } from "../validations/shared-schema";
+import { AppIcon } from "@/components/ui/app-icon";
 
 interface IProps {
   open: boolean;
@@ -23,14 +25,18 @@ function FieldError({ message }: { message?: string }) {
 }
 
 export function TollFormDialog({ open, pending, onClose, onSubmit }: IProps) {
-  const [form, setForm] = useState<CreateTollForm>({ year: "", amount: 0, dueDate: undefined, notes: "" });
+  const [form, setForm] = useState<CreateTollForm>({
+    year: "",
+    amount: 0,
+    dueDate: undefined,
+    notes: "",
+  });
   const [errors, setErrors] = useState<FieldErrors>({});
 
-  if (!open) {
-    return null;
-  }
-
-  function set<K extends keyof CreateTollForm>(key: K, value: CreateTollForm[K]): void {
+  function set<K extends keyof CreateTollForm>(
+    key: K,
+    value: CreateTollForm[K],
+  ): void {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
@@ -46,24 +52,33 @@ export function TollFormDialog({ open, pending, onClose, onSubmit }: IProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="fixed inset-0 bg-[#0b1c30]/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative z-10 w-full max-w-lg bg-white rounded-t-[28px] sm:rounded-3xl p-5 sm:p-6 shadow-2xl max-h-[88vh] overflow-y-auto no-scrollbar">
+    <BaseDialog
+      open={open}
+      onClose={onClose}
+      title="ثبت عوارض سالیانه"
+      size="lg"
+    >
+      <div className="p-5 sm:p-6">
         <div className="flex items-center justify-between pb-3 border-b border-[#e2e8f0]">
-          <h3 className="text-base font-bold text-[#0b1c30]">ثبت عوارض سالیانه</h3>
+          <h3 className="text-base font-bold text-[#0b1c30]">
+            ثبت عوارض سالیانه
+          </h3>
           <button
             onClick={onClose}
             aria-label="بستن"
             className="w-8 h-8 rounded-full bg-[#eff4ff] text-[#545f73] flex items-center justify-center hover:bg-[#e5eeff]"
           >
-            <span className="material-symbols-outlined text-[18px]">close</span>
+            <AppIcon name="close" className="size-[18px]" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3 pt-4">
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="toll-year">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="toll-year"
+              >
                 سال
               </label>
               <input
@@ -76,7 +91,10 @@ export function TollFormDialog({ open, pending, onClose, onSubmit }: IProps) {
               <FieldError message={errors.year} />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="toll-amount">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="toll-amount"
+              >
                 مبلغ
               </label>
               <input
@@ -91,7 +109,10 @@ export function TollFormDialog({ open, pending, onClose, onSubmit }: IProps) {
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-bold text-[#545f73]" htmlFor="toll-due">
+            <label
+              className="text-xs font-bold text-[#545f73]"
+              htmlFor="toll-due"
+            >
               مهلت پرداخت (اختیاری)
             </label>
             <input
@@ -122,6 +143,6 @@ export function TollFormDialog({ open, pending, onClose, onSubmit }: IProps) {
           </div>
         </form>
       </div>
-    </div>
+    </BaseDialog>
   );
 }

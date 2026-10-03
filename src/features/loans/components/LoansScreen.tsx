@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { BaseDialog } from "@/components/ui/dialog";
 import { useLifeHub } from "@/store/LifeHubContext";
 import { faNum, usd, usdInt } from "@/lib/format";
 import type { LoanItem } from "@/lib/types";
+import { AppIcon } from "@/components/ui/app-icon";
 
 const FILTERS = [
   { id: "all", label: "همه وام‌ها" },
@@ -42,7 +44,7 @@ export function LoansScreen() {
           </h2>
         </div>
         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#d5e0f8] text-[#111c2d] shadow-xs">
-          <span className="material-symbols-outlined text-[16px] text-[#005338]">verified_user</span>
+          <AppIcon name="verified_user" className="size-[16px] text-[#005338]" />
           <span className="text-xs font-bold">حالت اعتماد بالا</span>
         </div>
       </div>
@@ -65,7 +67,7 @@ export function LoansScreen() {
               </div>
             </div>
             <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center text-[#e2dfff]">
-              <span className="material-symbols-outlined text-[24px]">account_balance</span>
+              <AppIcon name="account_balance" className="size-[24px]" />
             </div>
           </div>
 
@@ -158,7 +160,7 @@ export function LoansScreen() {
                       isMac ? "bg-emerald-50 text-[#006e4b]" : "bg-[#eff4ff] text-[#3525cd]"
                     }`}
                   >
-                    <span className="material-symbols-outlined text-[24px]">{loan.icon}</span>
+                    <AppIcon name={loan.icon} className="size-[24px]" />
                   </div>
                   <div className="min-w-0">
                     <h3 className="font-bold text-sm sm:text-base text-[#0b1c30] truncate">{loan.title}</h3>
@@ -168,7 +170,7 @@ export function LoansScreen() {
 
                 {isMac ? (
                   <span className="flex-shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#005338] text-white text-[10px] font-bold shadow-xs">
-                    <span className="material-symbols-outlined text-[13px]">local_fire_department</span>
+                    <AppIcon name="local_fire_department" className="size-[13px]" />
                     ۲ ماه مانده!
                   </span>
                 ) : (
@@ -218,11 +220,11 @@ export function LoansScreen() {
               {loan.linkedAccount && (
                 <div className="flex items-center justify-between py-2 px-3 rounded-xl bg-[#eff4ff] text-[#464555] border border-[#dce9ff]/60">
                   <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[18px] text-[#545f73]">credit_card</span>
+                    <AppIcon name="credit_card" className="size-[18px] text-[#545f73]" />
                     <span className="text-xs font-medium" dir="ltr">{loan.linkedAccount}</span>
                   </div>
                   <span className="text-[10px] font-bold text-[#006e4b] flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]">autorenew</span> پرداخت خودکار روشن
+                    <AppIcon name="autorenew" className="size-[14px]" /> پرداخت خودکار روشن
                   </span>
                 </div>
               )}
@@ -240,16 +242,14 @@ export function LoansScreen() {
                         : "bg-[#4f46e5] text-white hover:bg-[#3525cd]"
                     }`}
                   >
-                    <span className="material-symbols-outlined text-[18px]">
-                      {loan.paidThisCycle ? "task_alt" : "done"}
-                    </span>
+                    <AppIcon name={loan.paidThisCycle ? "task_alt" : "done"} className="size-[18px]" />
                     <span>{loan.paidThisCycle ? "قسط مهر پرداخت شد! 🎉" : "ثبت پرداخت"}</span>
                   </button>
                   <button
                     onClick={() => setScheduleModalLoan(loan)}
                     className="h-11 rounded-xl bg-[#eff4ff] text-[#0b1c30] text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#e5eeff] transition-all"
                   >
-                    <span className="material-symbols-outlined text-[18px]">calendar_month</span>
+                    <AppIcon name="calendar_month" className="size-[18px]" />
                     <span>جدول اقساط</span>
                   </button>
                 </div>
@@ -267,13 +267,12 @@ export function LoansScreen() {
                         : "bg-[#4f46e5] text-white hover:bg-[#3525cd]"
                   }`}
                 >
-                  <span
-                    className={`material-symbols-outlined text-[18px] ${
+                  <AppIcon
+                    name={loan.paidThisCycle ? "task_alt" : "check_circle"}
+                    className={`size-[18px] ${
                       loan.paidThisCycle ? "text-[#005338]" : isMac ? "text-[#006e4b]" : "text-white"
                     }`}
-                  >
-                    {loan.paidThisCycle ? "task_alt" : "check_circle"}
-                  </span>
+                  />
                   <span>{loan.paidThisCycle ? "این ماه پرداخت شد! 🎉" : "ثبت پرداخت این ماه"}</span>
                 </button>
               )}
@@ -286,17 +285,18 @@ export function LoansScreen() {
         onClick={() => setQuickAddOpen(true)}
         className="w-full py-3.5 rounded-2xl bg-[#eff4ff] text-[#3525cd] text-xs sm:text-sm font-bold flex items-center justify-center gap-2 hover:bg-[#e5eeff] active:scale-[0.99] transition-all border border-[#dce9ff]"
       >
-        <span className="material-symbols-outlined text-[20px]">add_circle</span>
+        <AppIcon name="add_circle" className="size-[20px]" />
         <span>افزودن وام / قسط جدید</span>
       </button>
 
-      {scheduleModalLoan && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div
-            className="fixed inset-0 bg-[#0b1c30]/50 backdrop-blur-sm"
-            onClick={() => setScheduleModalLoan(null)}
-          />
-          <div className="relative z-10 w-full max-w-sm bg-white rounded-3xl p-5 shadow-2xl border border-[#e2e8f0] space-y-4">
+      <BaseDialog
+        open={scheduleModalLoan !== null}
+        onClose={() => setScheduleModalLoan(null)}
+        title={scheduleModalLoan?.title ?? "جدول استهلاک"}
+        size="sm"
+      >
+        {scheduleModalLoan && (
+          <div className="p-5 space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-bold text-base text-[#0b1c30]">{scheduleModalLoan.title}</h3>
@@ -308,7 +308,7 @@ export function LoansScreen() {
                 onClick={() => setScheduleModalLoan(null)}
                 className="w-7 h-7 rounded-full bg-[#eff4ff] text-[#545f73] flex items-center justify-center hover:bg-[#e5eeff]"
               >
-                <span className="material-symbols-outlined text-[16px]">close</span>
+                <AppIcon name="close" className="size-[16px]" />
               </button>
             </div>
 
@@ -342,8 +342,8 @@ export function LoansScreen() {
               خروجی PDF جدول استهلاک
             </button>
           </div>
-        </div>
-      )}
+        )}
+      </BaseDialog>
     </div>
   );
 }

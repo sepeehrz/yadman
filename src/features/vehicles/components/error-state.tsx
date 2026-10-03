@@ -1,4 +1,5 @@
 "use client";
+import { AppIcon } from "@/components/ui/app-icon";
 
 interface IProps {
   message: string;
@@ -8,7 +9,7 @@ interface IProps {
 export function ErrorState({ message, onRetry }: IProps) {
   return (
     <div className="rounded-2xl bg-[#ffdad6]/30 p-6 border border-[#ba1a1a]/20 text-center">
-      <span className="material-symbols-outlined text-[28px] text-[#ba1a1a]">error</span>
+      <AppIcon name="error" className="size-[28px] text-[#ba1a1a]" />
       <p className="text-sm font-bold text-[#0b1c30] mt-1">{message}</p>
       <button
         onClick={onRetry}

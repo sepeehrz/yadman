@@ -18,7 +18,11 @@ export function suggestNextService(
   if (category.defaultIntervalMonths) {
     const base = parseISODateOnly(serviceDateISO);
     if (base) {
-      const next = new Date(base.getFullYear(), base.getMonth() + category.defaultIntervalMonths, base.getDate());
+      const next = new Date(
+        base.getFullYear(),
+        base.getMonth() + category.defaultIntervalMonths,
+        base.getDate(),
+      );
       suggestion.nextDueDate = toISODateOnly(next);
     }
   }

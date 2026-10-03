@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ASSETS } from "@/lib/mock-data";
 import { useLifeHub } from "@/store/LifeHubContext";
 import { faKm, faNum } from "@/lib/format";
+import { AppIcon } from "@/components/ui/app-icon";
 
 const FILTERS = [
   { id: "all", label: "همه رویدادها" },
@@ -53,7 +54,7 @@ export function DashboardScreen() {
             <p className="text-xs sm:text-sm text-[#545f73] mt-0.5">پنجشنبه، ۳ آبان</p>
           </div>
           <div className="w-10 h-10 rounded-xl bg-[#dce9ff] flex items-center justify-center text-[#3525cd] shadow-xs">
-            <span className="material-symbols-outlined text-[20px]">bolt</span>
+            <AppIcon name="bolt" className="size-[20px]" />
           </div>
         </div>
 
@@ -67,9 +68,7 @@ export function DashboardScreen() {
             <span className="text-[#545f73] font-normal">•</span>{" "}
             <span className="font-bold text-[#0b1c30]">{faNum(upcomingLoansCount)} وام</span> تا ۳ روز آینده
           </span>
-          <span className="material-symbols-outlined text-[16px] text-[#545f73] mr-auto ltr-flip">
-            arrow_forward_ios
-          </span>
+          <AppIcon name="arrow_forward_ios" className="size-[16px] text-[#545f73] mr-auto" />
         </div>
       </div>
 
@@ -77,9 +76,7 @@ export function DashboardScreen() {
       <section className="flex flex-col space-y-2.5 -mx-4 sm:-mx-6">
         <div className="px-4 sm:px-6 flex items-center justify-between">
           <div className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[18px] text-[#ba1a1a]">
-              notification_important
-            </span>
+            <AppIcon name="notification_important" className="size-[18px] text-[#ba1a1a]" />
             <h2 className="text-base font-bold text-[#0b1c30]">نیازمند اقدام</h2>
           </div>
           <span className="text-xs text-[#3525cd] font-bold">۳ مورد</span>
@@ -94,7 +91,7 @@ export function DashboardScreen() {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#ba1a1a]" />
                   سرویس فوری
                 </span>
-                <span className="material-symbols-outlined text-[20px] text-[#ba1a1a]">warning</span>
+                <AppIcon name="warning" className="size-[20px] text-[#ba1a1a]" />
               </div>
               <h3 className="font-bold text-base text-[#0b1c30] line-clamp-1">تسلا مدل ۳</h3>
               <p className="text-xs text-[#464555] mt-1">
@@ -108,7 +105,7 @@ export function DashboardScreen() {
                 className="h-8 px-3.5 rounded-lg bg-[#4f46e5] text-white text-xs font-semibold shadow-xs active:scale-95 transition-transform flex items-center gap-1 hover:bg-[#3525cd]"
               >
                 <span>رزرو</span>
-                <span className="material-symbols-outlined text-[14px]">calendar_today</span>
+                <AppIcon name="calendar_today" className="size-[14px]" />
               </button>
             </div>
           </div>
@@ -120,7 +117,7 @@ export function DashboardScreen() {
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] bg-amber-100 text-amber-900 flex items-center gap-1 font-bold">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />۳ روز مانده
                 </span>
-                <span className="material-symbols-outlined text-[20px] text-amber-600">account_balance</span>
+                <AppIcon name="account_balance" className="size-[20px] text-amber-600" />
               </div>
               <h3 className="font-bold text-base text-[#0b1c30] line-clamp-1">وام مسکن آپارتمان</h3>
               <p className="text-xs text-[#464555] mt-1">
@@ -134,7 +131,7 @@ export function DashboardScreen() {
                 className="h-8 px-3.5 rounded-lg bg-[#0b1c30] text-white text-xs font-semibold shadow-xs active:scale-95 transition-transform flex items-center gap-1 hover:bg-[#213145]"
               >
                 <span>پرداخت</span>
-                <span className="material-symbols-outlined text-[14px] ltr-flip">arrow_forward</span>
+                <AppIcon name="arrow_forward" className="size-[14px]" />
               </button>
             </div>
           </div>
@@ -147,7 +144,7 @@ export function DashboardScreen() {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#006e4b]" />
                   تأیید شد
                 </span>
-                <span className="material-symbols-outlined text-[20px] text-[#006e4b]">verified</span>
+                <AppIcon name="verified" className="size-[20px] text-[#006e4b]" />
               </div>
               <h3 className="font-bold text-base text-[#0b1c30] line-clamp-1">معاینه سالانه دندان</h3>
               <p className="text-xs text-[#464555] mt-1">
@@ -178,7 +175,7 @@ export function DashboardScreen() {
           >
             <div className="flex items-center justify-between">
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <span className="material-symbols-outlined text-[22px]">directions_car</span>
+                <AppIcon name="directions_car" className="size-[22px]" />
               </div>
               <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold">
                 {faNum(92)}٪
@@ -205,7 +202,7 @@ export function DashboardScreen() {
           >
             <div className="flex items-center justify-between">
               <div className="w-10 h-10 rounded-xl bg-indigo-50 text-[#3525cd] flex items-center justify-center group-hover:scale-105 transition-transform">
-                <span className="material-symbols-outlined text-[22px]">account_balance_wallet</span>
+                <AppIcon name="account_balance_wallet" className="size-[22px]" />
               </div>
               <span className="px-2 py-0.5 rounded-full bg-[#e5eeff] text-[#3525cd] text-[10px] font-bold">
                 ۳ فعال
@@ -232,7 +229,7 @@ export function DashboardScreen() {
           >
             <div className="flex items-center justify-between">
               <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <span className="material-symbols-outlined text-[22px]">notifications_active</span>
+                <AppIcon name="notifications_active" className="size-[22px]" />
               </div>
               <span className="w-2 h-2 rounded-full bg-[#ba1a1a] animate-ping" />
             </div>
@@ -241,7 +238,7 @@ export function DashboardScreen() {
               <p className="text-xs text-[#ba1a1a] font-bold mt-0.5">۲ مورد امروز</p>
             </div>
             <div className="flex items-center gap-1.5 pt-1 text-[#545f73]">
-              <span className="material-symbols-outlined text-[14px]">receipt_long</span>
+              <AppIcon name="receipt_long" className="size-[14px]" />
               <span className="text-xs text-[#464555] truncate">فاکتور مالیاتی و نسخه</span>
             </div>
           </div>
@@ -252,7 +249,7 @@ export function DashboardScreen() {
           >
             <div className="flex items-center justify-between">
               <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <span className="material-symbols-outlined text-[22px]">fact_check</span>
+                <AppIcon name="fact_check" className="size-[22px]" />
               </div>
               <span className="px-2 py-0.5 rounded-full bg-[#e5eeff] text-[#545f73] text-[10px] font-bold">
                 ۴ لیست
@@ -304,7 +301,7 @@ export function DashboardScreen() {
             className="text-xs text-[#3525cd] font-bold flex items-center gap-0.5 hover:underline"
           >
             مشاهده همه
-            <span className="material-symbols-outlined text-[16px] ltr-flip">chevron_right</span>
+            <AppIcon name="chevron_right" className="size-[16px]" />
           </button>
         </div>
 
@@ -339,7 +336,7 @@ export function DashboardScreen() {
                           : "bg-purple-100 text-purple-700"
                   }`}
                 >
-                  <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
+                  <AppIcon name={item.icon} className="size-[20px]" />
                 </div>
                 {idx < filteredTimeline.length - 1 && <div className="w-0.5 h-10 bg-[#e5eeff] my-1" />}
               </div>

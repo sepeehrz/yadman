@@ -3,6 +3,7 @@
 import { faKm } from "@/lib/format";
 import { formatFaDate } from "@/utils";
 import type { VehicleService } from "../types";
+import { AppIcon } from "@/components/ui/app-icon";
 
 interface IProps {
   services: VehicleService[];
@@ -23,9 +24,12 @@ export function ServiceHistoryList({ services, onDelete, deleting }: IProps) {
               <span className="text-[10px] font-bold text-[#3525cd] block">
                 {formatFaDate(service.serviceDate)}
               </span>
-              <h4 className="font-bold text-sm text-[#0b1c30]">{service.title}</h4>
+              <h4 className="font-bold text-sm text-[#0b1c30]">
+                {service.title}
+              </h4>
               <p className="text-xs text-[#545f73]">
-                {service.provider || "بدون ارائه‌دهنده"} • {faKm(service.odometerKm)}
+                {service.provider || "بدون ارائه‌دهنده"} •{" "}
+                {faKm(service.odometerKm)}
               </p>
             </div>
             <div className="text-left flex-shrink-0">
@@ -51,9 +55,11 @@ export function ServiceHistoryList({ services, onDelete, deleting }: IProps) {
 
           {service.nextDueDate || service.nextDueKm ? (
             <p className="text-[11px] font-semibold text-[#3525cd] flex items-center gap-1">
-              <span className="material-symbols-outlined text-[14px]">event_repeat</span>
+              <AppIcon name="event_repeat" className="size-[14px]" />
               مراجعه بعدی:
-              {service.nextDueDate ? ` ${formatFaDate(service.nextDueDate)}` : ""}
+              {service.nextDueDate
+                ? ` ${formatFaDate(service.nextDueDate)}`
+                : ""}
               {service.nextDueKm ? ` • ${faKm(service.nextDueKm)}` : ""}
             </p>
           ) : null}

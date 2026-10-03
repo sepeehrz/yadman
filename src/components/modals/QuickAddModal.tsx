@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { BaseDialog } from "@/components/ui/dialog";
 import { useLifeHub } from "@/store/LifeHubContext";
 import { faNum } from "@/lib/format";
 import type { LoanItem, TaskReminder, VehicleTracker } from "@/lib/types";
+import { AppIcon } from "@/components/ui/app-icon";
 
 type QuickCategory = "vehicle" | "loan" | "task" | "checklist";
 
@@ -26,7 +28,9 @@ export function QuickAddModal() {
   const [intervalKm, setIntervalKm] = useState("5,000");
   const [intervalMo, setIntervalMo] = useState("6");
   const [nextDueDate, setNextDueDate] = useState("2024-11-18");
-  const [nextDueKm, setNextDueKm] = useState((odometerKm + 5000).toLocaleString("en-US"));
+  const [nextDueKm, setNextDueKm] = useState(
+    (odometerKm + 5000).toLocaleString("en-US"),
+  );
   const [estCost, setEstCost] = useState("240.00");
   const [receiptAttached, setReceiptAttached] = useState(false);
 
@@ -35,21 +39,24 @@ export function QuickAddModal() {
   const [loanMonthly, setLoanMonthly] = useState("");
   const [loanTotal, setLoanTotal] = useState("");
   const [loanDueDay, setLoanDueDay] = useState("15");
-  const [loanCategory, setLoanCategory] = useState<LoanItem["category"]>("personal");
+  const [loanCategory, setLoanCategory] =
+    useState<LoanItem["category"]>("personal");
   const [loanAutoPay, setLoanAutoPay] = useState(true);
 
   const [taskTitle, setTaskTitle] = useState("");
-  const [taskCategory, setTaskCategory] = useState<TaskReminder["category"]>("work");
+  const [taskCategory, setTaskCategory] =
+    useState<TaskReminder["category"]>("work");
   const [taskPriority, setTaskPriority] = useState<"high" | "normal">("normal");
   const [taskDateCategory, setTaskDateCategory] =
     useState<TaskReminder["dueDateCategory"]>("today");
   const [taskTime, setTaskTime] = useState("۱۵:۰۰");
   const [taskLocation, setTaskLocation] = useState("");
 
-  const [selectedPackId, setSelectedPackId] = useState(checklists[0]?.id || "camping-pack");
+  const [selectedPackId, setSelectedPackId] = useState(
+    checklists[0]?.id || "camping-pack",
+  );
   const [checklistItemText, setChecklistItemText] = useState("");
 
-  if (!isQuickAddOpen) return null;
   const onClose = () => setQuickAddOpen(false);
 
   const handleVehicleSubmit = (e: React.FormEvent) => {
@@ -131,7 +138,11 @@ export function QuickAddModal() {
     if (!taskTitle.trim()) return;
 
     const dateLabel =
-      taskDateCategory === "today" ? "امروز" : taskDateCategory === "tomorrow" ? "فردا" : "";
+      taskDateCategory === "today"
+        ? "امروز"
+        : taskDateCategory === "tomorrow"
+          ? "فردا"
+          : "";
     const newTask: TaskReminder = {
       id: `task-${Date.now()}`,
       title: taskTitle,
@@ -171,17 +182,22 @@ export function QuickAddModal() {
           category === id ? "bg-white/20" : "bg-[#e5eeff]"
         }`}
       >
-        <span className="material-symbols-outlined text-[19px]">{icon}</span>
+        <AppIcon name={icon} className="size-[19px]" />
       </div>
-      <span className="text-xs font-bold text-center leading-tight">{label}</span>
+      <span className="text-xs font-bold text-center leading-tight">
+        {label}
+      </span>
     </button>
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="fixed inset-0 bg-[#0b1c30]/50 backdrop-blur-[3px]" onClick={onClose} />
-
-      <div className="relative z-10 w-full max-w-lg bg-white rounded-t-[32px] sm:rounded-[28px] shadow-[0_-12px_40px_rgba(11,28,48,0.2)] flex flex-col max-h-[90vh] overflow-hidden">
+    <BaseDialog
+      open={isQuickAddOpen}
+      onClose={onClose}
+      title="ایجاد سریع"
+      size="lg"
+    >
+      <div className="bg-white rounded-t-[32px] sm:rounded-[28px] flex flex-col max-h-[88vh] overflow-hidden">
         <div className="w-full flex justify-center py-2 cursor-grab">
           <div className="w-12 h-1.5 rounded-full bg-[#c7c4d8]/70" />
         </div>
@@ -189,7 +205,7 @@ export function QuickAddModal() {
         <div className="px-5 sm:px-6 pt-1 pb-3 flex items-center justify-between border-b border-[#e2e8f0]/60">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-full bg-[#e2dfff] flex items-center justify-center text-[#3525cd]">
-              <span className="material-symbols-outlined text-[19px]">add_task</span>
+              <AppIcon name="add_task" className="size-[19px]" />
             </div>
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#0b1c30] tracking-tight">
               ایجاد سریع
@@ -200,7 +216,7 @@ export function QuickAddModal() {
             aria-label="بستن"
             className="w-9 h-9 rounded-full bg-[#e5eeff] text-[#545f73] flex items-center justify-center hover:bg-[#dce9ff] active:scale-95 transition-all"
           >
-            <span className="material-symbols-outlined text-[20px]">close</span>
+            <AppIcon name="close" className="size-[20px]" />
           </button>
         </div>
 
@@ -220,12 +236,12 @@ export function QuickAddModal() {
           {category === "vehicle" && (
             <form onSubmit={handleVehicleSubmit} className="space-y-3.5">
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#545f73]">خودرو</label>
+                <label className="block text-xs font-bold text-[#545f73]">
+                  خودرو
+                </label>
                 <div className="h-12 bg-[#eff4ff] rounded-xl px-3 flex items-center justify-between text-[#0b1c30]">
                   <div className="flex items-center gap-2 truncate">
-                    <span className="material-symbols-outlined text-[#3525cd] text-[20px]">
-                      electric_car
-                    </span>
+                    <AppIcon name="electric_car" className="text-[#3525cd] size-[20px]" />
                     <span className="text-sm font-bold truncate">
                       {vehicleName}{" "}
                       <span className="font-normal text-[#545f73] text-xs">
@@ -237,7 +253,9 @@ export function QuickAddModal() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-bold text-[#545f73]">نام سرویس / قطعه</label>
+                <label className="block text-xs font-bold text-[#545f73]">
+                  نام سرویس / قطعه
+                </label>
                 <input
                   type="text"
                   value={serviceName}
@@ -250,7 +268,12 @@ export function QuickAddModal() {
                   <span className="text-[11px] font-semibold text-[#545f73] whitespace-nowrap">
                     سریع:
                   </span>
-                  {["روغن موتور", "لنت ترمز", "جابه‌جایی تایر", "تمدید بیمه"].map((tag) => (
+                  {[
+                    "روغن موتور",
+                    "لنت ترمز",
+                    "جابه‌جایی تایر",
+                    "تمدید بیمه",
+                  ].map((tag) => (
                     <button
                       key={tag}
                       type="button"
@@ -269,41 +292,53 @@ export function QuickAddModal() {
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-[#545f73]">دوره تناوب</label>
-                  <span className="text-[11px] font-bold text-[#4f46e5]">هرکدام زودتر برسد</span>
+                  <label className="text-xs font-bold text-[#545f73]">
+                    دوره تناوب
+                  </label>
+                  <span className="text-[11px] font-bold text-[#4f46e5]">
+                    هرکدام زودتر برسد
+                  </span>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div className="h-12 bg-[#eff4ff] rounded-xl px-3 flex items-center gap-1.5">
-                    <span className="text-xs text-[#545f73] font-medium">هر</span>
+                    <span className="text-xs text-[#545f73] font-medium">
+                      هر
+                    </span>
                     <input
                       type="text"
                       value={intervalKm}
                       onChange={(e) => setIntervalKm(e.target.value)}
                       className="w-full bg-transparent text-[#0b1c30] font-bold text-sm text-left focus:outline-none"
                     />
-                    <span className="text-xs font-bold text-[#545f73]">کیلومتر</span>
+                    <span className="text-xs font-bold text-[#545f73]">
+                      کیلومتر
+                    </span>
                   </div>
                   <div className="h-12 bg-[#eff4ff] rounded-xl px-3 flex items-center gap-1.5">
-                    <span className="text-xs text-[#545f73] font-medium">هر</span>
+                    <span className="text-xs text-[#545f73] font-medium">
+                      هر
+                    </span>
                     <input
                       type="text"
                       value={intervalMo}
                       onChange={(e) => setIntervalMo(e.target.value)}
                       className="w-full bg-transparent text-[#0b1c30] font-bold text-sm text-left focus:outline-none"
                     />
-                    <span className="text-xs font-bold text-[#545f73]">ماه</span>
+                    <span className="text-xs font-bold text-[#545f73]">
+                      ماه
+                    </span>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#545f73]">آستانه موعد بعدی</label>
+                <label className="block text-xs font-bold text-[#545f73]">
+                  آستانه موعد بعدی
+                </label>
                 <div className="grid grid-cols-2 gap-2">
                   <div className="h-12 bg-[#eff4ff] rounded-xl px-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[18px] text-[#545f73]">
-                        calendar_today
-                      </span>
+                      <AppIcon name="calendar_today" className="size-[18px] text-[#545f73]" />
                       <input
                         type="date"
                         value={nextDueDate}
@@ -314,7 +349,7 @@ export function QuickAddModal() {
                   </div>
                   <div className="h-12 bg-[#eff4ff] rounded-xl px-3 flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-[18px] text-[#545f73]">speed</span>
+                      <AppIcon name="speed" className="size-[18px] text-[#545f73]" />
                       <input
                         type="text"
                         value={nextDueKm}
@@ -322,14 +357,18 @@ export function QuickAddModal() {
                         className="w-20 bg-transparent text-xs font-bold text-[#0b1c30] focus:outline-none"
                       />
                     </div>
-                    <span className="text-xs font-bold text-[#545f73]">کیلومتر</span>
+                    <span className="text-xs font-bold text-[#545f73]">
+                      کیلومتر
+                    </span>
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">هزینه تقریبی ($)</label>
+                  <label className="block text-xs font-bold text-[#545f73]">
+                    هزینه تقریبی ($)
+                  </label>
                   <div className="h-12 bg-[#eff4ff] rounded-xl px-3 flex items-center gap-1">
                     <span className="text-sm font-bold text-[#545f73]">$</span>
                     <input
@@ -342,7 +381,9 @@ export function QuickAddModal() {
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">فاکتور / مدرک</label>
+                  <label className="block text-xs font-bold text-[#545f73]">
+                    فاکتور / مدرک
+                  </label>
                   <button
                     type="button"
                     onClick={() => setReceiptAttached(!receiptAttached)}
@@ -352,9 +393,7 @@ export function QuickAddModal() {
                         : "bg-[#eff4ff] hover:bg-[#e5eeff] text-[#464555]"
                     }`}
                   >
-                    <span className="material-symbols-outlined text-[19px] text-[#4f46e5]">
-                      {receiptAttached ? "task_alt" : "add_a_photo"}
-                    </span>
+                    <AppIcon name={receiptAttached ? "task_alt" : "add_a_photo"} className="size-[19px] text-[#4f46e5]" />
                     <span className="truncate">
                       {receiptAttached ? "فاکتور پیوست شد" : "افزودن فاکتور"}
                     </span>
@@ -364,12 +403,15 @@ export function QuickAddModal() {
 
               <div className="p-3 rounded-xl bg-[#eff4ff] flex items-start gap-2.5 border border-[#dce9ff]">
                 <div className="w-6 h-6 rounded-full bg-[#6ffbbe] text-[#002113] flex items-center justify-center shrink-0 mt-0.5">
-                  <span className="material-symbols-outlined text-[14px]">auto_awesome</span>
+                  <AppIcon name="auto_awesome" className="size-[14px]" />
                 </div>
                 <div className="text-right">
-                  <span className="text-[11px] font-bold text-[#0b1c30] block">همگام‌سازی هوشمند چرخه</span>
+                  <span className="text-[11px] font-bold text-[#0b1c30] block">
+                    همگام‌سازی هوشمند چرخه
+                  </span>
                   <p className="text-[11px] text-[#545f73] leading-snug">
-                    لایف‌هاب ۵۰۰ کیلومتر قبل از آستانه هشدار می‌دهد و سوابق را با لاگ خودرو همگام می‌کند.
+                    لایف‌هاب ۵۰۰ کیلومتر قبل از آستانه هشدار می‌دهد و سوابق را
+                    با لاگ خودرو همگام می‌کند.
                   </p>
                 </div>
               </div>
@@ -380,7 +422,7 @@ export function QuickAddModal() {
                   className="w-full h-12 rounded-xl bg-[#4f46e5] text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#3525cd] active:scale-[0.98] transition-all"
                 >
                   <span>ساخت یادآور سرویس</span>
-                  <span className="material-symbols-outlined text-[18px] ltr-flip">arrow_forward</span>
+                  <AppIcon name="arrow_forward" className="size-[18px]" />
                 </button>
                 <button
                   type="button"
@@ -396,7 +438,9 @@ export function QuickAddModal() {
           {category === "loan" && (
             <form onSubmit={handleLoanSubmit} className="space-y-3.5">
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#545f73]">عنوان وام / بدهی</label>
+                <label className="block text-xs font-bold text-[#545f73]">
+                  عنوان وام / بدهی
+                </label>
                 <input
                   type="text"
                   value={loanTitle}
@@ -408,7 +452,9 @@ export function QuickAddModal() {
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">بانک / مؤسسه</label>
+                  <label className="block text-xs font-bold text-[#545f73]">
+                    بانک / مؤسسه
+                  </label>
                   <input
                     type="text"
                     value={loanBank}
@@ -419,10 +465,14 @@ export function QuickAddModal() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">دسته</label>
+                  <label className="block text-xs font-bold text-[#545f73]">
+                    دسته
+                  </label>
                   <select
                     value={loanCategory}
-                    onChange={(e) => setLoanCategory(e.target.value as LoanItem["category"])}
+                    onChange={(e) =>
+                      setLoanCategory(e.target.value as LoanItem["category"])
+                    }
                     className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm focus:outline-none"
                   >
                     <option value="mortgage">مسکن</option>
@@ -434,7 +484,9 @@ export function QuickAddModal() {
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">پرداخت ماهانه ($)</label>
+                  <label className="block text-xs font-bold text-[#545f73]">
+                    پرداخت ماهانه ($)
+                  </label>
                   <input
                     type="number"
                     value={loanMonthly}
@@ -445,7 +497,9 @@ export function QuickAddModal() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">مانده کل ($)</label>
+                  <label className="block text-xs font-bold text-[#545f73]">
+                    مانده کل ($)
+                  </label>
                   <input
                     type="number"
                     value={loanTotal}
@@ -458,9 +512,11 @@ export function QuickAddModal() {
               </div>
               <div className="flex items-center justify-between p-3 rounded-xl bg-[#eff4ff]">
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[20px] text-[#4f46e5]">autorenew</span>
+                  <AppIcon name="autorenew" className="size-[20px] text-[#4f46e5]" />
                   <div>
-                    <span className="text-xs font-bold text-[#0b1c30] block">پرداخت خودکار فعال</span>
+                    <span className="text-xs font-bold text-[#0b1c30] block">
+                      پرداخت خودکار فعال
+                    </span>
                     <span className="text-[11px] text-[#545f73]">
                       برداشت روز {faNum(parseInt(loanDueDay, 10) || 15)} هر ماه
                     </span>
@@ -479,7 +535,7 @@ export function QuickAddModal() {
                   className="w-full h-12 rounded-xl bg-[#4f46e5] text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#3525cd] active:scale-[0.98] transition-all"
                 >
                   <span>افزودن وام و زمان‌بندی پرداخت</span>
-                  <span className="material-symbols-outlined text-[18px] ltr-flip">arrow_forward</span>
+                  <AppIcon name="arrow_forward" className="size-[18px]" />
                 </button>
                 <button
                   type="button"
@@ -495,7 +551,9 @@ export function QuickAddModal() {
           {category === "task" && (
             <form onSubmit={handleTaskSubmit} className="space-y-3.5">
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#545f73]">نام کار / یادآور</label>
+                <label className="block text-xs font-bold text-[#545f73]">
+                  نام کار / یادآور
+                </label>
                 <input
                   type="text"
                   value={taskTitle}
@@ -507,10 +565,16 @@ export function QuickAddModal() {
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">دسته</label>
+                  <label className="block text-xs font-bold text-[#545f73]">
+                    دسته
+                  </label>
                   <select
                     value={taskCategory}
-                    onChange={(e) => setTaskCategory(e.target.value as TaskReminder["category"])}
+                    onChange={(e) =>
+                      setTaskCategory(
+                        e.target.value as TaskReminder["category"],
+                      )
+                    }
                     className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm focus:outline-none font-medium"
                   >
                     <option value="work">💼 کاری</option>
@@ -521,10 +585,14 @@ export function QuickAddModal() {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">اولویت</label>
+                  <label className="block text-xs font-bold text-[#545f73]">
+                    اولویت
+                  </label>
                   <select
                     value={taskPriority}
-                    onChange={(e) => setTaskPriority(e.target.value as "high" | "normal")}
+                    onChange={(e) =>
+                      setTaskPriority(e.target.value as "high" | "normal")
+                    }
                     className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm focus:outline-none font-medium"
                   >
                     <option value="normal">عادی</option>
@@ -534,11 +602,15 @@ export function QuickAddModal() {
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">موعد</label>
+                  <label className="block text-xs font-bold text-[#545f73]">
+                    موعد
+                  </label>
                   <select
                     value={taskDateCategory}
                     onChange={(e) =>
-                      setTaskDateCategory(e.target.value as TaskReminder["dueDateCategory"])
+                      setTaskDateCategory(
+                        e.target.value as TaskReminder["dueDateCategory"],
+                      )
                     }
                     className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm focus:outline-none font-medium"
                   >
@@ -548,7 +620,9 @@ export function QuickAddModal() {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">ساعت</label>
+                  <label className="block text-xs font-bold text-[#545f73]">
+                    ساعت
+                  </label>
                   <input
                     type="text"
                     value={taskTime}
@@ -559,7 +633,9 @@ export function QuickAddModal() {
                 </div>
               </div>
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#545f73]">مکان (اختیاری)</label>
+                <label className="block text-xs font-bold text-[#545f73]">
+                  مکان (اختیاری)
+                </label>
                 <input
                   type="text"
                   value={taskLocation}
@@ -574,7 +650,7 @@ export function QuickAddModal() {
                   className="w-full h-12 rounded-xl bg-[#4f46e5] text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#3525cd] active:scale-[0.98] transition-all"
                 >
                   <span>زمان‌بندی یادآور</span>
-                  <span className="material-symbols-outlined text-[18px] ltr-flip">arrow_forward</span>
+                  <AppIcon name="arrow_forward" className="size-[18px]" />
                 </button>
                 <button
                   type="button"
@@ -590,7 +666,9 @@ export function QuickAddModal() {
           {category === "checklist" && (
             <form onSubmit={handleChecklistSubmit} className="space-y-3.5">
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#545f73]">بسته چک‌لیست مقصد</label>
+                <label className="block text-xs font-bold text-[#545f73]">
+                  بسته چک‌لیست مقصد
+                </label>
                 <select
                   value={selectedPackId}
                   onChange={(e) => setSelectedPackId(e.target.value)}
@@ -604,7 +682,9 @@ export function QuickAddModal() {
                 </select>
               </div>
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#545f73]">قلم موردنظر</label>
+                <label className="block text-xs font-bold text-[#545f73]">
+                  قلم موردنظر
+                </label>
                 <input
                   type="text"
                   value={checklistItemText}
@@ -620,7 +700,7 @@ export function QuickAddModal() {
                   className="w-full h-12 rounded-xl bg-[#4f46e5] text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#3525cd] active:scale-[0.98] transition-all"
                 >
                   <span>افزودن به چک‌لیست</span>
-                  <span className="material-symbols-outlined text-[18px]">add</span>
+                  <AppIcon name="add" className="size-[18px]" />
                 </button>
                 <button
                   type="button"
@@ -634,6 +714,6 @@ export function QuickAddModal() {
           )}
         </div>
       </div>
-    </div>
+    </BaseDialog>
   );
 }

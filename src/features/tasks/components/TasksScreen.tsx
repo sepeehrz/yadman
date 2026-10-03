@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLifeHub } from "@/store/LifeHubContext";
 import { faNum } from "@/lib/format";
 import type { TaskReminder } from "@/lib/types";
+import { AppIcon } from "@/components/ui/app-icon";
 
 const CATEGORY_FA: Record<TaskReminder["category"], string> = {
   work: "کاری",
@@ -96,7 +97,7 @@ export function TasksScreen() {
               : "bg-[#eff4ff] text-transparent hover:bg-[#e5eeff] border border-[#c7c4d8]"
           }`}
         >
-          <span className="material-symbols-outlined text-[16px]">check</span>
+          <AppIcon name="check" className="size-[16px]" />
         </button>
 
         <div className="flex-1 min-w-0">
@@ -107,7 +108,7 @@ export function TasksScreen() {
                 task.priority === "high" ? "text-[#ba1a1a]" : "text-[#545f73]"
               }`}
             >
-              <span className="material-symbols-outlined text-[13px]">schedule</span> {task.dueTime}
+              <AppIcon name="schedule" className="size-[13px]" /> {task.dueTime}
             </span>
           </div>
 
@@ -123,12 +124,12 @@ export function TasksScreen() {
             <div className="flex items-center gap-2 mt-1.5 text-xs text-[#545f73]">
               {task.source && (
                 <span className="inline-flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">apartment</span> {task.source}
+                  <AppIcon name="apartment" className="size-[14px]" /> {task.source}
                 </span>
               )}
               {task.location && (
                 <span className="inline-flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">location_on</span>{" "}
+                  <AppIcon name="location_on" className="size-[14px]" />{" "}
                   {task.location}
                 </span>
               )}
@@ -156,7 +157,7 @@ export function TasksScreen() {
 
         <div className="flex items-center gap-2 mt-1">
           <div className="flex-1 flex items-center h-12 bg-white rounded-xl px-3.5 shadow-xs border border-[#e2e8f0]/80">
-            <span className="material-symbols-outlined text-[#545f73] text-[20px] ml-2">search</span>
+            <AppIcon name="search" className="text-[#545f73] size-[20px] ml-2" />
             <input
               type="text"
               value={searchQuery}
@@ -175,7 +176,7 @@ export function TasksScreen() {
             aria-label="فیلترها"
             className="w-12 h-12 flex items-center justify-center bg-white text-[#464555] rounded-xl shadow-xs border border-[#e2e8f0]/80 hover:bg-[#eff4ff] active:scale-95 transition-all"
           >
-            <span className="material-symbols-outlined text-[20px]">tune</span>
+            <AppIcon name="tune" className="size-[20px]" />
           </button>
         </div>
       </div>
@@ -274,7 +275,7 @@ export function TasksScreen() {
                       </span>
                       {task.recurring && (
                         <span className="inline-flex items-center gap-0.5 text-[#545f73] text-[10px] font-medium">
-                          <span className="material-symbols-outlined text-[12px]">sync</span> {task.recurring}
+                          <AppIcon name="sync" className="size-[12px]" /> {task.recurring}
                         </span>
                       )}
                     </div>
@@ -326,7 +327,7 @@ export function TasksScreen() {
           {!smartSuggestionAdded && (
             <div className="bg-[#eff4ff] rounded-2xl p-4 flex items-center gap-3 border border-[#dce9ff]">
               <div className="w-10 h-10 rounded-xl bg-[#6ffbbe] flex items-center justify-center text-[#002113] flex-shrink-0">
-                <span className="material-symbols-outlined text-[20px]">auto_awesome</span>
+                <AppIcon name="auto_awesome" className="size-[20px]" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-bold text-[#0b1c30]">پیشنهاد هوشمند</p>
@@ -357,7 +358,7 @@ export function TasksScreen() {
               }}
               className="flex items-center gap-1 text-xs text-[#3525cd] font-bold py-1.5 px-3 rounded-lg hover:bg-[#eff4ff] active:scale-95 transition-all"
             >
-              <span className="material-symbols-outlined text-[16px]">restart_alt</span>
+              <AppIcon name="restart_alt" className="size-[16px]" />
               <span>ریست همه</span>
             </button>
           </div>
@@ -373,7 +374,7 @@ export function TasksScreen() {
                 <div className="flex items-start justify-between gap-2">
                   <div onClick={() => toggleExpand(pack.id)} className="flex items-center gap-3 cursor-pointer flex-1">
                     <div className="w-10 h-10 rounded-xl bg-[#e2dfff] flex items-center justify-center text-[#3525cd] flex-shrink-0">
-                      <span className="material-symbols-outlined text-[22px]">{pack.icon}</span>
+                      <AppIcon name={pack.icon} className="size-[22px]" />
                     </div>
                     <div className="min-w-0">
                       <h3 className="text-sm sm:text-base font-bold text-[#0b1c30] truncate">{pack.title}</h3>
@@ -392,9 +393,7 @@ export function TasksScreen() {
                       onClick={() => toggleExpand(pack.id)}
                       className="w-8 h-8 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#545f73]"
                     >
-                      <span className="material-symbols-outlined text-[20px]">
-                        {isExpanded ? "expand_less" : "expand_more"}
-                      </span>
+                      <AppIcon name={isExpanded ? "expand_less" : "expand_more"} className="size-[20px]" />
                     </button>
                   </div>
                 </div>
@@ -428,13 +427,12 @@ export function TasksScreen() {
                         >
                           {item.text}
                         </span>
-                        <span
-                          className={`material-symbols-outlined text-[18px] ${
+                        <AppIcon
+                          name={item.completed ? "verified" : "radio_button_unchecked"}
+                          className={`size-[18px] ${
                             item.completed ? "text-[#006e4b]" : "text-[#c7c4d8]"
                           }`}
-                        >
-                          {item.completed ? "verified" : "radio_button_unchecked"}
-                        </span>
+                        />
                       </label>
                     ))}
 
@@ -446,7 +444,7 @@ export function TasksScreen() {
                         }}
                         className="flex items-center gap-1.5 text-xs text-[#545f73] hover:text-[#3525cd] font-semibold py-1"
                       >
-                        <span className="material-symbols-outlined text-[16px]">cached</span>
+                        <AppIcon name="cached" className="size-[16px]" />
                         <span>ریست برای چرخه بعدی</span>
                       </button>
                       <button
@@ -469,7 +467,7 @@ export function TasksScreen() {
           onClick={() => setQuickAddOpen(true)}
           className="flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-[#4f46e5] text-white text-xs sm:text-sm font-bold shadow-lg shadow-[#4f46e5]/25 hover:bg-[#3525cd] active:scale-95 transition-all"
         >
-          <span className="material-symbols-outlined text-[20px]">add</span>
+          <AppIcon name="add" className="size-[20px]" />
           <span>مورد یا یادآور جدید</span>
         </button>
       </div>

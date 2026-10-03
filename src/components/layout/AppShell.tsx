@@ -4,15 +4,12 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { Header } from "@/components/layout/Header";
 import { NavigationDock } from "@/components/layout/NavigationDock";
-import { Toast } from "@/components/ui/Toast";
-import { ToastBridge } from "@/components/common/toast-bridge";
 import { QuickAddModal } from "@/components/modals/QuickAddModal";
 import { SearchModal } from "@/components/modals/SearchModal";
 import { NotificationsModal } from "@/components/modals/NotificationsModal";
 import { ProfileModal } from "@/components/modals/ProfileModal";
-import { OdometerModal } from "@/components/modals/OdometerModal";
-import { ScheduleServiceModal } from "@/components/modals/ScheduleServiceModal";
 import { ROUTE_TITLES } from "@/lib/mock-data";
+import { Toaster } from "@/components/ui/sonner";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -36,10 +33,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <SearchModal />
       <NotificationsModal />
       <ProfileModal />
-      <OdometerModal />
-      <ScheduleServiceModal />
-      <Toast />
-      <ToastBridge />
+      <Toaster />
     </div>
   );
 }

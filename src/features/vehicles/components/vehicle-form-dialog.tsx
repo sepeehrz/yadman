@@ -1,9 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { BaseDialog } from "@/components/ui/dialog";
 import type { CreateVehicleInput, Vehicle } from "../types";
-import { parseVehicleForm, type CreateVehicleForm } from "../validations/vehicle-schema";
+import {
+  parseVehicleForm,
+  type CreateVehicleForm,
+} from "../validations/vehicle-schema";
 import type { FieldErrors } from "../validations/shared-schema";
+import { AppIcon } from "@/components/ui/app-icon";
 
 interface IProps {
   open: boolean;
@@ -31,7 +36,13 @@ function FieldError({ message }: { message?: string }) {
   return <p className="text-[11px] text-[#ba1a1a] font-semibold">{message}</p>;
 }
 
-export function VehicleFormDialog({ open, initial, pending, onClose, onSubmit }: IProps) {
+export function VehicleFormDialog({
+  open,
+  initial,
+  pending,
+  onClose,
+  onSubmit,
+}: IProps) {
   const [form, setForm] = useState<CreateVehicleForm>({
     name: initial?.name ?? "",
     brand: initial?.brand ?? "",
@@ -46,11 +57,10 @@ export function VehicleFormDialog({ open, initial, pending, onClose, onSubmit }:
   });
   const [errors, setErrors] = useState<FieldErrors>({});
 
-  if (!open) {
-    return null;
-  }
-
-  function set<K extends keyof CreateVehicleForm>(key: K, value: CreateVehicleForm[K]): void {
+  function set<K extends keyof CreateVehicleForm>(
+    key: K,
+    value: CreateVehicleForm[K],
+  ): void {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
@@ -66,9 +76,13 @@ export function VehicleFormDialog({ open, initial, pending, onClose, onSubmit }:
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="fixed inset-0 bg-[#0b1c30]/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative z-10 w-full max-w-lg bg-white rounded-t-[28px] sm:rounded-3xl p-5 sm:p-6 shadow-2xl max-h-[88vh] overflow-y-auto no-scrollbar">
+    <BaseDialog
+      open={open}
+      onClose={onClose}
+      title={initial ? "ویرایش خودرو" : "ثبت خودرو جدید"}
+      size="lg"
+    >
+      <div className="p-5 sm:p-6">
         <div className="flex items-center justify-between pb-3 border-b border-[#e2e8f0]">
           <h3 className="text-base font-bold text-[#0b1c30]">
             {initial ? "ویرایش خودرو" : "ثبت خودرو جدید"}
@@ -78,13 +92,16 @@ export function VehicleFormDialog({ open, initial, pending, onClose, onSubmit }:
             aria-label="بستن"
             className="w-8 h-8 rounded-full bg-[#eff4ff] text-[#545f73] flex items-center justify-center hover:bg-[#e5eeff]"
           >
-            <span className="material-symbols-outlined text-[18px]">close</span>
+            <AppIcon name="close" className="size-[18px]" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3 pt-4">
           <div className="space-y-1">
-            <label className="text-xs font-bold text-[#545f73]" htmlFor="vehicle-name">
+            <label
+              className="text-xs font-bold text-[#545f73]"
+              htmlFor="vehicle-name"
+            >
               نام خودرو
             </label>
             <input
@@ -99,7 +116,10 @@ export function VehicleFormDialog({ open, initial, pending, onClose, onSubmit }:
 
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="vehicle-brand">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="vehicle-brand"
+              >
                 برند
               </label>
               <input
@@ -111,7 +131,10 @@ export function VehicleFormDialog({ open, initial, pending, onClose, onSubmit }:
               />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="vehicle-model">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="vehicle-model"
+              >
                 مدل
               </label>
               <input
@@ -127,21 +150,32 @@ export function VehicleFormDialog({ open, initial, pending, onClose, onSubmit }:
 
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="vehicle-year">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="vehicle-year"
+              >
                 سال ساخت
               </label>
               <input
                 id="vehicle-year"
                 type="number"
                 value={form.year ?? ""}
-                onChange={(e) => set("year", e.target.value === "" ? null : Number(e.target.value))}
+                onChange={(e) =>
+                  set(
+                    "year",
+                    e.target.value === "" ? null : Number(e.target.value),
+                  )
+                }
                 placeholder="۱۴۰۳"
                 className={inputClass}
               />
               <FieldError message={errors.year} />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="vehicle-color">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="vehicle-color"
+              >
                 رنگ
               </label>
               <input
@@ -157,7 +191,10 @@ export function VehicleFormDialog({ open, initial, pending, onClose, onSubmit }:
 
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="vehicle-plate">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="vehicle-plate"
+              >
                 پلاک
               </label>
               <input
@@ -170,7 +207,10 @@ export function VehicleFormDialog({ open, initial, pending, onClose, onSubmit }:
               <FieldError message={errors.plateNumber} />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="vehicle-fuel">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="vehicle-fuel"
+              >
                 سوخت
               </label>
               <select
@@ -190,7 +230,10 @@ export function VehicleFormDialog({ open, initial, pending, onClose, onSubmit }:
 
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="vehicle-km">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="vehicle-km"
+              >
                 کیلومتر فعلی
               </label>
               <input
@@ -203,7 +246,10 @@ export function VehicleFormDialog({ open, initial, pending, onClose, onSubmit }:
               <FieldError message={errors.odometerKm} />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="vehicle-vin">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="vehicle-vin"
+              >
                 شماره شاسی (اختیاری)
               </label>
               <input
@@ -229,11 +275,15 @@ export function VehicleFormDialog({ open, initial, pending, onClose, onSubmit }:
               disabled={pending}
               className="flex-1 h-11 rounded-xl bg-[#4f46e5] text-white font-bold text-xs hover:bg-[#3525cd] active:scale-95 transition-all disabled:opacity-60"
             >
-              {pending ? "در حال ذخیره..." : initial ? "ذخیره تغییرات" : "ثبت خودرو"}
+              {pending
+                ? "در حال ذخیره..."
+                : initial
+                  ? "ذخیره تغییرات"
+                  : "ثبت خودرو"}
             </button>
           </div>
         </form>
       </div>
-    </div>
+    </BaseDialog>
   );
 }

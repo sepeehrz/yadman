@@ -34,8 +34,13 @@ export function useInsurances(vehicleId: string | null) {
 export function useCreateInsurance() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ vehicleId, input }: { vehicleId: string; input: CreateInsuranceInput }) =>
-      createInsurance(vehicleId, input),
+    mutationFn: ({
+      vehicleId,
+      input,
+    }: {
+      vehicleId: string;
+      input: CreateInsuranceInput;
+    }) => createInsurance(vehicleId, input),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: vehicleKeys.insurances(variables.vehicleId),
@@ -51,8 +56,13 @@ export function useCreateInsurance() {
 export function useDeleteInsurance() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ vehicleId, insuranceId }: { vehicleId: string; insuranceId: string }) =>
-      deleteInsurance(vehicleId, insuranceId),
+    mutationFn: ({
+      vehicleId,
+      insuranceId,
+    }: {
+      vehicleId: string;
+      insuranceId: string;
+    }) => deleteInsurance(vehicleId, insuranceId),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: vehicleKeys.insurances(variables.vehicleId),
@@ -76,10 +86,17 @@ export function useTolls(vehicleId: string | null) {
 export function useCreateToll() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ vehicleId, input }: { vehicleId: string; input: CreateTollInput }) =>
-      createToll(vehicleId, input),
+    mutationFn: ({
+      vehicleId,
+      input,
+    }: {
+      vehicleId: string;
+      input: CreateTollInput;
+    }) => createToll(vehicleId, input),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: vehicleKeys.tolls(variables.vehicleId) });
+      queryClient.invalidateQueries({
+        queryKey: vehicleKeys.tolls(variables.vehicleId),
+      });
       toast.success("عوارض ثبت شد");
     },
     onError: (error: unknown) => {
@@ -101,7 +118,9 @@ export function useUpdateToll() {
       input: UpdateTollInput;
     }) => updateToll(vehicleId, tollId, input),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: vehicleKeys.tolls(variables.vehicleId) });
+      queryClient.invalidateQueries({
+        queryKey: vehicleKeys.tolls(variables.vehicleId),
+      });
       toast.success("وضعیت عوارض به‌روزرسانی شد");
     },
     onError: (error: unknown) => {
@@ -113,10 +132,17 @@ export function useUpdateToll() {
 export function useDeleteToll() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ vehicleId, tollId }: { vehicleId: string; tollId: string }) =>
-      deleteToll(vehicleId, tollId),
+    mutationFn: ({
+      vehicleId,
+      tollId,
+    }: {
+      vehicleId: string;
+      tollId: string;
+    }) => deleteToll(vehicleId, tollId),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: vehicleKeys.tolls(variables.vehicleId) });
+      queryClient.invalidateQueries({
+        queryKey: vehicleKeys.tolls(variables.vehicleId),
+      });
       toast.success("رکورد عوارض حذف شد");
     },
     onError: (error: unknown) => {

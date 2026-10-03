@@ -1,9 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { BaseDialog } from "@/components/ui/dialog";
 import type { CreateInsuranceInput, Insurance } from "../types";
-import { parseInsuranceForm, type CreateInsuranceForm } from "../validations/insurance-schema";
+import {
+  parseInsuranceForm,
+  type CreateInsuranceForm,
+} from "../validations/insurance-schema";
 import type { FieldErrors } from "../validations/shared-schema";
+import { AppIcon } from "@/components/ui/app-icon";
 
 interface IProps {
   open: boolean;
@@ -22,7 +27,12 @@ function FieldError({ message }: { message?: string }) {
   return <p className="text-[11px] text-[#ba1a1a] font-semibold">{message}</p>;
 }
 
-export function InsuranceFormDialog({ open, pending, onClose, onSubmit }: IProps) {
+export function InsuranceFormDialog({
+  open,
+  pending,
+  onClose,
+  onSubmit,
+}: IProps) {
   const [form, setForm] = useState<CreateInsuranceForm>({
     type: "third-party",
     company: "",
@@ -34,11 +44,10 @@ export function InsuranceFormDialog({ open, pending, onClose, onSubmit }: IProps
   });
   const [errors, setErrors] = useState<FieldErrors>({});
 
-  if (!open) {
-    return null;
-  }
-
-  function set<K extends keyof CreateInsuranceForm>(key: K, value: CreateInsuranceForm[K]): void {
+  function set<K extends keyof CreateInsuranceForm>(
+    key: K,
+    value: CreateInsuranceForm[K],
+  ): void {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
@@ -54,9 +63,8 @@ export function InsuranceFormDialog({ open, pending, onClose, onSubmit }: IProps
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="fixed inset-0 bg-[#0b1c30]/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative z-10 w-full max-w-lg bg-white rounded-t-[28px] sm:rounded-3xl p-5 sm:p-6 shadow-2xl max-h-[88vh] overflow-y-auto no-scrollbar">
+    <BaseDialog open={open} onClose={onClose} title="ثبت بیمه‌نامه" size="lg">
+      <div className="p-5 sm:p-6">
         <div className="flex items-center justify-between pb-3 border-b border-[#e2e8f0]">
           <h3 className="text-base font-bold text-[#0b1c30]">ثبت بیمه‌نامه</h3>
           <button
@@ -64,20 +72,25 @@ export function InsuranceFormDialog({ open, pending, onClose, onSubmit }: IProps
             aria-label="بستن"
             className="w-8 h-8 rounded-full bg-[#eff4ff] text-[#545f73] flex items-center justify-center hover:bg-[#e5eeff]"
           >
-            <span className="material-symbols-outlined text-[18px]">close</span>
+            <AppIcon name="close" className="size-[18px]" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3 pt-4">
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="insurance-type">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="insurance-type"
+              >
                 نوع بیمه
               </label>
               <select
                 id="insurance-type"
                 value={form.type}
-                onChange={(e) => set("type", e.target.value as Insurance["type"])}
+                onChange={(e) =>
+                  set("type", e.target.value as Insurance["type"])
+                }
                 className={inputClass}
               >
                 <option value="third-party">شخص ثالث</option>
@@ -85,7 +98,10 @@ export function InsuranceFormDialog({ open, pending, onClose, onSubmit }: IProps
               </select>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="insurance-company">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="insurance-company"
+              >
                 شرکت بیمه
               </label>
               <input
@@ -100,7 +116,10 @@ export function InsuranceFormDialog({ open, pending, onClose, onSubmit }: IProps
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-bold text-[#545f73]" htmlFor="insurance-policy">
+            <label
+              className="text-xs font-bold text-[#545f73]"
+              htmlFor="insurance-policy"
+            >
               شماره بیمه‌نامه (اختیاری)
             </label>
             <input
@@ -114,7 +133,10 @@ export function InsuranceFormDialog({ open, pending, onClose, onSubmit }: IProps
 
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="insurance-start">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="insurance-start"
+              >
                 شروع اعتبار
               </label>
               <input
@@ -127,7 +149,10 @@ export function InsuranceFormDialog({ open, pending, onClose, onSubmit }: IProps
               <FieldError message={errors.startDate} />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="insurance-end">
+              <label
+                className="text-xs font-bold text-[#545f73]"
+                htmlFor="insurance-end"
+              >
                 پایان اعتبار
               </label>
               <input
@@ -142,14 +167,22 @@ export function InsuranceFormDialog({ open, pending, onClose, onSubmit }: IProps
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-bold text-[#545f73]" htmlFor="insurance-cost">
+            <label
+              className="text-xs font-bold text-[#545f73]"
+              htmlFor="insurance-cost"
+            >
               هزینه (اختیاری)
             </label>
             <input
               id="insurance-cost"
               type="number"
               value={form.cost ?? ""}
-              onChange={(e) => set("cost", e.target.value === "" ? null : Number(e.target.value))}
+              onChange={(e) =>
+                set(
+                  "cost",
+                  e.target.value === "" ? null : Number(e.target.value),
+                )
+              }
               className={inputClass}
             />
             <FieldError message={errors.cost} />
@@ -173,6 +206,6 @@ export function InsuranceFormDialog({ open, pending, onClose, onSubmit }: IProps
           </div>
         </form>
       </div>
-    </div>
+    </BaseDialog>
   );
 }

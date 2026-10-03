@@ -6,10 +6,10 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
   type ReactNode,
 } from "react";
+import { toast } from "@/components/common/toast";
 import {
   INITIAL_CHECKLISTS,
   INITIAL_LOANS,
@@ -29,12 +29,6 @@ import type {
 import { faNum } from "@/lib/format";
 
 type ToastType = "success" | "info" | "warning";
-
-interface ToastState {
-  message: string | null;
-  icon: string;
-  type: ToastType;
-}
 
 interface LifeHubContextValue {
   // domain state
@@ -68,8 +62,7 @@ interface LifeHubContextValue {
   ) => void;
   payLoanDirect: (loanId: string, loanName: string) => void;
 
-  // toast
-  toast: ToastState;
+  // toast (delegates to the centralized sonner wrapper in components/common/toast)
   showToast: (msg: string, icon?: string, type?: ToastType) => void;
 
   // global modals
@@ -129,13 +122,6 @@ export function LifeHubProvider({ children }: { children: ReactNode }) {
     INITIAL_TIMELINE_EVENTS,
   );
 
-  const [toast, setToast] = useState<ToastState>({
-    message: null,
-    icon: "check_circle",
-    type: "success",
-  });
-  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const [isQuickAddOpen, setQuickAddOpen] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [isNotificationsOpen, setNotificationsOpen] = useState(false);
@@ -146,12 +132,14 @@ export function LifeHubProvider({ children }: { children: ReactNode }) {
   >(null);
 
   const showToast = useCallback(
-    (msg: string, icon = "check_circle", type: ToastType = "success") => {
-      if (toastTimer.current) clearTimeout(toastTimer.current);
-      setToast({ message: msg, icon, type });
-      toastTimer.current = setTimeout(() => {
-        setToast((t) => ({ ...t, message: null }));
-      }, 3200);
+    (msg: string, _icon = "check_circle", type: ToastType = "success") => {
+      if (type === "warning") {
+        toast.warning(msg);
+      } else if (type === "info") {
+        toast.info(msg);
+      } else {
+        toast.success(msg);
+      }
     },
     [],
   );
@@ -177,12 +165,6 @@ export function LifeHubProvider({ children }: { children: ReactNode }) {
       JSON.stringify(checklists),
     );
   }, [checklists]);
-  useEffect(() => {
-    return () => {
-      if (toastTimer.current) clearTimeout(toastTimer.current);
-    };
-  }, []);
-
   const updateOdometer = useCallback(
     (newKm: number) => {
       setOdometerKm(newKm);
@@ -403,7 +385,6 @@ export function LifeHubProvider({ children }: { children: ReactNode }) {
       resetChecklist,
       confirmSchedule,
       payLoanDirect,
-      toast,
       showToast,
       isQuickAddOpen,
       setQuickAddOpen,
@@ -440,7 +421,6 @@ export function LifeHubProvider({ children }: { children: ReactNode }) {
       resetChecklist,
       confirmSchedule,
       payLoanDirect,
-      toast,
       showToast,
       isQuickAddOpen,
       isSearchOpen,

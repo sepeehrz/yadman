@@ -3,13 +3,22 @@
 import { useState } from "react";
 import { formatFaDate } from "@/utils";
 import type { CreateInsuranceInput } from "../types";
-import { useCreateInsurance, useDeleteInsurance, useInsurances } from "../hooks/use-vehicle-documents";
-import { INSURANCE_TYPE_LABEL, dueLabel, severityStyle } from "../utils/reminder-helpers";
+import {
+  useCreateInsurance,
+  useDeleteInsurance,
+  useInsurances,
+} from "../hooks/use-vehicle-documents";
+import {
+  INSURANCE_TYPE_LABEL,
+  dueLabel,
+  severityStyle,
+} from "../utils/reminder-helpers";
 import { daysUntil } from "@/utils";
 import { EmptyState } from "./empty-state";
 import { ErrorState } from "./error-state";
 import { LoadingSkeleton } from "./loading-skeleton";
 import { InsuranceFormDialog } from "./insurance-form-dialog";
+import { AppIcon } from "@/components/ui/app-icon";
 
 interface IProps {
   vehicleId: string;
@@ -36,22 +45,34 @@ export function InsuranceSection({ vehicleId }: IProps) {
           onClick={() => setDialogOpen(true)}
           className="flex items-center gap-1 text-xs font-bold text-[#3525cd] hover:underline"
         >
-          <span className="material-symbols-outlined text-[16px]">add_circle</span>
+          <AppIcon name="add_circle" className="size-[16px]" />
           بیمه جدید
         </button>
       </div>
 
       {insurances.isPending ? <LoadingSkeleton rows={2} /> : null}
       {insurances.isError ? (
-        <ErrorState message="بارگذاری بیمه‌نامه‌ها ناموفق بود" onRetry={() => insurances.refetch()} />
+        <ErrorState
+          message="بارگذاری بیمه‌نامه‌ها ناموفق بود"
+          onRetry={() => insurances.refetch()}
+        />
       ) : null}
       {insurances.data && insurances.data.length === 0 ? (
-        <EmptyState icon="security" title="بیمه‌ای ثبت نشده" hint="اولین بیمه‌نامه این خودرو را ثبت کنید" />
+        <EmptyState
+          icon="security"
+          title="بیمه‌ای ثبت نشده"
+          hint="اولین بیمه‌نامه این خودرو را ثبت کنید"
+        />
       ) : null}
 
       {insurances.data?.map((insurance) => {
         const remaining = daysUntil(insurance.endDate);
-        const severity = remaining !== null && remaining < 0 ? "overdue" : remaining !== null && remaining <= 30 ? "urgent" : "ok";
+        const severity =
+          remaining !== null && remaining < 0
+            ? "overdue"
+            : remaining !== null && remaining <= 30
+              ? "urgent"
+              : "ok";
         const style = severityStyle(severity);
         return (
           <div
@@ -61,19 +82,26 @@ export function InsuranceSection({ vehicleId }: IProps) {
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2.5">
                 <span className="w-10 h-10 rounded-xl bg-[#d5e0f8] text-[#111c2d] flex items-center justify-center flex-shrink-0">
-                  <span className="material-symbols-outlined text-[22px]">security</span>
+                  <AppIcon name="security" className="size-[22px]" />
                 </span>
                 <div>
                   <h4 className="font-bold text-sm text-[#0b1c30]">
-                    بیمه {INSURANCE_TYPE_LABEL[insurance.type]} • {insurance.company}
+                    بیمه {INSURANCE_TYPE_LABEL[insurance.type]} •{" "}
+                    {insurance.company}
                   </h4>
                   <p className="text-xs text-[#545f73]">
-                    {formatFaDate(insurance.startDate)} تا {formatFaDate(insurance.endDate)}
+                    {formatFaDate(insurance.startDate)} تا{" "}
+                    {formatFaDate(insurance.endDate)}
                   </p>
                 </div>
               </div>
               <button
-                onClick={() => deleteInsurance.mutate({ vehicleId, insuranceId: insurance.id })}
+                onClick={() =>
+                  deleteInsurance.mutate({
+                    vehicleId,
+                    insuranceId: insurance.id,
+                  })
+                }
                 disabled={deleteInsurance.isPending}
                 aria-label={`حذف بیمه ${insurance.company}`}
                 className="text-[11px] font-bold text-[#ba1a1a] hover:underline disabled:opacity-50"
