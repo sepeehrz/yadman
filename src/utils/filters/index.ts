@@ -51,3 +51,20 @@ export function formatFaDateTime(value: Date | string): string {
     year: "numeric",
   });
 }
+
+/** تاریخ و ساعت فارسی — مثل «۱۵ آبان، ساعت ۱۷:۰۰» */
+export function formatFaDateWithTime(value: Date | string): string {
+  const parsed = typeof value === "string" ? new Date(value) : value;
+  if (Number.isNaN(parsed.getTime())) {
+    return "";
+  }
+  const date = parsed.toLocaleDateString("fa-IR", {
+    day: "numeric",
+    month: "long",
+  });
+  const time = parsed.toLocaleTimeString("fa-IR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return `${date}، ساعت ${time}`;
+}

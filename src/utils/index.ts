@@ -1,6 +1,7 @@
 export {
   daysUntil,
   formatFaDate,
+  formatFaDateWithTime,
   formatFaDateTime,
   parseISODateOnly,
   startOfToday,

@@ -11,10 +11,10 @@ import {
   useVehicles,
 } from "../hooks/use-vehicles";
 import { DocumentsTab } from "../components/documents-tab";
-import { EmptyState } from "../components/empty-state";
-import { ErrorState } from "../components/error-state";
+import { EmptyState } from "@/components/common/empty-state";
+import { ErrorState } from "@/components/common/error-state";
 import { ExpiringAlerts } from "../components/expiring-alerts";
-import { LoadingSkeleton } from "../components/loading-skeleton";
+import { LoadingSkeleton } from "@/components/common/loading-skeleton";
 import { ServiceTab } from "../components/service-tab";
 import { VehicleDetailCard } from "../components/vehicle-detail-card";
 import { VehicleFormDialog } from "../components/vehicle-form-dialog";

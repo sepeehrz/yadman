@@ -1,19 +1,32 @@
-import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  index,
+  pgTable,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
 
-export const taskReminders = pgTable("task_reminders", {
-  id: text("id").primaryKey(),
-  title: text("title").notNull(),
-  dueTime: text("due_time").notNull(),
-  dueDateCategory: text("due_date_category").notNull().default("today"),
-  priority: text("priority"),
-  category: text("category").notNull().default("work"),
-  source: text("source"),
-  location: text("location"),
-  recurring: text("recurring"),
-  done: boolean("done").notNull().default(false),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
+/**
+ * یادآورهای کاربر — مدل سرویس‌محور.
+ * dueAt مبنای فیلترهای زمانی است و snoozedUntil موعد مؤثر اعلان را جابه‌جا می‌کند.
+ */
+export const taskReminders = pgTable(
+  "task_reminders",
+  {
+    id: text("id").primaryKey(),
+    title: text("title").notNull(),
+    description: text("description"),
+    dueAt: timestamp("due_at", { withTimezone: true }).notNull(),
+    priority: text("priority").notNull().default("normal"),
+    recurrence: text("recurrence").notNull().default("none"),
+    snoozedUntil: timestamp("snoozed_until", { withTimezone: true }),
+    done: boolean("done").notNull().default(false),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (table) => [index("task_reminders_due_at_idx").on(table.dueAt)],
+);
 
 export const checklistPacks = pgTable("checklist_packs", {
   id: text("id").primaryKey(),
@@ -25,13 +38,17 @@ export const checklistPacks = pgTable("checklist_packs", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const checklistItems = pgTable("checklist_items", {
-  id: text("id").primaryKey(),
-  packId: text("pack_id")
-    .notNull()
-    .references(() => checklistPacks.id, { onDelete: "cascade" }),
-  text: text("text").notNull(),
-  completed: boolean("completed").notNull().default(false),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
+export const checklistItems = pgTable(
+  "checklist_items",
+  {
+    id: text("id").primaryKey(),
+    packId: text("pack_id")
+      .notNull()
+      .references(() => checklistPacks.id, { onDelete: "cascade" }),
+    text: text("text").notNull(),
+    completed: boolean("completed").notNull().default(false),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (table) => [index("checklist_items_pack_id_idx").on(table.packId)],
+);

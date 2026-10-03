@@ -12,9 +12,9 @@ import {
 } from "../hooks/use-vehicle-documents";
 import { dueLabel } from "../utils/reminder-helpers";
 import { daysUntil } from "@/utils";
-import { EmptyState } from "./empty-state";
-import { ErrorState } from "./error-state";
-import { LoadingSkeleton } from "./loading-skeleton";
+import { EmptyState } from "@/components/common/empty-state";
+import { ErrorState } from "@/components/common/error-state";
+import { LoadingSkeleton } from "@/components/common/loading-skeleton";
 import { TollFormDialog } from "./toll-form-dialog";
 import { AppIcon } from "@/components/ui/app-icon";
 

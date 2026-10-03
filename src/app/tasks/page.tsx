@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { TasksScreen } from "@/features/tasks/components/TasksScreen";
+import { TasksView } from "@/features/tasks/views/tasks-view";
 
 export const metadata: Metadata = {
   title: "کارها و لیست‌ها | لایف‌هاب",
-  description: "یادآورها و چک‌لیست‌های آماده",
+  description: "یادآورها و چک‌لیست‌های متصل به سرویس",
 };
 
 export default function TasksPage() {
-  return <TasksScreen />;
+  return <TasksView />;
 }

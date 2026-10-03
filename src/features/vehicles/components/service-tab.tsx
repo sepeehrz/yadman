@@ -9,9 +9,9 @@ import {
   useServiceCategories,
   useVehicleServices,
 } from "../hooks/use-vehicle-services";
-import { EmptyState } from "./empty-state";
-import { ErrorState } from "./error-state";
-import { LoadingSkeleton } from "./loading-skeleton";
+import { EmptyState } from "@/components/common/empty-state";
+import { ErrorState } from "@/components/common/error-state";
+import { LoadingSkeleton } from "@/components/common/loading-skeleton";
 import { ServiceFormDialog } from "./service-form-dialog";
 import { ServiceHistoryList } from "./service-history-list";
 import { AppIcon } from "@/components/ui/app-icon";
