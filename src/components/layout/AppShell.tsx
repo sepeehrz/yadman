@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { Header } from "@/components/layout/Header";
 import { NavigationDock } from "@/components/layout/NavigationDock";
 import { Toast } from "@/components/ui/Toast";
+import { ToastBridge } from "@/components/common/toast-bridge";
 import { QuickAddModal } from "@/components/modals/QuickAddModal";
 import { SearchModal } from "@/components/modals/SearchModal";
 import { NotificationsModal } from "@/components/modals/NotificationsModal";
@@ -38,6 +39,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <OdometerModal />
       <ScheduleServiceModal />
       <Toast />
+      <ToastBridge />
     </div>
   );
 }

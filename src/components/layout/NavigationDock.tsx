@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useLifeHub } from "@/store/LifeHubContext";
 import { faNum } from "@/lib/format";
 
@@ -34,6 +34,7 @@ const TABS = [
 
 export function NavigationDock() {
   const pathname = usePathname();
+  const router = useRouter();
   const { setQuickAddOpen, pendingTasksCount } = useLifeHub();
 
   const renderTab = (
@@ -81,7 +82,13 @@ export function NavigationDock() {
 
         <div className="flex-1 flex items-center justify-center relative">
           <button
-            onClick={() => setQuickAddOpen(true)}
+            onClick={() => {
+              if (pathname.startsWith("/vehicles")) {
+                router.push("/vehicles?add=vehicle");
+                return;
+              }
+              setQuickAddOpen(true);
+            }}
             aria-label="ایجاد مورد جدید"
             className="w-12 h-12 -mt-6 rounded-full bg-[#4f46e5] text-white flex items-center justify-center shadow-[0_8px_20px_rgba(79,70,229,0.38)] hover:bg-[#3525cd] active:scale-95 transition-all ring-4 ring-white"
           >

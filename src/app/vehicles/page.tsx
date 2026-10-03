@@ -1,11 +1,16 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
-import { VehiclesScreen } from "@/features/vehicles/components/VehiclesScreen";
+import { VehiclesView } from "@/features/vehicles/views/vehicles-view";
 
 export const metadata: Metadata = {
-  title: "خودروها | لایف‌هاب",
-  description: "ردیاب‌های نگهداری خودرو و دفترچه سرویس",
+  title: "خودروها و سرویس‌ها | لایف‌هاب",
+  description: "مدیریت خودروها، سرویس‌های دوره‌ای، بیمه‌نامه‌ها و عوارض",
 };
 
 export default function VehiclesPage() {
-  return <VehiclesScreen />;
+  return (
+    <Suspense fallback={null}>
+      <VehiclesView />
+    </Suspense>
+  );
 }

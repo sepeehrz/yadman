@@ -1,4 +1,6 @@
 import { boolean, integer, pgTable, real, text, timestamp } from "drizzle-orm/pg-core";
+import { serviceCategories } from "./garage";
+import { vehicles } from "./garage";
 
 export const vehicleTrackers = pgTable("vehicle_trackers", {
   id: text("id").primaryKey(),
@@ -24,6 +26,10 @@ export const vehicleTrackers = pgTable("vehicle_trackers", {
 
 export const serviceLogs = pgTable("service_logs", {
   id: text("id").primaryKey(),
+  vehicleId: text("vehicle_id").references(() => vehicles.id, { onDelete: "cascade" }),
+  categoryId: text("category_id").references(() => serviceCategories.id, {
+    onDelete: "set null",
+  }),
   title: text("title").notNull(),
   date: text("date").notNull(),
   provider: text("provider").notNull(),
@@ -32,6 +38,8 @@ export const serviceLogs = pgTable("service_logs", {
   receiptVerified: boolean("receipt_verified").notNull().default(false),
   notes: text("notes"),
   category: text("category").notNull().default("Service"),
+  nextDueDate: text("next_due_date"),
+  nextDueKm: integer("next_due_km"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
