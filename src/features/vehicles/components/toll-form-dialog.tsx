@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BaseDialog } from "@/components/ui/dialog";
 import type { CreateTollInput } from "../types";
 import { parseTollForm, type CreateTollForm } from "../validations/toll-schema";
@@ -24,14 +24,23 @@ function FieldError({ message }: { message?: string }) {
   return <p className="text-[11px] text-[#ba1a1a] font-semibold">{message}</p>;
 }
 
+const EMPTY_FORM: CreateTollForm = {
+  year: "",
+  amount: 0,
+  dueDate: undefined,
+  notes: "",
+};
+
 export function TollFormDialog({ open, pending, onClose, onSubmit }: IProps) {
-  const [form, setForm] = useState<CreateTollForm>({
-    year: "",
-    amount: 0,
-    dueDate: undefined,
-    notes: "",
-  });
+  const [form, setForm] = useState<CreateTollForm>({ ...EMPTY_FORM });
   const [errors, setErrors] = useState<FieldErrors>({});
+
+  useEffect(() => {
+    if (open) {
+      setForm({ ...EMPTY_FORM });
+      setErrors({});
+    }
+  }, [open]);
 
   function set<K extends keyof CreateTollForm>(
     key: K,

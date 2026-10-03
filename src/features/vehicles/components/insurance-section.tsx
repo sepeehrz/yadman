@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useConfirm } from "@/hooks/use-confirm";
 import { formatFaDate } from "@/utils";
 import type { CreateInsuranceInput } from "../types";
 import {
@@ -29,6 +30,7 @@ export function InsuranceSection({ vehicleId }: IProps) {
   const insurances = useInsurances(vehicleId);
   const createInsurance = useCreateInsurance();
   const deleteInsurance = useDeleteInsurance();
+  const confirm = useConfirm();
 
   function handleSubmit(input: CreateInsuranceInput): void {
     createInsurance.mutate(
@@ -96,12 +98,21 @@ export function InsuranceSection({ vehicleId }: IProps) {
                 </div>
               </div>
               <button
-                onClick={() =>
-                  deleteInsurance.mutate({
-                    vehicleId,
-                    insuranceId: insurance.id,
-                  })
-                }
+                onClick={() => {
+                  void (async () => {
+                    const ok = await confirm({
+                      title: "حذف بیمه‌نامه",
+                      message: `بیمه ${INSURANCE_TYPE_LABEL[insurance.type]} «${insurance.company}» حذف شود؟`,
+                      confirmLabel: "حذف بیمه‌نامه",
+                    });
+                    if (ok) {
+                      deleteInsurance.mutate({
+                        vehicleId,
+                        insuranceId: insurance.id,
+                      });
+                    }
+                  })();
+                }}
                 disabled={deleteInsurance.isPending}
                 aria-label={`حذف بیمه ${insurance.company}`}
                 className="text-[11px] font-bold text-[#ba1a1a] hover:underline disabled:opacity-50"

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useConfirm } from "@/hooks/use-confirm";
 import type { CreateVehicleInput } from "../types";
 import {
   useCreateVehicle,
@@ -31,6 +32,7 @@ export function VehiclesView() {
   const createVehicle = useCreateVehicle();
   const updateVehicle = useUpdateVehicle();
   const deleteVehicle = useDeleteVehicle();
+  const confirm = useConfirm();
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -130,9 +132,18 @@ export function VehiclesView() {
           isDeleting={deleteVehicle.isPending}
           onEdit={openEdit}
           onDelete={() => {
-            deleteVehicle.mutate(selected.id, {
-              onSuccess: () => setSelectedId(null),
-            });
+            void (async () => {
+              const ok = await confirm({
+                title: "حذف خودرو",
+                message: `«${selected.name}» برای همیشه حذف شود؟ این عمل قابل بازگشت نیست.`,
+                confirmLabel: "حذف خودرو",
+              });
+              if (ok) {
+                deleteVehicle.mutate(selected.id, {
+                  onSuccess: () => setSelectedId(null),
+                });
+              }
+            })();
           }}
         />
       ) : null}

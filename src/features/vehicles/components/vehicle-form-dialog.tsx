@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BaseDialog } from "@/components/ui/dialog";
 import type { CreateVehicleInput, Vehicle } from "../types";
 import {
@@ -36,14 +36,8 @@ function FieldError({ message }: { message?: string }) {
   return <p className="text-[11px] text-[#ba1a1a] font-semibold">{message}</p>;
 }
 
-export function VehicleFormDialog({
-  open,
-  initial,
-  pending,
-  onClose,
-  onSubmit,
-}: IProps) {
-  const [form, setForm] = useState<CreateVehicleForm>({
+function toForm(initial: Vehicle | null): CreateVehicleForm {
+  return {
     name: initial?.name ?? "",
     brand: initial?.brand ?? "",
     model: initial?.model ?? "",
@@ -54,8 +48,28 @@ export function VehicleFormDialog({
     fuelType: initial?.fuelType ?? "benzin",
     odometerKm: initial?.odometerKm ?? 0,
     imageUrl: initial?.imageUrl ?? "",
-  });
+  };
+}
+
+export function VehicleFormDialog({
+  open,
+  initial,
+  pending,
+  onClose,
+  onSubmit,
+}: IProps) {
+  const [form, setForm] = useState<CreateVehicleForm>(() => toForm(initial));
   const [errors, setErrors] = useState<FieldErrors>({});
+
+  const initialRef = useRef(initial);
+  initialRef.current = initial;
+
+  useEffect(() => {
+    if (open) {
+      setForm(toForm(initialRef.current));
+      setErrors({});
+    }
+  }, [open]);
 
   function set<K extends keyof CreateVehicleForm>(
     key: K,

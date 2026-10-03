@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BaseDialog } from "@/components/ui/dialog";
 import type { CreateInsuranceInput, Insurance } from "../types";
 import {
@@ -27,22 +27,31 @@ function FieldError({ message }: { message?: string }) {
   return <p className="text-[11px] text-[#ba1a1a] font-semibold">{message}</p>;
 }
 
+const EMPTY_FORM: CreateInsuranceForm = {
+  type: "third-party",
+  company: "",
+  policyNumber: "",
+  startDate: "",
+  endDate: "",
+  cost: null,
+  notes: "",
+};
+
 export function InsuranceFormDialog({
   open,
   pending,
   onClose,
   onSubmit,
 }: IProps) {
-  const [form, setForm] = useState<CreateInsuranceForm>({
-    type: "third-party",
-    company: "",
-    policyNumber: "",
-    startDate: "",
-    endDate: "",
-    cost: null,
-    notes: "",
-  });
+  const [form, setForm] = useState<CreateInsuranceForm>({ ...EMPTY_FORM });
   const [errors, setErrors] = useState<FieldErrors>({});
+
+  useEffect(() => {
+    if (open) {
+      setForm({ ...EMPTY_FORM });
+      setErrors({});
+    }
+  }, [open]);
 
   function set<K extends keyof CreateInsuranceForm>(
     key: K,

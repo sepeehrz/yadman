@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useConfirm } from "@/hooks/use-confirm";
 import { formatFaDate, toISODateOnly } from "@/utils";
 import type { CreateTollInput } from "../types";
 import {
@@ -27,6 +28,7 @@ export function TollSection({ vehicleId }: IProps) {
   const createToll = useCreateToll();
   const updateToll = useUpdateToll();
   const deleteToll = useDeleteToll();
+  const confirm = useConfirm();
 
   function handleSubmit(input: CreateTollInput): void {
     createToll.mutate(
@@ -114,9 +116,18 @@ export function TollSection({ vehicleId }: IProps) {
                 {toll.amount.toLocaleString("fa-IR")}
               </span>
               <button
-                onClick={() =>
-                  deleteToll.mutate({ vehicleId, tollId: toll.id })
-                }
+                onClick={() => {
+                  void (async () => {
+                    const ok = await confirm({
+                      title: "حذف عوارض",
+                      message: `عوارض سال ${toll.year} حذف شود؟`,
+                      confirmLabel: "حذف عوارض",
+                    });
+                    if (ok) {
+                      deleteToll.mutate({ vehicleId, tollId: toll.id });
+                    }
+                  })();
+                }}
                 disabled={deleteToll.isPending}
                 aria-label={`حذف عوارض ${toll.year}`}
                 className="text-[11px] font-bold text-[#ba1a1a] hover:underline block mt-1 disabled:opacity-50"

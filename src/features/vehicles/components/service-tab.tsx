@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useConfirm } from "@/hooks/use-confirm";
 import type { CreateServiceInput } from "../types";
 import {
   useCreateVehicleService,
@@ -26,6 +27,7 @@ export function ServiceTab({ vehicleId, defaultOdometer }: IProps) {
   const categories = useServiceCategories();
   const createService = useCreateVehicleService();
   const deleteService = useDeleteVehicleService();
+  const confirm = useConfirm();
 
   function handleSubmit(input: CreateServiceInput): void {
     createService.mutate(
@@ -65,9 +67,23 @@ export function ServiceTab({ vehicleId, defaultOdometer }: IProps) {
         <ServiceHistoryList
           services={services.data}
           deleting={deleteService.isPending}
-          onDelete={(serviceId) =>
-            deleteService.mutate({ vehicleId, serviceId })
-          }
+          onDelete={(serviceId) => {
+            void (async () => {
+              const target = services.data?.find(
+                (service) => service.id === serviceId,
+              );
+              const ok = await confirm({
+                title: "حذف سرویس",
+                message: target
+                  ? `«${target.title}» از تاریخچه سرویس‌ها حذف شود؟`
+                  : "این سرویس از تاریخچه حذف شود؟",
+                confirmLabel: "حذف سرویس",
+              });
+              if (ok) {
+                deleteService.mutate({ vehicleId, serviceId });
+              }
+            })();
+          }}
         />
       ) : null}
 

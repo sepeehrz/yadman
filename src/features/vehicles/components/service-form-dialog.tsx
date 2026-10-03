@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BaseDialog } from "@/components/ui/dialog";
 import { faNum } from "@/lib/format";
 import { toISODateOnly } from "@/utils";
@@ -40,7 +40,7 @@ export function ServiceFormDialog({
   onClose,
   onSubmit,
 }: IProps) {
-  const [form, setForm] = useState<CreateServiceForm>({
+  const [form, setForm] = useState<CreateServiceForm>(() => ({
     title: "",
     categoryId: null,
     serviceDate: toISODateOnly(new Date()),
@@ -50,8 +50,28 @@ export function ServiceFormDialog({
     notes: "",
     nextDueDate: undefined,
     nextDueKm: null,
-  });
+  }));
   const [errors, setErrors] = useState<FieldErrors>({});
+
+  const odometerRef = useRef(defaultOdometer);
+  odometerRef.current = defaultOdometer;
+
+  useEffect(() => {
+    if (open) {
+      setForm({
+        title: "",
+        categoryId: null,
+        serviceDate: toISODateOnly(new Date()),
+        provider: "",
+        odometerKm: odometerRef.current,
+        cost: 0,
+        notes: "",
+        nextDueDate: undefined,
+        nextDueKm: null,
+      });
+      setErrors({});
+    }
+  }, [open]);
 
   function set<K extends keyof CreateServiceForm>(
     key: K,
