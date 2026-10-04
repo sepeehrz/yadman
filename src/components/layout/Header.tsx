@@ -8,7 +8,7 @@ import { useNotificationsContext } from "@/features/notifications/providers/noti
 import { AppIcon } from "@/components/ui/app-icon";
 
 export function Header({ title }: { title: string }) {
-  const { setSearchOpen, setProfileOpen } = useLifeHub();
+  const { setProfileOpen } = useLifeHub();
   const { openDialog } = useDialog();
   const { unreadCount } = useNotificationsContext();
 
@@ -32,14 +32,6 @@ export function Header({ title }: { title: string }) {
         </div>
 
         <div className="flex items-center gap-1 sm:gap-2">
-          <button
-            onClick={() => setSearchOpen(true)}
-            aria-label="جست‌وجو"
-            className="w-10 h-10 flex items-center justify-center rounded-full text-[#545f73] hover:text-[#0b1c30] hover:bg-[#dce9ff]/50 active:scale-95 transition-all"
-          >
-            <AppIcon name="search" className="size-5.5" />
-          </button>
-
           <button
             onClick={() => openDialog(NotificationsCenter)}
             aria-label="مشاهده اعلان‌ها"

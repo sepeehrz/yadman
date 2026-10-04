@@ -17,6 +17,12 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
+      // Lift toasts clear of the fixed bottom dock (h-16 + sm:mb-5 + safe-area).
+      // Only `bottom` is set on purpose: a bare string offset would apply to all
+      // four sides, and on mobile sonner derives toast width from the left/right
+      // offsets, which would squash the toast.
+      offset={{ bottom: "calc(env(safe-area-inset-bottom) + 96px)" }}
+      mobileOffset={{ bottom: "calc(env(safe-area-inset-bottom) + 96px)" }}
       icons={{
         success: <CircleCheckIcon className="size-4" />,
         info: <InfoIcon className="size-4" />,
