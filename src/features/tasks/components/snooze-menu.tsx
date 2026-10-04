@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { AppIcon } from "@/components/ui/app-icon";
 
 interface IProps {
@@ -14,35 +15,123 @@ const SNOOZE_OPTIONS = [
   { minutes: 1440, label: "فردا" },
 ];
 
+const MENU_WIDTH = 176;
+const MENU_ITEM_HEIGHT = 40;
+const VIEWPORT_MARGIN = 8;
+const MENU_GAP = 8;
+
+interface MenuPosition {
+  top: number;
+  left: number;
+}
+
 export function SnoozeMenu({ disabled = false, onSelect }: IProps) {
   const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState<MenuPosition | null>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * منو داخل کارت یادآور رندر می‌شود و کارت `overflow-hidden` دارد، پس منو
+   * بریده می‌شد. آن را در پورتال با موقعیت fixed نسبت به جای واقعی دکمه
+   * در viewport می‌گذاریم تا همیشه کامل دیده شود.
+   */
+  useEffect(() => {
+    if (!open) {
+      setPosition(null);
+      return;
+    }
+    const trigger = triggerRef.current;
+    if (!trigger) {
+      return;
+    }
+
+    const rect = trigger.getBoundingClientRect();
+    const menuHeight = SNOOZE_OPTIONS.length * MENU_ITEM_HEIGHT + 8;
+    const hasRoomAbove = rect.top >= menuHeight + MENU_GAP + VIEWPORT_MARGIN;
+
+    setPosition({
+      top: hasRoomAbove
+        ? rect.top - menuHeight - MENU_GAP
+        : rect.bottom + MENU_GAP,
+      left: Math.min(
+        Math.max(VIEWPORT_MARGIN, rect.left),
+        window.innerWidth - MENU_WIDTH - VIEWPORT_MARGIN,
+      ),
+    });
+  }, [open]);
 
   useEffect(() => {
     if (!open) {
       return;
     }
+
     function handlePointerDown(event: MouseEvent): void {
-      if (!containerRef.current?.contains(event.target as Node)) {
-        setOpen(false);
+      const target = event.target as Node;
+      if (
+        triggerRef.current?.contains(target) ||
+        menuRef.current?.contains(target)
+      ) {
+        return;
       }
+      setOpen(false);
     }
+
     function handleKeyDown(event: KeyboardEvent): void {
       if (event.key === "Escape") {
         setOpen(false);
       }
     }
+
+    function handleViewportChange(): void {
+      setOpen(false);
+    }
+
     document.addEventListener("mousedown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleViewportChange);
+    window.addEventListener("scroll", handleViewportChange, true);
     return () => {
       document.removeEventListener("mousedown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleViewportChange);
+      window.removeEventListener("scroll", handleViewportChange, true);
     };
   }, [open]);
 
+  const menu =
+    open && position && typeof document !== "undefined"
+      ? createPortal(
+          <div
+            ref={menuRef}
+            role="menu"
+            aria-label="مدت تعویق"
+            style={{ top: position.top, left: position.left }}
+            className="fixed z-[70] w-44 rounded-xl bg-white shadow-[0_12px_28px_-6px_rgba(11,28,48,0.28)] border border-[#e2e8f0] py-1"
+          >
+            {SNOOZE_OPTIONS.map((option) => (
+              <button
+                key={option.minutes}
+                type="button"
+                role="menuitem"
+                onClick={() => {
+                  setOpen(false);
+                  onSelect(option.minutes);
+                }}
+                className="w-full h-10 text-right px-3 text-xs font-semibold text-[#0b1c30] hover:bg-[#eff4ff] transition-colors"
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>,
+          document.body,
+        )
+      : null;
+
   return (
-    <div ref={containerRef} className="relative">
+    <>
       <button
+        ref={triggerRef}
         type="button"
         disabled={disabled}
         onClick={() => setOpen((value) => !value)}
@@ -54,29 +143,7 @@ export function SnoozeMenu({ disabled = false, onSelect }: IProps) {
         <AppIcon name="notifications_active" className="size-[14px]" />
         <span>تعویق</span>
       </button>
-
-      {open ? (
-        <div
-          role="menu"
-          aria-label="مدت تعویق"
-          className="absolute bottom-full mb-1.5 left-0 z-20 w-40 rounded-xl bg-white shadow-lg border border-[#e2e8f0] py-1"
-        >
-          {SNOOZE_OPTIONS.map((option) => (
-            <button
-              key={option.minutes}
-              type="button"
-              role="menuitem"
-              onClick={() => {
-                setOpen(false);
-                onSelect(option.minutes);
-              }}
-              className="w-full text-right px-3 py-2 text-xs font-semibold text-[#0b1c30] hover:bg-[#eff4ff] transition-colors"
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      ) : null}
-    </div>
+      {menu}
+    </>
   );
 }

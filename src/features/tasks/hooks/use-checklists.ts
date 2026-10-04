@@ -8,6 +8,8 @@ import { isApiError } from "@/lib/api";
 import {
   createChecklist,
   createChecklistItem,
+  deleteChecklist,
+  deleteChecklistItem,
   getChecklists,
   updateChecklistItem,
 } from "../service";
@@ -111,6 +113,64 @@ export function useUpdateChecklistItem() {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: checklistKeys.lists() });
+    },
+  });
+}
+
+/**
+ * حذف قلم به‌صورت Optimistic انجام می‌شود تا فهرست بلافاصله کوتاه شود
+ * و در صورت خطای سرور به وضعیت قبلی بازگردد.
+ */
+export function useDeleteChecklistItem() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      checklistId,
+      itemId,
+    }: {
+      checklistId: string;
+      itemId: string;
+    }) => deleteChecklistItem(checklistId, itemId),
+    onMutate: async ({ checklistId, itemId }) => {
+      await queryClient.cancelQueries({ queryKey: checklistKeys.lists() });
+      const previous = queryClient.getQueryData<Checklist[]>(
+        checklistKeys.lists(),
+      );
+      queryClient.setQueryData<Checklist[]>(checklistKeys.lists(), (current) =>
+        current?.map((checklist) =>
+          checklist.id === checklistId
+            ? {
+                ...checklist,
+                items: checklist.items.filter((item) => item.id !== itemId),
+              }
+            : checklist,
+        ),
+      );
+      return { previous };
+    },
+    onError: (error: unknown, _variables, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(checklistKeys.lists(), context.previous);
+      }
+      toast.error(toMessage(error, "حذف قلم ناموفق بود"));
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: checklistKeys.lists() });
+    },
+  });
+}
+
+/** حذف کل چک‌لیست به‌همراه همه اقلام آن */
+export function useDeleteChecklist() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (checklistId: string) => deleteChecklist(checklistId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: checklistKeys.lists() });
+      toast.success("چک‌لیست حذف شد");
+    },
+    onError: (error: unknown) => {
+      toast.error(toMessage(error, "حذف چک‌لیست ناموفق بود"));
     },
   });
 }

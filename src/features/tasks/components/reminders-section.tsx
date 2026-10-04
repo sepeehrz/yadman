@@ -156,13 +156,14 @@ export function RemindersSection({ search }: IProps) {
         />
       ) : null}
 
-      <div className="pt-1 pb-2 flex justify-center">
+      {/* دکمه باید همیشه در دسترس باشد، حتی وقتی فهرست یادآورها طولانی است. */}
+      <div className="sticky bottom-24 z-20 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-2 pb-2 bg-gradient-to-t from-[#f8f9ff] via-[#f8f9ff] to-transparent">
         <button
           type="button"
           onClick={openCreate}
-          className="flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-[#4f46e5] text-white text-xs sm:text-sm font-bold shadow-lg shadow-[#4f46e5]/25 hover:bg-[#3525cd] active:scale-95 transition-all"
+          className="w-full flex items-center justify-center gap-2 h-12 rounded-full bg-[#4f46e5] text-white text-xs sm:text-sm font-bold shadow-lg shadow-[#4f46e5]/25 hover:bg-[#3525cd] active:scale-95 transition-all"
         >
-          <AppIcon name="add" className="size-[20px]" />
+          <AppIcon name="add" className="size-[20px] flex-shrink-0" />
           <span>یادآور جدید</span>
         </button>
       </div>

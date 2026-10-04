@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useConfirm } from "@/hooks/use-confirm";
 import { EmptyState } from "@/components/common/empty-state";
 import { ErrorState } from "@/components/common/error-state";
 import { LoadingSkeleton } from "@/components/common/loading-skeleton";
@@ -9,9 +10,11 @@ import {
   useChecklists,
   useCreateChecklist,
   useCreateChecklistItem,
+  useDeleteChecklist,
+  useDeleteChecklistItem,
   useUpdateChecklistItem,
 } from "../hooks/use-checklists";
-import type { CreateChecklistInput } from "../types";
+import type { ChecklistItem, CreateChecklistInput } from "../types";
 import {
   filterChecklists,
   REMINDERS_PAGE_SIZE,
@@ -32,6 +35,9 @@ export function ChecklistsSection({ search }: IProps) {
   const createChecklist = useCreateChecklist();
   const addItem = useCreateChecklistItem();
   const toggleItem = useUpdateChecklistItem();
+  const deleteItem = useDeleteChecklistItem();
+  const deleteChecklist = useDeleteChecklist();
+  const confirm = useConfirm();
 
   const list = useMemo(
     () => filterChecklists(checklists.data ?? [], search),
@@ -42,6 +48,35 @@ export function ChecklistsSection({ search }: IProps) {
 
   function handleSubmit(input: CreateChecklistInput): void {
     createChecklist.mutate(input, { onSuccess: () => setCreateOpen(false) });
+  }
+
+  function handleDeleteItem(
+    checklistId: string,
+    item: ChecklistItem,
+  ): void {
+    void (async () => {
+      const confirmed = await confirm({
+        title: "حذف قلم",
+        message: `«${item.text}» از این چک‌لیست حذف شود؟`,
+        confirmLabel: "حذف قلم",
+      });
+      if (confirmed) {
+        deleteItem.mutate({ checklistId, itemId: item.id });
+      }
+    })();
+  }
+
+  function handleDeleteChecklist(checklistId: string, title: string): void {
+    void (async () => {
+      const confirmed = await confirm({
+        title: "حذف چک‌لیست",
+        message: `«${title}» و همه اقلام آن برای همیشه حذف شود؟ این عمل قابل بازگشت نیست.`,
+        confirmLabel: "حذف چک‌لیست",
+      });
+      if (confirmed) {
+        deleteChecklist.mutate(checklistId);
+      }
+    })();
   }
 
   return (
@@ -58,9 +93,9 @@ export function ChecklistsSection({ search }: IProps) {
         <button
           type="button"
           onClick={() => setCreateOpen(true)}
-          className="flex items-center gap-1 text-xs text-[#3525cd] font-bold py-1.5 px-3 rounded-lg hover:bg-[#eff4ff] active:scale-95 transition-all"
+          className="flex flex-shrink-0 items-center gap-1.5 h-9 px-3.5 rounded-full bg-[#4f46e5] text-white text-xs font-bold whitespace-nowrap shadow-[0_6px_16px_rgba(79,70,229,0.25)] hover:bg-[#3525cd] active:scale-95 transition-all"
         >
-          <AppIcon name="add" className="size-[16px]" />
+          <AppIcon name="add" className="size-[16px] flex-shrink-0" />
           <span>چک‌لیست جدید</span>
         </button>
       </div>
@@ -85,7 +120,12 @@ export function ChecklistsSection({ search }: IProps) {
         <ChecklistCard
           key={checklist.id}
           checklist={checklist}
-          pending={toggleItem.isPending || addItem.isPending}
+          pending={
+            toggleItem.isPending ||
+            addItem.isPending ||
+            deleteItem.isPending ||
+            deleteChecklist.isPending
+          }
           onToggleItem={(itemId, completed) =>
             toggleItem.mutate({
               checklistId: checklist.id,
@@ -95,6 +135,12 @@ export function ChecklistsSection({ search }: IProps) {
           }
           onAddItem={(text) =>
             addItem.mutate({ checklistId: checklist.id, input: { text } })
+          }
+          onDeleteItem={(item) =>
+            handleDeleteItem(checklist.id, item)
+          }
+          onDeleteChecklist={() =>
+            handleDeleteChecklist(checklist.id, checklist.title)
           }
         />
       ))}

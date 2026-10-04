@@ -42,6 +42,17 @@ export async function getChecklists(): Promise<Checklist[]> {
   return data;
 }
 
+export async function deleteChecklist(checklistId: string): Promise<void> {
+  await apiClient.delete(`/checklists/${checklistId}`);
+}
+
+export async function deleteChecklistItem(
+  checklistId: string,
+  itemId: string,
+): Promise<void> {
+  await apiClient.delete(`/checklists/${checklistId}/items/${itemId}`);
+}
+
 export async function createChecklist(
   input: CreateChecklistInput,
 ): Promise<Checklist> {

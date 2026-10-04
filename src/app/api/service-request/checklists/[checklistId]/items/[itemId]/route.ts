@@ -40,3 +40,24 @@ export async function PATCH(request: Request, { params }: IRouteParams) {
     return handleRouteError(error);
   }
 }
+
+export async function DELETE(_request: Request, { params }: IRouteParams) {
+  try {
+    const { checklistId, itemId } = await params;
+    const deleted = await getDb()
+      .delete(checklistItems)
+      .where(
+        and(
+          eq(checklistItems.id, itemId),
+          eq(checklistItems.packId, checklistId),
+        ),
+      )
+      .returning({ id: checklistItems.id });
+    if (deleted.length === 0) {
+      return fail("قلم چک‌لیست پیدا نشد", 404);
+    }
+    return ok({ deleted: true });
+  } catch (error) {
+    return handleRouteError(error);
+  }
+}
