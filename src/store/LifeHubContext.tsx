@@ -70,8 +70,6 @@ interface LifeHubContextValue {
   setQuickAddOpen: (v: boolean) => void;
   isSearchOpen: boolean;
   setSearchOpen: (v: boolean) => void;
-  isNotificationsOpen: boolean;
-  setNotificationsOpen: (v: boolean) => void;
   isProfileOpen: boolean;
   setProfileOpen: (v: boolean) => void;
   isOdometerOpen: boolean;
@@ -124,7 +122,6 @@ export function LifeHubProvider({ children }: { children: ReactNode }) {
 
   const [isQuickAddOpen, setQuickAddOpen] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
-  const [isNotificationsOpen, setNotificationsOpen] = useState(false);
   const [isProfileOpen, setProfileOpen] = useState(false);
   const [isOdometerOpen, setOdometerOpen] = useState(false);
   const [scheduleServiceTitle, setScheduleServiceTitle] = useState<
@@ -390,8 +387,6 @@ export function LifeHubProvider({ children }: { children: ReactNode }) {
       setQuickAddOpen,
       isSearchOpen,
       setSearchOpen,
-      isNotificationsOpen,
-      setNotificationsOpen,
       isProfileOpen,
       setProfileOpen,
       isOdometerOpen,
@@ -424,7 +419,6 @@ export function LifeHubProvider({ children }: { children: ReactNode }) {
       showToast,
       isQuickAddOpen,
       isSearchOpen,
-      isNotificationsOpen,
       isProfileOpen,
       isOdometerOpen,
       scheduleServiceTitle,

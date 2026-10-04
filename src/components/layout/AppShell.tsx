@@ -6,7 +6,6 @@ import { Header } from "@/components/layout/Header";
 import { NavigationDock } from "@/components/layout/NavigationDock";
 import { QuickAddModal } from "@/components/modals/QuickAddModal";
 import { SearchModal } from "@/components/modals/SearchModal";
-import { NotificationsModal } from "@/components/modals/NotificationsModal";
 import { ProfileModal } from "@/components/modals/ProfileModal";
 import { ROUTE_TITLES } from "@/lib/mock-data";
 import { Toaster } from "@/components/ui/sonner";
@@ -31,7 +30,6 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <QuickAddModal />
       <SearchModal />
-      <NotificationsModal />
       <ProfileModal />
       <Toaster />
     </div>
