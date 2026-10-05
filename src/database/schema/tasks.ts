@@ -5,6 +5,7 @@ import {
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
+import { users } from "./users";
 
 /**
  * یادآورهای کاربر — مدل سرویس‌محور.
@@ -14,6 +15,7 @@ export const taskReminders = pgTable(
   "task_reminders",
   {
     id: text("id").primaryKey(),
+    userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
     description: text("description"),
     dueAt: timestamp("due_at", { withTimezone: true }).notNull(),
@@ -25,11 +27,15 @@ export const taskReminders = pgTable(
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
-  (table) => [index("task_reminders_due_at_idx").on(table.dueAt)],
+  (table) => [
+    index("task_reminders_due_at_idx").on(table.dueAt),
+    index("task_reminders_user_id_idx").on(table.userId),
+  ],
 );
 
 export const checklistPacks = pgTable("checklist_packs", {
   id: text("id").primaryKey(),
+  userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
   title: text("title").notNull(),
   subtitle: text("subtitle"),
   icon: text("icon").notNull().default("checklist"),

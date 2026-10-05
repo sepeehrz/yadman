@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { BaseDialog } from "@/components/ui/dialog";
+import { EmptyState } from "@/components/common/empty-state";
+import { LoadingSkeleton } from "@/components/common/loading-skeleton";
 import { useLifeHub } from "@/store/LifeHubContext";
+import { useLoans, useUpdateLoan } from "../hooks/use-loans";
 import { faNum, usd, usdInt } from "@/lib/format";
 import type { LoanItem } from "@/lib/types";
 import { AppIcon } from "@/components/ui/app-icon";
@@ -15,10 +18,19 @@ const FILTERS = [
 ] as const;
 
 export function LoansScreen() {
-  const { loans, toggleMarkPaid, setQuickAddOpen, showToast } = useLifeHub();
+  const { setQuickAddOpen } = useLifeHub();
+  const { data: loans = [], isLoading } = useLoans();
+  const updateLoanMutation = useUpdateLoan();
   const [filter, setFilter] =
     useState<(typeof FILTERS)[number]["id"]>("all");
   const [scheduleModalLoan, setScheduleModalLoan] = useState<LoanItem | null>(null);
+
+  const togglePaid = (loan: LoanItem) => {
+    updateLoanMutation.mutate({
+      loanId: loan.id,
+      input: { paidThisCycle: !loan.paidThisCycle },
+    });
+  };
 
   const filteredLoans = loans.filter((loan) => {
     if (filter === "all") return true;
@@ -143,10 +155,19 @@ export function LoansScreen() {
           <span className="text-xs text-primary font-bold">تایم‌لاین</span>
         </div>
 
-        {filteredLoans.map((loan) => {
-          const isMac = loan.id === "loan-3";
-          const isCar = loan.id === "loan-2";
+        {isLoading && <LoadingSkeleton rows={3} />}
 
+        {!isLoading && filteredLoans.length === 0 && (
+          <EmptyState
+            icon="account_balance_wallet"
+            title="هنوز وامی ثبت نشده"
+            hint="اولین وام یا قسط خود را اضافه کنید تا مدیریتش کنیم."
+            actionLabel="افزودن وام جدید"
+            onAction={() => setQuickAddOpen(true)}
+          />
+        )}
+
+        {filteredLoans.map((loan) => {
           return (
             <div
               key={loan.id}
@@ -156,11 +177,7 @@ export function LoansScreen() {
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                      isMac ? "bg-success/10 text-success" : "bg-primary/5 text-primary"
-                    }`}
-                  >
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 bg-primary/5 text-primary">
                     <AppIcon name={loan.icon} className="size-[24px]" />
                   </div>
                   <div className="min-w-0">
@@ -169,33 +186,22 @@ export function LoansScreen() {
                   </div>
                 </div>
 
-                {isMac ? (
-                  <span className="flex-shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-success text-success-foreground text-[10px] font-bold shadow-xs">
-                    <AppIcon name="local_fire_department" className="size-[13px]" />
-                    ۲ ماه مانده!
-                  </span>
-                ) : (
-                  <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/15 text-foreground text-[10px] font-bold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                    {loan.dueNotice}
-                  </span>
-                )}
+                <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/15 text-foreground text-[10px] font-bold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  {loan.dueNotice}
+                </span>
               </div>
 
               <div className="flex items-baseline justify-between pt-1">
                 <div>
-                  <span className="text-[10px] font-bold text-muted-foreground block">
-                    {isMac ? "موعد ۲۴ آبان" : "قسط ماهانه"}
-                  </span>
+                  <span className="text-[10px] font-bold text-muted-foreground block">قسط ماهانه</span>
                   <span className="text-lg sm:text-xl font-extrabold text-foreground" dir="ltr">
                     {usd(loan.monthlyAmount)}
                   </span>
                 </div>
                 <div className="text-left">
-                  <span className="text-[10px] font-bold text-muted-foreground block">
-                    {isCar ? "اصل باقی‌مانده" : "مانده"}
-                  </span>
-                  <span className={`text-xs sm:text-sm font-semibold ${isMac ? "text-success" : "text-muted-foreground"}`} dir="ltr">
+                  <span className="text-[10px] font-bold text-muted-foreground block">مانده</span>
+                  <span className="text-xs sm:text-sm font-semibold text-muted-foreground" dir="ltr">
                     {usdInt(loan.remainingAmount)} of {usdInt(loan.totalAmount)}
                   </span>
                 </div>
@@ -206,13 +212,13 @@ export function LoansScreen() {
                   <span>
                     {faNum(loan.paidInstallments)} از {faNum(loan.totalInstallments)} قسط پرداخت شد
                   </span>
-                  <span className={`font-bold ${isMac ? "text-success" : "text-primary"}`}>
-                    {faNum(Math.round(loan.progressPercent * 10) / 10)}٪ {isMac && "تکمیل"}
+                  <span className="font-bold text-primary">
+                    {faNum(Math.round(loan.progressPercent * 10) / 10)}٪
                   </span>
                 </div>
                 <div className="w-full h-2 rounded-full bg-primary/10 overflow-hidden">
                   <div
-                    className={`h-full rounded-full transition-all duration-500 ${isMac ? "bg-success" : "bg-primary"}`}
+                    className="h-full rounded-full transition-all duration-500 bg-primary"
                     style={{ width: `${loan.progressPercent}%` }}
                   />
                 </div>
@@ -225,58 +231,32 @@ export function LoansScreen() {
                     <span className="text-xs font-medium" dir="ltr">{loan.linkedAccount}</span>
                   </div>
                   <span className="text-[10px] font-bold text-success flex items-center gap-1">
-                    <AppIcon name="autorenew" className="size-[14px]" /> پرداخت خودکار روشن
+                    <AppIcon name="autorenew" className="size-[14px]" />{" "}
+                    {loan.autoPay ? "پرداخت خودکار روشن" : "پرداخت خودکار خاموش"}
                   </span>
                 </div>
               )}
 
-              {isCar ? (
-                <div className="grid grid-cols-2 gap-2 pt-1">
-                  <button
-                    onClick={() => {
-                      toggleMarkPaid(loan.id);
-                      showToast(loan.paidThisCycle ? "به حالت در انتظار برگشت" : "پرداخت شد! 🎉");
-                    }}
-                    className={`h-11 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs ${
-                      loan.paidThisCycle
-                        ? "bg-success/30 text-success border border-success/40"
-                        : "bg-primary text-primary-foreground hover:bg-primary/90"
-                    }`}
-                  >
-                    <AppIcon name={loan.paidThisCycle ? "task_alt" : "done"} className="size-[18px]" />
-                    <span>{loan.paidThisCycle ? "قسط مهر پرداخت شد! 🎉" : "ثبت پرداخت"}</span>
-                  </button>
-                  <button
-                    onClick={() => setScheduleModalLoan(loan)}
-                    className="h-11 rounded-xl bg-primary/5 text-foreground text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-primary/10 transition-all"
-                  >
-                    <AppIcon name="calendar_month" className="size-[18px]" />
-                    <span>جدول اقساط</span>
-                  </button>
-                </div>
-              ) : (
+              <div className="grid grid-cols-2 gap-2 pt-1">
                 <button
-                  onClick={() => {
-                    toggleMarkPaid(loan.id);
-                    showToast(loan.paidThisCycle ? "به حالت در انتظار برگشت" : "قسط این ماه پرداخت شد! 🎉");
-                  }}
-                  className={`w-full h-11 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-xs ${
+                  onClick={() => togglePaid(loan)}
+                  className={`h-11 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs ${
                     loan.paidThisCycle
                       ? "bg-success/30 text-success border border-success/40"
-                      : isMac
-                        ? "bg-primary/5 text-foreground hover:bg-primary/10"
-                        : "bg-primary text-primary-foreground hover:bg-primary/90"
+                      : "bg-primary text-primary-foreground hover:bg-primary/90"
                   }`}
                 >
-                  <AppIcon
-                    name={loan.paidThisCycle ? "task_alt" : "check_circle"}
-                    className={`size-[18px] ${
-                      loan.paidThisCycle ? "text-success" : isMac ? "text-success" : "text-primary-foreground"
-                    }`}
-                  />
-                  <span>{loan.paidThisCycle ? "این ماه پرداخت شد! 🎉" : "ثبت پرداخت این ماه"}</span>
+                  <AppIcon name={loan.paidThisCycle ? "task_alt" : "done"} className="size-[18px]" />
+                  <span>{loan.paidThisCycle ? "پرداخت شد! 🎉" : "ثبت پرداخت"}</span>
                 </button>
-              )}
+                <button
+                  onClick={() => setScheduleModalLoan(loan)}
+                  className="h-11 rounded-xl bg-primary/5 text-foreground text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-primary/10 transition-all"
+                >
+                  <AppIcon name="calendar_month" className="size-[18px]" />
+                  <span>جدول اقساط</span>
+                </button>
+              </div>
             </div>
           );
         })}
@@ -334,10 +314,7 @@ export function LoansScreen() {
             </div>
 
             <button
-              onClick={() => {
-                showToast("جدول استهلاک خروجی گرفته شد");
-                setScheduleModalLoan(null);
-              }}
+              onClick={() => setScheduleModalLoan(null)}
               className="w-full py-2.5 rounded-xl bg-primary text-primary-foreground font-bold text-xs hover:bg-primary/90"
             >
               خروجی PDF جدول استهلاک

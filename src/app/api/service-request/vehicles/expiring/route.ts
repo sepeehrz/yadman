@@ -1,8 +1,14 @@
+import { eq, inArray } from "drizzle-orm";
 import { getDb } from "@/database/db";
 import { insurances, tolls, vehicles } from "@/database/schema/garage";
 import { serviceLogs } from "@/database/schema/vehicles";
 import type { ExpiringReminder, ReminderSeverity } from "@/features/vehicles/types";
-import { handleRouteError, ok } from "@/app/api/service-request/route-helpers";
+import {
+  getAuthorizedUser,
+  handleRouteError,
+  ok,
+  unauthorized,
+} from "@/app/api/service-request/route-helpers";
 
 function daysFromToday(dateISO: string): number | null {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateISO.trim());
@@ -36,21 +42,43 @@ function toSeverity(daysRemaining: number | null): ReminderSeverity {
 
 export async function GET(request: Request) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const url = new URL(request.url);
     const days = Number(url.searchParams.get("days") ?? "30");
     const windowDays = Number.isFinite(days) && days > 0 ? Math.min(days, 365) : 30;
     const vehicleFilter = url.searchParams.get("vehicleId");
 
     const db = getDb();
-    const vehicleRows = await db.select().from(vehicles);
+    const vehicleRows = await db
+      .select()
+      .from(vehicles)
+      .where(eq(vehicles.userId, user.userId));
     const inScope = vehicleFilter
       ? vehicleRows.filter((vehicle) => vehicle.id === vehicleFilter)
       : vehicleRows;
     const names = new Map(inScope.map((vehicle) => [vehicle.id, vehicle.name]));
+    const scopeIds = [...names.keys()];
 
-    const insuranceRows = await db.select().from(insurances);
-    const tollRows = await db.select().from(tolls);
-    const serviceRows = await db.select().from(serviceLogs);
+    // فقط رکوردهای متعلق به خودروهای همان کاربر خوانده می‌شود
+    const insuranceRows =
+      scopeIds.length > 0
+        ? await db
+            .select()
+            .from(insurances)
+            .where(inArray(insurances.vehicleId, scopeIds))
+        : [];
+    const tollRows =
+      scopeIds.length > 0
+        ? await db.select().from(tolls).where(inArray(tolls.vehicleId, scopeIds))
+        : [];
+    const serviceRows =
+      scopeIds.length > 0
+        ? await db
+            .select()
+            .from(serviceLogs)
+            .where(inArray(serviceLogs.vehicleId, scopeIds))
+        : [];
 
     const reminders: ExpiringReminder[] = [];
 

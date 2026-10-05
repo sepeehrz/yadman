@@ -1,10 +1,16 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { getDb } from "@/database/db";
 import { taskReminders } from "@/database/schema/tasks";
 import {
   updateReminderSchema,
 } from "@/features/tasks/validations/reminder-schema";
-import { fail, handleRouteError, ok } from "@/app/api/service-request/route-helpers";
+import {
+  fail,
+  getAuthorizedUser,
+  handleRouteError,
+  ok,
+  unauthorized,
+} from "@/app/api/service-request/route-helpers";
 import { mapReminder } from "../reminders-mappers";
 
 interface IRouteParams {
@@ -13,6 +19,8 @@ interface IRouteParams {
 
 export async function PATCH(request: Request, { params }: IRouteParams) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const { reminderId } = await params;
     const body: unknown = await request.json();
     const parsed = updateReminderSchema.safeParse(body);
@@ -60,7 +68,12 @@ export async function PATCH(request: Request, { params }: IRouteParams) {
     const [row] = await getDb()
       .update(taskReminders)
       .set(set)
-      .where(eq(taskReminders.id, reminderId))
+      .where(
+        and(
+          eq(taskReminders.id, reminderId),
+          eq(taskReminders.userId, user.userId),
+        ),
+      )
       .returning();
     if (!row) {
       return fail("یادآور پیدا نشد", 404);
@@ -71,19 +84,23 @@ export async function PATCH(request: Request, { params }: IRouteParams) {
   }
 }
 
-export async function DELETE(_request: Request, { params }: IRouteParams) {
+export async function DELETE(request: Request, { params }: IRouteParams) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const { reminderId } = await params;
-    const db = getDb();
-    const existing = await db
-      .select({ id: taskReminders.id })
-      .from(taskReminders)
-      .where(eq(taskReminders.id, reminderId))
-      .limit(1);
-    if (existing.length === 0) {
+    const deleted = await getDb()
+      .delete(taskReminders)
+      .where(
+        and(
+          eq(taskReminders.id, reminderId),
+          eq(taskReminders.userId, user.userId),
+        ),
+      )
+      .returning({ id: taskReminders.id });
+    if (deleted.length === 0) {
       return fail("یادآور پیدا نشد", 404);
     }
-    await db.delete(taskReminders).where(eq(taskReminders.id, reminderId));
     return ok({ deleted: true });
   } catch (error) {
     return handleRouteError(error);

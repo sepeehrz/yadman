@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { getDb } from "@/database/db";
 import {
   checklistItems,
@@ -7,7 +7,13 @@ import {
 import {
   createChecklistItemSchema,
 } from "@/features/tasks/validations/checklist-schema";
-import { fail, handleRouteError, ok } from "@/app/api/service-request/route-helpers";
+import {
+  fail,
+  getAuthorizedUser,
+  handleRouteError,
+  ok,
+  unauthorized,
+} from "@/app/api/service-request/route-helpers";
 import { mapChecklistItem } from "../../checklists-mappers";
 
 interface IRouteParams {
@@ -16,6 +22,8 @@ interface IRouteParams {
 
 export async function POST(request: Request, { params }: IRouteParams) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const { checklistId } = await params;
     const body: unknown = await request.json();
     const parsed = createChecklistItemSchema.safeParse(body);
@@ -26,7 +34,12 @@ export async function POST(request: Request, { params }: IRouteParams) {
     const pack = await db
       .select({ id: checklistPacks.id })
       .from(checklistPacks)
-      .where(eq(checklistPacks.id, checklistId))
+      .where(
+        and(
+          eq(checklistPacks.id, checklistId),
+          eq(checklistPacks.userId, user.userId),
+        ),
+      )
       .limit(1);
     if (pack.length === 0) {
       return fail("چک‌لیست پیدا نشد", 404);

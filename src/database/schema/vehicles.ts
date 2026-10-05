@@ -1,10 +1,22 @@
-import { boolean, integer, pgTable, real, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  index,
+  integer,
+  pgTable,
+  real,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
 import { serviceCategories } from "./garage";
+import { users } from "./users";
 import { vehicles } from "./garage";
 
-export const vehicleTrackers = pgTable("vehicle_trackers", {
-  id: text("id").primaryKey(),
-  title: text("title").notNull(),
+export const vehicleTrackers = pgTable(
+  "vehicle_trackers",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
   subtitle: text("subtitle").notNull().default(""),
   category: text("category").notNull().default("healthy"),
   badgeText: text("badge_text").notNull().default(""),
@@ -22,11 +34,16 @@ export const vehicleTrackers = pgTable("vehicle_trackers", {
   autoPay: boolean("auto_pay").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
+},
+  (table) => [index("vehicle_trackers_user_id_idx").on(table.userId)],
+);
 
-export const serviceLogs = pgTable("service_logs", {
-  id: text("id").primaryKey(),
-  vehicleId: text("vehicle_id").references(() => vehicles.id, { onDelete: "cascade" }),
+export const serviceLogs = pgTable(
+  "service_logs",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
+    vehicleId: text("vehicle_id").references(() => vehicles.id, { onDelete: "cascade" }),
   categoryId: text("category_id").references(() => serviceCategories.id, {
     onDelete: "set null",
   }),
@@ -42,4 +59,6 @@ export const serviceLogs = pgTable("service_logs", {
   nextDueKm: integer("next_due_km"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
+},
+  (table) => [index("service_logs_user_id_idx").on(table.userId)],
+);

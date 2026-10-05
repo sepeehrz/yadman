@@ -1,20 +1,34 @@
-import { boolean, integer, pgTable, real, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  index,
+  integer,
+  pgTable,
+  real,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
+import { users } from "./users";
 
-export const vehicles = pgTable("vehicles", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  brand: text("brand").notNull().default(""),
-  model: text("model").notNull().default(""),
-  year: integer("year"),
-  color: text("color").notNull().default(""),
-  plateNumber: text("plate_number").notNull().unique(),
-  vin: text("vin"),
-  fuelType: text("fuel_type").notNull().default("benzin"),
-  odometerKm: integer("odometer_km").notNull().default(0),
-  imageUrl: text("image_url"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
+export const vehicles = pgTable(
+  "vehicles",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    brand: text("brand").notNull().default(""),
+    model: text("model").notNull().default(""),
+    year: integer("year"),
+    color: text("color").notNull().default(""),
+    plateNumber: text("plate_number").notNull().unique(),
+    vin: text("vin"),
+    fuelType: text("fuel_type").notNull().default("benzin"),
+    odometerKm: integer("odometer_km").notNull().default(0),
+    imageUrl: text("image_url"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (table) => [index("vehicles_user_id_idx").on(table.userId)],
+);
 
 export const serviceCategories = pgTable("service_categories", {
   id: text("id").primaryKey(),

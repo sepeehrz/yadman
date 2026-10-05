@@ -124,6 +124,9 @@ export interface UpdateTollInput {
   notes?: string;
 }
 
+export type CreateTrackerRequest = import("../validations/tracker-schema").CreateTrackerRequest;
+export type UpdateTrackerRequest = import("../validations/tracker-schema").UpdateTrackerRequest;
+
 export type ExpiringKind = "insurance" | "toll" | "service";
 
 export type ReminderSeverity = "overdue" | "urgent" | "soon" | "ok";

@@ -12,4 +12,5 @@ export const vehicleKeys = {
   categories: ["service-categories"] as const,
   expiring: (days: number, vehicleId?: string) =>
     ["vehicles-expiring", days, vehicleId ?? "all"] as const,
+  trackers: () => [...vehicleKeys.all, "trackers"] as const,
 };

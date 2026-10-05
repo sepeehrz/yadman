@@ -2,7 +2,14 @@ import { and, eq } from "drizzle-orm";
 import { getDb } from "@/database/db";
 import { serviceLogs } from "@/database/schema/vehicles";
 import { updateServiceSchema } from "@/features/vehicles/validations/service-schema";
-import { fail, handleRouteError, ok } from "@/app/api/service-request/route-helpers";
+import {
+  fail,
+  getAuthorizedUser,
+  getOwnedVehicle,
+  handleRouteError,
+  ok,
+  unauthorized,
+} from "@/app/api/service-request/route-helpers";
 import { mapVehicleService } from "@/app/api/service-request/vehicles/vehicle-mappers";
 
 interface IRouteParams {
@@ -11,7 +18,12 @@ interface IRouteParams {
 
 export async function PATCH(request: Request, { params }: IRouteParams) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const { vehicleId, serviceId } = await params;
+    if (!(await getOwnedVehicle(user.userId, vehicleId))) {
+      return fail("رکورد سرویس پیدا نشد", 404);
+    }
     const body: unknown = await request.json();
     const parsed = updateServiceSchema.safeParse(body);
     if (!parsed.success) {
@@ -32,9 +44,14 @@ export async function PATCH(request: Request, { params }: IRouteParams) {
   }
 }
 
-export async function DELETE(_request: Request, { params }: IRouteParams) {
+export async function DELETE(request: Request, { params }: IRouteParams) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const { vehicleId, serviceId } = await params;
+    if (!(await getOwnedVehicle(user.userId, vehicleId))) {
+      return fail("رکورد سرویس پیدا نشد", 404);
+    }
     const db = getDb();
     const existing = await db
       .select({ id: serviceLogs.id })

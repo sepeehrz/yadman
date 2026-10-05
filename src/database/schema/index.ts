@@ -3,4 +3,5 @@ export * from "./garage";
 export * from "./finance";
 export * from "./tasks";
 export * from "./timeline";
+export * from "./users";
 export * from "../relations";

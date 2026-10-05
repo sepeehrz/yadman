@@ -1,4 +1,4 @@
-import { asc, desc, inArray } from "drizzle-orm";
+import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import { getDb } from "@/database/db";
 import {
   checklistItems,
@@ -7,15 +7,24 @@ import {
 import {
   createChecklistSchema,
 } from "@/features/tasks/validations/checklist-schema";
-import { fail, handleRouteError, ok } from "@/app/api/service-request/route-helpers";
+import {
+  fail,
+  getAuthorizedUser,
+  handleRouteError,
+  ok,
+  unauthorized,
+} from "@/app/api/service-request/route-helpers";
 import { mapChecklist } from "./checklists-mappers";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const db = getDb();
     const packs = await db
       .select()
       .from(checklistPacks)
+      .where(eq(checklistPacks.userId, user.userId))
       .orderBy(desc(checklistPacks.createdAt));
     if (packs.length === 0) {
       return ok([]);
@@ -45,6 +54,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const body: unknown = await request.json();
     const parsed = createChecklistSchema.safeParse(body);
     if (!parsed.success) {
@@ -56,6 +67,7 @@ export async function POST(request: Request) {
       .insert(checklistPacks)
       .values({
         id: crypto.randomUUID(),
+        userId: user.userId,
         title: input.title,
         active: true,
       })

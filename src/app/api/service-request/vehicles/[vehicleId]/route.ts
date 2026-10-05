@@ -2,17 +2,29 @@ import { and, eq } from "drizzle-orm";
 import { getDb } from "@/database/db";
 import { vehicles } from "@/database/schema/garage";
 import { updateVehicleSchema } from "@/features/vehicles/validations/vehicle-schema";
-import { fail, handleRouteError, ok } from "@/app/api/service-request/route-helpers";
+import {
+  fail,
+  getAuthorizedUser,
+  handleRouteError,
+  ok,
+  unauthorized,
+} from "@/app/api/service-request/route-helpers";
 import { mapVehicle } from "@/app/api/service-request/vehicles/vehicle-mappers";
 
 interface IRouteParams {
   params: Promise<{ vehicleId: string }>;
 }
 
-export async function GET(_request: Request, { params }: IRouteParams) {
+export async function GET(request: Request, { params }: IRouteParams) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const { vehicleId } = await params;
-    const rows = await getDb().select().from(vehicles).where(eq(vehicles.id, vehicleId)).limit(1);
+    const rows = await getDb()
+      .select()
+      .from(vehicles)
+      .where(and(eq(vehicles.id, vehicleId), eq(vehicles.userId, user.userId)))
+      .limit(1);
     if (rows.length === 0) {
       return fail("خودرو پیدا نشد", 404);
     }
@@ -24,6 +36,8 @@ export async function GET(_request: Request, { params }: IRouteParams) {
 
 export async function PATCH(request: Request, { params }: IRouteParams) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const { vehicleId } = await params;
     const body: unknown = await request.json();
     const parsed = updateVehicleSchema.safeParse(body);
@@ -34,7 +48,7 @@ export async function PATCH(request: Request, { params }: IRouteParams) {
     const [row] = await getDb()
       .update(vehicles)
       .set({ ...input, updatedAt: new Date() })
-      .where(eq(vehicles.id, vehicleId))
+      .where(and(eq(vehicles.id, vehicleId), eq(vehicles.userId, user.userId)))
       .returning();
     if (!row) {
       return fail("خودرو پیدا نشد", 404);
@@ -45,19 +59,18 @@ export async function PATCH(request: Request, { params }: IRouteParams) {
   }
 }
 
-export async function DELETE(_request: Request, { params }: IRouteParams) {
+export async function DELETE(request: Request, { params }: IRouteParams) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const { vehicleId } = await params;
-    const db = getDb();
-    const existing = await db
-      .select({ id: vehicles.id })
-      .from(vehicles)
-      .where(eq(vehicles.id, vehicleId))
-      .limit(1);
-    if (existing.length === 0) {
+    const deleted = await getDb()
+      .delete(vehicles)
+      .where(and(eq(vehicles.id, vehicleId), eq(vehicles.userId, user.userId)))
+      .returning({ id: vehicles.id });
+    if (deleted.length === 0) {
       return fail("خودرو پیدا نشد", 404);
     }
-    await db.delete(vehicles).where(and(eq(vehicles.id, vehicleId)));
     return ok({ deleted: true });
   } catch (error) {
     return handleRouteError(error);

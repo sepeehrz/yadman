@@ -1,13 +1,25 @@
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { getDb } from "@/database/db";
 import { vehicles } from "@/database/schema/garage";
 import { createVehicleSchema } from "@/features/vehicles/validations/vehicle-schema";
-import { fail, handleRouteError, ok } from "@/app/api/service-request/route-helpers";
+import {
+  fail,
+  getAuthorizedUser,
+  handleRouteError,
+  ok,
+  unauthorized,
+} from "@/app/api/service-request/route-helpers";
 import { mapVehicle } from "@/app/api/service-request/vehicles/vehicle-mappers";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const rows = await getDb().select().from(vehicles).orderBy(desc(vehicles.createdAt));
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
+    const rows = await getDb()
+      .select()
+      .from(vehicles)
+      .where(eq(vehicles.userId, user.userId))
+      .orderBy(desc(vehicles.createdAt));
     return ok(rows.map(mapVehicle));
   } catch (error) {
     return handleRouteError(error);
@@ -16,6 +28,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const body: unknown = await request.json();
     const parsed = createVehicleSchema.safeParse(body);
     if (!parsed.success) {
@@ -26,6 +40,7 @@ export async function POST(request: Request) {
       .insert(vehicles)
       .values({
         id: crypto.randomUUID(),
+        userId: user.userId,
         name: input.name,
         brand: input.brand ?? "",
         model: input.model,

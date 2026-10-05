@@ -1,17 +1,26 @@
-import { asc } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 import { getDb } from "@/database/db";
 import { taskReminders } from "@/database/schema/tasks";
 import {
   createReminderSchema,
 } from "@/features/tasks/validations/reminder-schema";
-import { fail, handleRouteError, ok } from "@/app/api/service-request/route-helpers";
+import {
+  fail,
+  getAuthorizedUser,
+  handleRouteError,
+  ok,
+  unauthorized,
+} from "@/app/api/service-request/route-helpers";
 import { mapReminder } from "./reminders-mappers";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const rows = await getDb()
       .select()
       .from(taskReminders)
+      .where(eq(taskReminders.userId, user.userId))
       .orderBy(asc(taskReminders.dueAt));
     return ok(rows.map(mapReminder));
   } catch (error) {
@@ -21,6 +30,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const body: unknown = await request.json();
     const parsed = createReminderSchema.safeParse(body);
     if (!parsed.success) {
@@ -31,6 +42,7 @@ export async function POST(request: Request) {
       .insert(taskReminders)
       .values({
         id: crypto.randomUUID(),
+        userId: user.userId,
         title: input.title,
         description: input.description || null,
         dueAt: new Date(input.dueAt),

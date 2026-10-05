@@ -2,7 +2,14 @@ import { and, eq } from "drizzle-orm";
 import { getDb } from "@/database/db";
 import { tolls } from "@/database/schema/garage";
 import { updateTollSchema } from "@/features/vehicles/validations/toll-schema";
-import { fail, handleRouteError, ok } from "@/app/api/service-request/route-helpers";
+import {
+  fail,
+  getAuthorizedUser,
+  getOwnedVehicle,
+  handleRouteError,
+  ok,
+  unauthorized,
+} from "@/app/api/service-request/route-helpers";
 import { mapToll } from "@/app/api/service-request/vehicles/vehicle-mappers";
 
 interface IRouteParams {
@@ -11,7 +18,12 @@ interface IRouteParams {
 
 export async function PATCH(request: Request, { params }: IRouteParams) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const { vehicleId, tollId } = await params;
+    if (!(await getOwnedVehicle(user.userId, vehicleId))) {
+      return fail("رکورد عوارض پیدا نشد", 404);
+    }
     const body: unknown = await request.json();
     const parsed = updateTollSchema.safeParse(body);
     if (!parsed.success) {
@@ -31,9 +43,14 @@ export async function PATCH(request: Request, { params }: IRouteParams) {
   }
 }
 
-export async function DELETE(_request: Request, { params }: IRouteParams) {
+export async function DELETE(request: Request, { params }: IRouteParams) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const { vehicleId, tollId } = await params;
+    if (!(await getOwnedVehicle(user.userId, vehicleId))) {
+      return fail("رکورد عوارض پیدا نشد", 404);
+    }
     const db = getDb();
     const existing = await db
       .select({ id: tolls.id })

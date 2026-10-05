@@ -2,16 +2,28 @@ import { desc, eq } from "drizzle-orm";
 import { getDb } from "@/database/db";
 import { serviceLogs } from "@/database/schema/vehicles";
 import { createServiceSchema } from "@/features/vehicles/validations/service-schema";
-import { fail, handleRouteError, ok } from "@/app/api/service-request/route-helpers";
+import {
+  fail,
+  getAuthorizedUser,
+  getOwnedVehicle,
+  handleRouteError,
+  ok,
+  unauthorized,
+} from "@/app/api/service-request/route-helpers";
 import { mapVehicleService } from "@/app/api/service-request/vehicles/vehicle-mappers";
 
 interface IRouteParams {
   params: Promise<{ vehicleId: string }>;
 }
 
-export async function GET(_request: Request, { params }: IRouteParams) {
+export async function GET(request: Request, { params }: IRouteParams) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const { vehicleId } = await params;
+    if (!(await getOwnedVehicle(user.userId, vehicleId))) {
+      return fail("خودرو پیدا نشد", 404);
+    }
     const rows = await getDb()
       .select()
       .from(serviceLogs)
@@ -25,7 +37,13 @@ export async function GET(_request: Request, { params }: IRouteParams) {
 
 export async function POST(request: Request, { params }: IRouteParams) {
   try {
+    const user = getAuthorizedUser(request);
+    if (!user) return unauthorized();
     const { vehicleId } = await params;
+    const ownedVehicle = await getOwnedVehicle(user.userId, vehicleId);
+    if (!ownedVehicle) {
+      return fail("خودرو پیدا نشد", 404);
+    }
     const body: unknown = await request.json();
     const parsed = createServiceSchema.safeParse(body);
     if (!parsed.success) {
@@ -36,6 +54,7 @@ export async function POST(request: Request, { params }: IRouteParams) {
       .insert(serviceLogs)
       .values({
         id: crypto.randomUUID(),
+        userId: user.userId,
         vehicleId,
         categoryId: input.categoryId ?? null,
         title: input.title,

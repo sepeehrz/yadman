@@ -5,10 +5,28 @@ import { useRouter } from "next/navigation";
 import { BaseDialog } from "@/components/ui/dialog";
 import { useLifeHub } from "@/store/LifeHubContext";
 import { AppIcon } from "@/components/ui/app-icon";
+import { useTrackers } from "@/features/vehicles/hooks/use-trackers";
+import { useLoans } from "@/features/loans/hooks/use-loans";
+import { useReminders } from "@/features/tasks/hooks/use-reminders";
+import { useTimeline } from "@/features/dashboard/hooks/use-timeline";
+import { usd } from "@/lib/format";
 
+interface SearchableEntry {
+  id: string;
+  title: string;
+  subtitle: string;
+  icon: string;
+  href: string;
+  badge: string;
+}
+
+/** جست‌وجوی سراسری روی داده‌های کاربر جاری از حافظه کوئری */
 export function SearchModal() {
-  const { isSearchOpen, setSearchOpen, trackers, loans, tasks, timeline } =
-    useLifeHub();
+  const { isSearchOpen, setSearchOpen } = useLifeHub();
+  const { data: trackers = [] } = useTrackers();
+  const { data: loans = [] } = useLoans();
+  const { data: reminders = [] } = useReminders();
+  const { data: timeline = [] } = useTimeline();
   const [query, setQuery] = useState("");
   const router = useRouter();
 
@@ -20,39 +38,46 @@ export function SearchModal() {
 
   const q = query.toLowerCase().trim();
 
-  const filteredTrackers = q
-    ? trackers.filter(
-        (t) =>
-          t.title.toLowerCase().includes(q) ||
-          t.subtitle.toLowerCase().includes(q),
+  const results: SearchableEntry[] = q
+    ? [
+        ...trackers.map((t) => ({
+          id: `tracker-${t.id}`,
+          title: t.title,
+          subtitle: t.subtitle,
+          icon: t.icon,
+          href: "/vehicles",
+          badge: t.badgeText,
+        })),
+        ...loans.map((l) => ({
+          id: `loan-${l.id}`,
+          title: l.title,
+          subtitle: `${l.bank} • ${usd(l.monthlyAmount)}/ماه`,
+          icon: l.icon,
+          href: "/loans",
+          badge: `${usd(l.remainingAmount)} مانده`,
+        })),
+        ...reminders.map((r) => ({
+          id: `reminder-${r.id}`,
+          title: r.title,
+          subtitle: new Date(r.dueAt).toLocaleString("fa-IR"),
+          icon: r.done ? "check_circle" : "radio_button_unchecked",
+          href: "/tasks",
+          badge: r.done ? "انجام شد" : "در انتظار",
+        })),
+        ...timeline.map((tl) => ({
+          id: `timeline-${tl.id}`,
+          title: tl.title,
+          subtitle: tl.subtitle,
+          icon: tl.icon,
+          href: "/",
+          badge: tl.timeLabel,
+        })),
+      ].filter(
+        (entry) =>
+          entry.title.toLowerCase().includes(q) ||
+          entry.subtitle.toLowerCase().includes(q),
       )
     : [];
-  const filteredLoans = q
-    ? loans.filter(
-        (l) =>
-          l.title.toLowerCase().includes(q) || l.bank.toLowerCase().includes(q),
-      )
-    : [];
-  const filteredTasks = q
-    ? tasks.filter(
-        (t) =>
-          t.title.toLowerCase().includes(q) ||
-          t.category.toLowerCase().includes(q),
-      )
-    : [];
-  const filteredTimeline = q
-    ? timeline.filter(
-        (tl) =>
-          tl.title.toLowerCase().includes(q) ||
-          tl.subtitle.toLowerCase().includes(q),
-      )
-    : [];
-
-  const totalResults =
-    filteredTrackers.length +
-    filteredLoans.length +
-    filteredTasks.length +
-    filteredTimeline.length;
 
   return (
     <BaseDialog
@@ -76,6 +101,7 @@ export function SearchModal() {
           {query && (
             <button
               onClick={() => setQuery("")}
+              aria-label="پاک‌کردن جست‌وجو"
               className="w-6 h-6 rounded-full bg-primary/10 text-muted-foreground flex items-center justify-center text-xs"
             >
               ✕
@@ -92,12 +118,15 @@ export function SearchModal() {
         <div className="p-3 sm:p-4 overflow-y-auto space-y-3 no-scrollbar">
           {!query && (
             <div className="py-6 text-center text-muted-foreground">
-              <AppIcon name="manage_search" className="size-[32px] text-muted-foreground mb-1" />
+              <AppIcon
+                name="manage_search"
+                className="size-[32px] text-muted-foreground mb-1"
+              />
               <p className="text-xs sm:text-sm font-medium">
                 کلیدواژه‌ای بنویسید تا در همه هاب‌ها جست‌وجو شود
               </p>
               <div className="flex flex-wrap items-center justify-center gap-1.5 mt-3">
-                {["تسلا", "مسکن", "نسخه", "ترمز", "سفر"].map((hint) => (
+                {["تسلا", "وام", "بیمه", "روغن"].map((hint) => (
                   <button
                     key={hint}
                     onClick={() => setQuery(hint)}
@@ -110,139 +139,39 @@ export function SearchModal() {
             </div>
           )}
 
-          {query && totalResults === 0 && (
+          {query && results.length === 0 && (
             <div className="py-8 text-center text-muted-foreground">
               <p className="text-sm font-semibold text-foreground">
                 موردی پیدا نشد
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                «تسلا»، «وام» یا «پزشک» را امتحان کنید.
+                «تسلا»، «وام» یا «روغن» را امتحان کنید.
               </p>
             </div>
           )}
 
-          {filteredTrackers.length > 0 && (
-            <div className="space-y-1.5">
-              <span className="text-[11px] font-bold text-muted-foreground">
-                خودرو ({filteredTrackers.length})
-              </span>
-              {filteredTrackers.map((t) => (
-                <div
-                  key={t.id}
-                  onClick={() => go("/vehicles")}
-                  className="p-2.5 rounded-xl bg-primary/5 hover:bg-primary/10 cursor-pointer flex items-center justify-between transition-colors"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <AppIcon name={t.icon} className="text-primary size-[20px]" />
-                    <div>
-                      <div className="text-xs font-bold text-foreground">
-                        {t.title}
-                      </div>
-                      <div className="text-[11px] text-muted-foreground">
-                        {t.subtitle}
-                      </div>
-                    </div>
+          {results.map((entry) => (
+            <div
+              key={entry.id}
+              onClick={() => go(entry.href)}
+              className="p-2.5 rounded-xl bg-primary/5 hover:bg-primary/10 cursor-pointer flex items-center justify-between transition-colors"
+            >
+              <div className="flex items-center gap-2.5">
+                <AppIcon name={entry.icon} className="text-primary size-[20px]" />
+                <div>
+                  <div className="text-xs font-bold text-foreground">
+                    {entry.title}
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-card text-primary">
-                    {t.badgeText}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {filteredLoans.length > 0 && (
-            <div className="space-y-1.5">
-              <span className="text-[11px] font-bold text-muted-foreground">
-                وام‌ها ({filteredLoans.length})
-              </span>
-              {filteredLoans.map((l) => (
-                <div
-                  key={l.id}
-                  onClick={() => go("/loans")}
-                  className="p-2.5 rounded-xl bg-primary/5 hover:bg-primary/10 cursor-pointer flex items-center justify-between transition-colors"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <AppIcon name={l.icon} className="text-primary size-[20px]" />
-                    <div>
-                      <div className="text-xs font-bold text-foreground">
-                        {l.title}
-                      </div>
-                      <div className="text-[11px] text-muted-foreground">
-                        <span dir="ltr">{l.bank}</span> • ${l.monthlyAmount}/ماه
-                      </div>
-                    </div>
+                  <div className="text-[11px] text-muted-foreground">
+                    {entry.subtitle}
                   </div>
-                  <span className="text-xs font-bold text-foreground">
-                    <span dir="ltr">${l.remainingAmount.toLocaleString()}</span>{" "}
-                    مانده
-                  </span>
                 </div>
-              ))}
-            </div>
-          )}
-
-          {filteredTasks.length > 0 && (
-            <div className="space-y-1.5">
-              <span className="text-[11px] font-bold text-muted-foreground">
-                کارها ({filteredTasks.length})
+              </div>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-card text-primary">
+                {entry.badge}
               </span>
-              {filteredTasks.map((t) => (
-                <div
-                  key={t.id}
-                  onClick={() => go("/tasks")}
-                  className="p-2.5 rounded-xl bg-primary/5 hover:bg-primary/10 cursor-pointer flex items-center justify-between transition-colors"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <AppIcon name={t.done ? "check_circle" : "radio_button_unchecked"} className="text-primary size-[18px]" />
-                    <div>
-                      <div
-                        className={`text-xs font-bold ${t.done ? "line-through text-muted-foreground" : "text-foreground"}`}
-                      >
-                        {t.title}
-                      </div>
-                      <div className="text-[11px] text-muted-foreground">
-                        {t.dueTime}
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-card text-muted-foreground">
-                    {t.category}
-                  </span>
-                </div>
-              ))}
             </div>
-          )}
-
-          {filteredTimeline.length > 0 && (
-            <div className="space-y-1.5">
-              <span className="text-[11px] font-bold text-muted-foreground">
-                تایم‌لاین ({filteredTimeline.length})
-              </span>
-              {filteredTimeline.map((tl) => (
-                <div
-                  key={tl.id}
-                  onClick={() => go("/")}
-                  className="p-2.5 rounded-xl bg-primary/5 hover:bg-primary/10 cursor-pointer flex items-center justify-between transition-colors"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <AppIcon name={tl.icon} className="text-primary size-[20px]" />
-                    <div>
-                      <div className="text-xs font-bold text-foreground">
-                        {tl.title}
-                      </div>
-                      <div className="text-[11px] text-muted-foreground">
-                        {tl.subtitle}
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/15 text-foreground">
-                    {tl.timeLabel}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
+          ))}
         </div>
       </div>
     </BaseDialog>

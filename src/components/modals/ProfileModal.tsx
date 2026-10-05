@@ -2,16 +2,26 @@
 
 import { useState } from "react";
 import { BaseDialog } from "@/components/ui/dialog";
-import { ASSETS } from "@/lib/mock-data";
 import { useLifeHub } from "@/store/LifeHubContext";
 import { AppIcon } from "@/components/ui/app-icon";
+import { useCurrentUser } from "@/features/auth/hooks/use-current-user";
+import { useLogout } from "@/features/auth/hooks/use-logout";
+import { useProfile } from "@/features/profile/hooks/use-profile";
+import { ProfileEditForm } from "@/features/profile/components/profile-edit-form";
+import { ChangePasswordForm } from "@/features/profile/components/change-password-form";
+
+type Tab = "info" | "security";
 
 export function ProfileModal() {
-  const { isProfileOpen, setProfileOpen, showToast } = useLifeHub();
-  const [highTrustMode, setHighTrustMode] = useState(true);
-  const [autoSyncTelematics, setAutoSyncTelematics] = useState(true);
+  const { isProfileOpen, setProfileOpen } = useLifeHub();
+  const { data: profile } = useProfile();
+  const logoutMutation = useLogout();
+  const [tab, setTab] = useState<Tab>("info");
 
   const onClose = () => setProfileOpen(false);
+  const initials = profile
+    ? `${profile.name[0] ?? ""}${profile.lastName[0] ?? ""}`.trim()
+    : "؟";
 
   return (
     <BaseDialog
@@ -24,132 +34,69 @@ export function ProfileModal() {
         <div className="bg-gradient-to-l from-primary to-chart-4 p-5 text-primary-foreground relative">
           <button
             onClick={onClose}
+            aria-label="بستن"
             className="absolute top-4 left-4 w-7 h-7 rounded-full bg-primary-foreground/20 text-primary-foreground flex items-center justify-center hover:bg-primary-foreground/30"
           >
             <AppIcon name="close" className="size-[16px]" />
           </button>
           <div className="flex items-center gap-3 mt-1">
-            <img
-              src={ASSETS.avatar}
-              alt="کاربر"
-              className="w-14 h-14 rounded-full border-2 border-primary-foreground/50 object-cover shadow-md"
-            />
+            <div className="w-14 h-14 rounded-full border-2 border-primary-foreground/50 bg-primary-foreground/20 flex items-center justify-center text-lg font-bold shadow-md">
+              {initials}
+            </div>
             <div>
-              <h3 className="font-bold text-lg text-primary-foreground">سارا</h3>
+              <h3 className="font-bold text-lg text-primary-foreground">
+                {profile ? `${profile.name} ${profile.lastName}` : "در حال بارگذاری…"}
+              </h3>
               <p className="text-xs text-primary-foreground/80" dir="ltr">
-                sepeehrz@gmail.com
+                @{profile?.username ?? "—"}
               </p>
-              <span className="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-success text-success-foreground">
-                اشتراک ویژه لایف‌هاب فعال
-              </span>
             </div>
           </div>
         </div>
 
-        <div className="p-4 space-y-3.5 text-xs">
-          <div>
-            <span className="text-[10px] font-bold text-muted-foreground block mb-1.5">
-              اتصال‌های فعال
-            </span>
-            <div className="space-y-1.5">
-              <div className="p-2.5 rounded-xl bg-primary/5 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <AppIcon name="electric_car" className="text-primary size-[18px]" />
-                  <span className="font-semibold text-foreground">
-                    تله‌متری تسلا
-                  </span>
-                </div>
-                <span className="text-[11px] font-bold text-success flex items-center gap-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-success" />{" "}
-                  همگام
-                </span>
-              </div>
-              <div className="p-2.5 rounded-xl bg-primary/5 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <AppIcon name="account_balance" className="text-primary size-[18px]" />
-                  <span className="font-semibold text-foreground">
-                    درگاه بانکی
-                  </span>
-                </div>
-                <span className="text-[11px] font-bold text-success flex items-center gap-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-success" />{" "}
-                  زنده
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-1 space-y-2">
-            <span className="text-[10px] font-bold text-muted-foreground block">
-              ترجیحات و حریم خصوصی
-            </span>
-            <div className="flex items-center justify-between p-2 rounded-xl hover:bg-primary/5 transition-colors">
-              <div>
-                <span className="font-semibold text-foreground block">
-                  حالت اعتماد بالا
-                </span>
-                <span className="text-[11px] text-muted-foreground">
-                  راستی‌آزمایی سخت‌گیرانه و بدون حدس
-                </span>
-              </div>
-              <input
-                type="checkbox"
-                checked={highTrustMode}
-                onChange={(e) => {
-                  setHighTrustMode(e.target.checked);
-                  showToast(
-                    e.target.checked
-                      ? "حالت اعتماد بالا فعال شد"
-                      : "حالت استاندارد تنظیم شد",
-                  );
-                }}
-                className="w-4 h-4 rounded accent-primary cursor-pointer"
-              />
-            </div>
-            <div className="flex items-center justify-between p-2 rounded-xl hover:bg-primary/5 transition-colors">
-              <div>
-                <span className="font-semibold text-foreground block">
-                  همگام‌سازی خودکار کیلومتر
-                </span>
-                <span className="text-[11px] text-muted-foreground">
-                  بازتنظیم روزانه ردیاب‌ها
-                </span>
-              </div>
-              <input
-                type="checkbox"
-                checked={autoSyncTelematics}
-                onChange={(e) => {
-                  setAutoSyncTelematics(e.target.checked);
-                  showToast(
-                    e.target.checked
-                      ? "همگام‌سازی روزانه فعال شد"
-                      : "حالت دستی",
-                  );
-                }}
-                className="w-4 h-4 rounded accent-primary cursor-pointer"
-              />
-            </div>
-          </div>
-
-          <div className="pt-2 border-t border-border flex flex-col gap-1.5">
+        <div className="flex border-b border-border">
+          {(
+            [
+              { id: "info", label: "اطلاعات پروفایل", icon: "person" },
+              { id: "security", label: "امنیت", icon: "lock" },
+            ] as const
+          ).map((item) => (
             <button
-              onClick={() => {
-                showToast("پشتیبان داده‌ها خروجی گرفته شد");
-                onClose();
-              }}
-              className="w-full py-2.5 rounded-xl bg-primary/5 text-primary font-bold text-xs hover:bg-primary/10 transition-colors flex items-center justify-center gap-1.5"
+              key={item.id}
+              onClick={() => setTab(item.id)}
+              className={`flex-1 py-2.5 text-xs font-bold flex items-center justify-center gap-1 transition-colors ${
+                tab === item.id
+                  ? "text-primary border-b-2 border-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
             >
-              <AppIcon name="download" className="size-[16px]" />
-              <span>خروجی همه داده‌ها (.json)</span>
+              <AppIcon name={item.icon} className="size-[15px]" />
+              {item.label}
             </button>
+          ))}
+        </div>
+
+        <div className="p-4 space-y-4 text-xs">
+          {tab === "info" ? (
+            profile ? (
+              <ProfileEditForm profile={profile} onDone={onClose} />
+            ) : (
+              <p className="py-6 text-center text-muted-foreground">
+                در حال دریافت پروفایل…
+              </p>
+            )
+          ) : (
+            <ChangePasswordForm />
+          )}
+
+          <div className="pt-2 border-t border-border">
             <button
-              onClick={() => {
-                showToast("حافظه محلی تازه‌سازی شد");
-                onClose();
-              }}
-              className="w-full py-2 rounded-xl text-muted-foreground font-semibold text-xs hover:bg-primary/5"
+              onClick={() => logoutMutation.mutate()}
+              disabled={logoutMutation.isPending}
+              className="w-full py-2.5 rounded-xl bg-destructive/10 text-destructive font-bold text-xs hover:bg-destructive/20 transition-colors flex items-center justify-center gap-1.5 disabled:opacity-60"
             >
-              تازه‌سازی حافظه محلی
+              <AppIcon name="logout" className="size-[16px]" />
+              <span>خروج از حساب</span>
             </button>
           </div>
         </div>

@@ -2,7 +2,6 @@ import { cn } from "@/lib";
 import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "@/providers";
-import { AppShell } from "@/components/layout/AppShell";
 import { vazirmatn } from "@/lib/fonts";
 
 export const metadata: Metadata = {
@@ -30,9 +29,7 @@ export default function RootLayout({
           vazirmatn.className,
         )}
       >
-        <Providers>
-          <AppShell>{children}</AppShell>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

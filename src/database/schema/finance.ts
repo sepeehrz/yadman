@@ -1,8 +1,20 @@
-import { boolean, integer, pgTable, real, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  index,
+  integer,
+  pgTable,
+  real,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
+import { users } from "./users";
 
-export const loans = pgTable("loans", {
-  id: text("id").primaryKey(),
-  title: text("title").notNull(),
+export const loans = pgTable(
+  "loans",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
   bank: text("bank").notNull(),
   icon: text("icon").notNull().default("credit_card"),
   dueNotice: text("due_notice").notNull().default(""),
@@ -21,4 +33,6 @@ export const loans = pgTable("loans", {
   badgeType: text("badge_type"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
+},
+  (table) => [index("loans_user_id_idx").on(table.userId)],
+);
