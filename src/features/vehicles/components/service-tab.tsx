@@ -39,10 +39,10 @@ export function ServiceTab({ vehicleId, defaultOdometer }: IProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between px-1">
-        <h3 className="text-sm font-bold text-[#0b1c30]">تاریخچه سرویس‌ها</h3>
+        <h3 className="text-sm font-bold text-foreground">تاریخچه سرویس‌ها</h3>
         <button
           onClick={() => setDialogOpen(true)}
-          className="px-3 py-1.5 rounded-lg bg-[#4f46e5] text-white text-xs font-bold flex items-center gap-1 shadow-xs hover:bg-[#3525cd]"
+          className="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold flex items-center gap-1 shadow-xs hover:bg-primary"
         >
           <AppIcon name="add" className="size-3.5" />
           ثبت سرویس

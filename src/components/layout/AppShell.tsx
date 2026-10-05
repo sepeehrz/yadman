@@ -23,7 +23,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           : "داشبورد");
 
   return (
-    <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col selection:bg-[#4f46e5]/15 selection:text-[#3525cd]">
+    <div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/15 selection:text-primary">
       <Header title={title} />
       <main className="flex-1 w-full pt-16">{children}</main>
       <NavigationDock />

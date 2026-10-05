@@ -90,10 +90,10 @@ export function VehiclesView() {
   return (
     <div className="flex flex-col w-full max-w-2xl mx-auto px-4 sm:px-6 pt-2 pb-28 space-y-4">
       <div className="pt-1">
-        <span className="text-[11px] text-[#3525cd] font-bold">
+        <span className="text-[11px] text-primary font-bold">
           مدیریت ناوگان شخصی
         </span>
-        <h1 className="text-2xl sm:text-[26px] font-bold text-[#0b1c30] tracking-tight">
+        <h1 className="text-2xl sm:text-[26px] font-bold text-foreground tracking-tight">
           خودروها و سرویس‌ها
         </h1>
       </div>
@@ -149,13 +149,13 @@ export function VehiclesView() {
       ) : null}
 
       {selected ? (
-        <div className="p-1 bg-[#e5eeff] rounded-xl grid grid-cols-2">
+        <div className="p-1 bg-primary/10 rounded-xl grid grid-cols-2">
           <button
             onClick={() => setActiveTab("services")}
             className={`py-2 px-3 rounded-lg text-xs font-semibold transition-all ${
               activeTab === "services"
-                ? "bg-white text-[#3525cd] shadow-xs font-bold"
-                : "text-[#545f73] hover:text-[#0b1c30]"
+                ? "bg-card text-primary shadow-xs font-bold"
+                : "text-muted-foreground hover:text-foreground"
             }`}
           >
             سرویس‌های دوره‌ای
@@ -164,8 +164,8 @@ export function VehiclesView() {
             onClick={() => setActiveTab("documents")}
             className={`py-2 px-3 rounded-lg text-xs font-semibold transition-all ${
               activeTab === "documents"
-                ? "bg-white text-[#3525cd] shadow-xs font-bold"
-                : "text-[#545f73] hover:text-[#0b1c30]"
+                ? "bg-card text-primary shadow-xs font-bold"
+                : "text-muted-foreground hover:text-foreground"
             }`}
           >
             بیمه و عوارض

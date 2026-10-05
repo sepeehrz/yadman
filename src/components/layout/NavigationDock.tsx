@@ -38,7 +38,7 @@ const TABS = [
 
 const tabClassName = (active: boolean) =>
   `flex-1 flex flex-col items-center justify-center h-full transition-all ${
-    active ? "text-[#3525cd] font-bold" : "text-[#545f73] hover:text-[#0b1c30]"
+    active ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground"
   }`;
 
 export function NavigationDock() {
@@ -47,7 +47,7 @@ export function NavigationDock() {
   const iconWrapperClassName = (active: boolean) =>
     `flex items-center justify-center size-8 rounded-full transition-all ${
       active
-        ? "bg-[#4f46e5] text-white shadow-[0_6px_14px_rgba(79,70,229,0.35)]"
+        ? "bg-primary text-primary-foreground shadow-[0_6px_14px_var(--primary)]/35"
         : ""
     }`;
 
@@ -68,7 +68,7 @@ export function NavigationDock() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none pb-safe">
-      <nav className="pointer-events-auto max-w-md mx-auto mx-4 mb-4 sm:mb-5 h-16 rounded-[24px] bg-white/95 backdrop-blur-xl shadow-[0_12px_32px_-4px_rgba(11,28,48,0.12)] border border-[#e2e8f0]/60 flex items-center justify-around px-2 relative">
+      <nav className="pointer-events-auto max-w-md mx-auto mx-4 mb-4 sm:mb-5 h-16 rounded-[24px] bg-card/95 backdrop-blur-xl shadow-[0_12px_32px_-4px_var(--shadow-color)]/15 border border-border/60 flex items-center justify-around px-2 relative">
         {TABS.map((tab) => {
           const active = tab.match(pathname);
 

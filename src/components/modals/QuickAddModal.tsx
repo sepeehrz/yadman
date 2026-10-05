@@ -173,13 +173,13 @@ export function QuickAddModal() {
       onClick={() => setCategory(id)}
       className={`flex flex-col items-center justify-center py-2.5 px-1 rounded-2xl transition-all ${
         category === id
-          ? "bg-[#4f46e5] text-white shadow-[0_8px_20px_rgba(79,70,229,0.30)] ring-2 ring-[#4f46e5]/20 scale-[1.02]"
-          : "bg-[#eff4ff] text-[#464555] hover:bg-[#e5eeff]"
+          ? "bg-primary text-primary-foreground shadow-[0_8px_20px_var(--primary)]/30 ring-2 ring-primary/20 scale-[1.02]"
+          : "bg-primary/5 text-muted-foreground hover:bg-primary/10"
       }`}
     >
       <div
         className={`w-8 h-8 rounded-full flex items-center justify-center mb-1 ${
-          category === id ? "bg-white/20" : "bg-[#e5eeff]"
+          category === id ? "bg-card/20" : "bg-primary/10"
         }`}
       >
         <AppIcon name={icon} className="size-[19px]" />
@@ -197,24 +197,24 @@ export function QuickAddModal() {
       title="ایجاد سریع"
       size="lg"
     >
-      <div className="bg-white rounded-t-[32px] sm:rounded-[28px] flex flex-col max-h-[88vh] overflow-hidden">
+      <div className="bg-card rounded-t-[32px] sm:rounded-[28px] flex flex-col max-h-[88vh] overflow-hidden">
         <div className="w-full flex justify-center py-2 cursor-grab">
-          <div className="w-12 h-1.5 rounded-full bg-[#c7c4d8]/70" />
+          <div className="w-12 h-1.5 rounded-full bg-muted-foreground/70" />
         </div>
 
-        <div className="px-5 sm:px-6 pt-1 pb-3 flex items-center justify-between border-b border-[#e2e8f0]/60">
+        <div className="px-5 sm:px-6 pt-1 pb-3 flex items-center justify-between border-b border-border/60">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#e2dfff] flex items-center justify-center text-[#3525cd]">
+            <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center text-primary">
               <AppIcon name="add_task" className="size-[19px]" />
             </div>
-            <h2 className="text-xl sm:text-2xl font-extrabold text-[#0b1c30] tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
               ایجاد سریع
             </h2>
           </div>
           <button
             onClick={onClose}
             aria-label="بستن"
-            className="w-9 h-9 rounded-full bg-[#e5eeff] text-[#545f73] flex items-center justify-center hover:bg-[#dce9ff] active:scale-95 transition-all"
+            className="w-9 h-9 rounded-full bg-primary/10 text-muted-foreground flex items-center justify-center hover:bg-primary/10 active:scale-95 transition-all"
           >
             <AppIcon name="close" className="size-[20px]" />
           </button>
@@ -222,7 +222,7 @@ export function QuickAddModal() {
 
         <div className="px-5 sm:px-6 py-4 overflow-y-auto space-y-4 no-scrollbar">
           <div>
-            <label className="block text-[11px] font-bold text-[#545f73] mb-2">
+            <label className="block text-[11px] font-bold text-muted-foreground mb-2">
               انتخاب دسته یادآور
             </label>
             <div className="grid grid-cols-4 gap-2">
@@ -236,15 +236,15 @@ export function QuickAddModal() {
           {category === "vehicle" && (
             <form onSubmit={handleVehicleSubmit} className="space-y-3.5">
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#545f73]">
+                <label className="block text-xs font-bold text-muted-foreground">
                   خودرو
                 </label>
-                <div className="h-12 bg-[#eff4ff] rounded-xl px-3 flex items-center justify-between text-[#0b1c30]">
+                <div className="h-12 bg-primary/5 rounded-xl px-3 flex items-center justify-between text-foreground">
                   <div className="flex items-center gap-2 truncate">
-                    <AppIcon name="electric_car" className="text-[#3525cd] size-[20px]" />
+                    <AppIcon name="electric_car" className="text-primary size-[20px]" />
                     <span className="text-sm font-bold truncate">
                       {vehicleName}{" "}
-                      <span className="font-normal text-[#545f73] text-xs">
+                      <span className="font-normal text-muted-foreground text-xs">
                         ({faNum(odometerKm)} کیلومتر)
                       </span>
                     </span>
@@ -253,7 +253,7 @@ export function QuickAddModal() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-bold text-[#545f73]">
+                <label className="block text-xs font-bold text-muted-foreground">
                   نام سرویس / قطعه
                 </label>
                 <input
@@ -261,11 +261,11 @@ export function QuickAddModal() {
                   value={serviceName}
                   onChange={(e) => setServiceName(e.target.value)}
                   placeholder="مثلاً لنت ترمز، روغن، جابه‌جایی تایر"
-                  className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3.5 text-sm focus:outline-none focus:bg-[#e5eeff] focus:ring-2 focus:ring-[#4f46e5]/40 transition-all font-medium"
+                  className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3.5 text-sm focus:outline-none focus:bg-primary/10 focus:ring-2 focus:ring-primary/40 transition-all font-medium"
                   required
                 />
                 <div className="flex items-center gap-1.5 overflow-x-auto py-0.5 no-scrollbar">
-                  <span className="text-[11px] font-semibold text-[#545f73] whitespace-nowrap">
+                  <span className="text-[11px] font-semibold text-muted-foreground whitespace-nowrap">
                     سریع:
                   </span>
                   {[
@@ -280,8 +280,8 @@ export function QuickAddModal() {
                       onClick={() => setServiceName(tag)}
                       className={`px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                         serviceName === tag
-                          ? "bg-[#e2dfff] text-[#0f0069] font-bold"
-                          : "bg-[#e5eeff] text-[#464555] hover:bg-[#dce9ff]"
+                          ? "bg-primary/15 text-primary font-bold"
+                          : "bg-primary/10 text-muted-foreground hover:bg-primary/10"
                       }`}
                     >
                       {tag}
@@ -292,39 +292,39 @@ export function QuickAddModal() {
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-[#545f73]">
+                  <label className="text-xs font-bold text-muted-foreground">
                     دوره تناوب
                   </label>
-                  <span className="text-[11px] font-bold text-[#4f46e5]">
+                  <span className="text-[11px] font-bold text-primary">
                     هرکدام زودتر برسد
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="h-12 bg-[#eff4ff] rounded-xl px-3 flex items-center gap-1.5">
-                    <span className="text-xs text-[#545f73] font-medium">
+                  <div className="h-12 bg-primary/5 rounded-xl px-3 flex items-center gap-1.5">
+                    <span className="text-xs text-muted-foreground font-medium">
                       هر
                     </span>
                     <input
                       type="text"
                       value={intervalKm}
                       onChange={(e) => setIntervalKm(e.target.value)}
-                      className="w-full bg-transparent text-[#0b1c30] font-bold text-sm text-left focus:outline-none"
+                      className="w-full bg-transparent text-foreground font-bold text-sm text-left focus:outline-none"
                     />
-                    <span className="text-xs font-bold text-[#545f73]">
+                    <span className="text-xs font-bold text-muted-foreground">
                       کیلومتر
                     </span>
                   </div>
-                  <div className="h-12 bg-[#eff4ff] rounded-xl px-3 flex items-center gap-1.5">
-                    <span className="text-xs text-[#545f73] font-medium">
+                  <div className="h-12 bg-primary/5 rounded-xl px-3 flex items-center gap-1.5">
+                    <span className="text-xs text-muted-foreground font-medium">
                       هر
                     </span>
                     <input
                       type="text"
                       value={intervalMo}
                       onChange={(e) => setIntervalMo(e.target.value)}
-                      className="w-full bg-transparent text-[#0b1c30] font-bold text-sm text-left focus:outline-none"
+                      className="w-full bg-transparent text-foreground font-bold text-sm text-left focus:outline-none"
                     />
-                    <span className="text-xs font-bold text-[#545f73]">
+                    <span className="text-xs font-bold text-muted-foreground">
                       ماه
                     </span>
                   </div>
@@ -332,32 +332,32 @@ export function QuickAddModal() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-[#545f73]">
+                <label className="block text-xs font-bold text-muted-foreground">
                   آستانه موعد بعدی
                 </label>
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="h-12 bg-[#eff4ff] rounded-xl px-3 flex items-center justify-between">
+                  <div className="h-12 bg-primary/5 rounded-xl px-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <AppIcon name="calendar_today" className="size-[18px] text-[#545f73]" />
+                      <AppIcon name="calendar_today" className="size-[18px] text-muted-foreground" />
                       <input
                         type="date"
                         value={nextDueDate}
                         onChange={(e) => setNextDueDate(e.target.value)}
-                        className="bg-transparent text-xs font-bold text-[#0b1c30] focus:outline-none"
+                        className="bg-transparent text-xs font-bold text-foreground focus:outline-none"
                       />
                     </div>
                   </div>
-                  <div className="h-12 bg-[#eff4ff] rounded-xl px-3 flex items-center justify-between">
+                  <div className="h-12 bg-primary/5 rounded-xl px-3 flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
-                      <AppIcon name="speed" className="size-[18px] text-[#545f73]" />
+                      <AppIcon name="speed" className="size-[18px] text-muted-foreground" />
                       <input
                         type="text"
                         value={nextDueKm}
                         onChange={(e) => setNextDueKm(e.target.value)}
-                        className="w-20 bg-transparent text-xs font-bold text-[#0b1c30] focus:outline-none"
+                        className="w-20 bg-transparent text-xs font-bold text-foreground focus:outline-none"
                       />
                     </div>
-                    <span className="text-xs font-bold text-[#545f73]">
+                    <span className="text-xs font-bold text-muted-foreground">
                       کیلومتر
                     </span>
                   </div>
@@ -366,22 +366,22 @@ export function QuickAddModal() {
 
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">
+                  <label className="block text-xs font-bold text-muted-foreground">
                     هزینه تقریبی ($)
                   </label>
-                  <div className="h-12 bg-[#eff4ff] rounded-xl px-3 flex items-center gap-1">
-                    <span className="text-sm font-bold text-[#545f73]">$</span>
+                  <div className="h-12 bg-primary/5 rounded-xl px-3 flex items-center gap-1">
+                    <span className="text-sm font-bold text-muted-foreground">$</span>
                     <input
                       type="text"
                       value={estCost}
                       onChange={(e) => setEstCost(e.target.value)}
                       placeholder="240.00"
-                      className="w-full bg-transparent text-sm font-semibold text-[#0b1c30] focus:outline-none"
+                      className="w-full bg-transparent text-sm font-semibold text-foreground focus:outline-none"
                     />
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">
+                  <label className="block text-xs font-bold text-muted-foreground">
                     فاکتور / مدرک
                   </label>
                   <button
@@ -389,11 +389,11 @@ export function QuickAddModal() {
                     onClick={() => setReceiptAttached(!receiptAttached)}
                     className={`w-full h-12 rounded-xl px-2.5 flex items-center justify-center gap-1.5 transition-all text-xs font-semibold ${
                       receiptAttached
-                        ? "bg-[#4edea3]/20 text-[#005338] border border-[#4edea3]/50"
-                        : "bg-[#eff4ff] hover:bg-[#e5eeff] text-[#464555]"
+                        ? "bg-success/20 text-success border border-success/50"
+                        : "bg-primary/5 hover:bg-primary/10 text-muted-foreground"
                     }`}
                   >
-                    <AppIcon name={receiptAttached ? "task_alt" : "add_a_photo"} className="size-[19px] text-[#4f46e5]" />
+                    <AppIcon name={receiptAttached ? "task_alt" : "add_a_photo"} className="size-[19px] text-primary" />
                     <span className="truncate">
                       {receiptAttached ? "فاکتور پیوست شد" : "افزودن فاکتور"}
                     </span>
@@ -401,15 +401,15 @@ export function QuickAddModal() {
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-[#eff4ff] flex items-start gap-2.5 border border-[#dce9ff]">
-                <div className="w-6 h-6 rounded-full bg-[#6ffbbe] text-[#002113] flex items-center justify-center shrink-0 mt-0.5">
+              <div className="p-3 rounded-xl bg-primary/5 flex items-start gap-2.5 border border-primary/15">
+                <div className="w-6 h-6 rounded-full bg-success text-success-foreground flex items-center justify-center shrink-0 mt-0.5">
                   <AppIcon name="auto_awesome" className="size-[14px]" />
                 </div>
                 <div className="text-right">
-                  <span className="text-[11px] font-bold text-[#0b1c30] block">
+                  <span className="text-[11px] font-bold text-foreground block">
                     همگام‌سازی هوشمند چرخه
                   </span>
-                  <p className="text-[11px] text-[#545f73] leading-snug">
+                  <p className="text-[11px] text-muted-foreground leading-snug">
                     لایف‌هاب ۵۰۰ کیلومتر قبل از آستانه هشدار می‌دهد و سوابق را
                     با لاگ خودرو همگام می‌کند.
                   </p>
@@ -419,7 +419,7 @@ export function QuickAddModal() {
               <div className="pt-2 space-y-2">
                 <button
                   type="submit"
-                  className="w-full h-12 rounded-xl bg-[#4f46e5] text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#3525cd] active:scale-[0.98] transition-all"
+                  className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary active:scale-[0.98] transition-all"
                 >
                   <span>ساخت یادآور سرویس</span>
                   <AppIcon name="arrow_forward" className="size-[18px]" />
@@ -427,7 +427,7 @@ export function QuickAddModal() {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="w-full h-10 rounded-xl text-[#545f73] font-semibold text-xs hover:bg-[#eff4ff]"
+                  className="w-full h-10 rounded-xl text-muted-foreground font-semibold text-xs hover:bg-primary/5"
                 >
                   انصراف
                 </button>
@@ -438,7 +438,7 @@ export function QuickAddModal() {
           {category === "loan" && (
             <form onSubmit={handleLoanSubmit} className="space-y-3.5">
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#545f73]">
+                <label className="block text-xs font-bold text-muted-foreground">
                   عنوان وام / بدهی
                 </label>
                 <input
@@ -446,13 +446,13 @@ export function QuickAddModal() {
                   value={loanTitle}
                   onChange={(e) => setLoanTitle(e.target.value)}
                   placeholder="مثلاً وام بازسازی خانه، وام دانشجویی"
-                  className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#4f46e5]/40 font-medium"
+                  className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 font-medium"
                   required
                 />
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">
+                  <label className="block text-xs font-bold text-muted-foreground">
                     بانک / مؤسسه
                   </label>
                   <input
@@ -460,12 +460,12 @@ export function QuickAddModal() {
                     value={loanBank}
                     onChange={(e) => setLoanBank(e.target.value)}
                     placeholder="مثلاً Chase"
-                    className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm focus:outline-none"
+                    className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3 text-sm focus:outline-none"
                     required
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">
+                  <label className="block text-xs font-bold text-muted-foreground">
                     دسته
                   </label>
                   <select
@@ -473,7 +473,7 @@ export function QuickAddModal() {
                     onChange={(e) =>
                       setLoanCategory(e.target.value as LoanItem["category"])
                     }
-                    className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm focus:outline-none"
+                    className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3 text-sm focus:outline-none"
                   >
                     <option value="mortgage">مسکن</option>
                     <option value="auto">خودرو</option>
@@ -484,7 +484,7 @@ export function QuickAddModal() {
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">
+                  <label className="block text-xs font-bold text-muted-foreground">
                     پرداخت ماهانه ($)
                   </label>
                   <input
@@ -492,12 +492,12 @@ export function QuickAddModal() {
                     value={loanMonthly}
                     onChange={(e) => setLoanMonthly(e.target.value)}
                     placeholder="450.00"
-                    className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm font-bold focus:outline-none"
+                    className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3 text-sm font-bold focus:outline-none"
                     required
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">
+                  <label className="block text-xs font-bold text-muted-foreground">
                     مانده کل ($)
                   </label>
                   <input
@@ -505,19 +505,19 @@ export function QuickAddModal() {
                     value={loanTotal}
                     onChange={(e) => setLoanTotal(e.target.value)}
                     placeholder="12,000.00"
-                    className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm font-bold focus:outline-none"
+                    className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3 text-sm font-bold focus:outline-none"
                     required
                   />
                 </div>
               </div>
-              <div className="flex items-center justify-between p-3 rounded-xl bg-[#eff4ff]">
+              <div className="flex items-center justify-between p-3 rounded-xl bg-primary/5">
                 <div className="flex items-center gap-2">
-                  <AppIcon name="autorenew" className="size-[20px] text-[#4f46e5]" />
+                  <AppIcon name="autorenew" className="size-[20px] text-primary" />
                   <div>
-                    <span className="text-xs font-bold text-[#0b1c30] block">
+                    <span className="text-xs font-bold text-foreground block">
                       پرداخت خودکار فعال
                     </span>
-                    <span className="text-[11px] text-[#545f73]">
+                    <span className="text-[11px] text-muted-foreground">
                       برداشت روز {faNum(parseInt(loanDueDay, 10) || 15)} هر ماه
                     </span>
                   </div>
@@ -526,13 +526,13 @@ export function QuickAddModal() {
                   type="checkbox"
                   checked={loanAutoPay}
                   onChange={(e) => setLoanAutoPay(e.target.checked)}
-                  className="w-5 h-5 rounded accent-[#4f46e5] cursor-pointer"
+                  className="w-5 h-5 rounded accent-primary cursor-pointer"
                 />
               </div>
               <div className="pt-2 space-y-2">
                 <button
                   type="submit"
-                  className="w-full h-12 rounded-xl bg-[#4f46e5] text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#3525cd] active:scale-[0.98] transition-all"
+                  className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary active:scale-[0.98] transition-all"
                 >
                   <span>افزودن وام و زمان‌بندی پرداخت</span>
                   <AppIcon name="arrow_forward" className="size-[18px]" />
@@ -540,7 +540,7 @@ export function QuickAddModal() {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="w-full h-10 rounded-xl text-[#545f73] font-semibold text-xs hover:bg-[#eff4ff]"
+                  className="w-full h-10 rounded-xl text-muted-foreground font-semibold text-xs hover:bg-primary/5"
                 >
                   انصراف
                 </button>
@@ -551,7 +551,7 @@ export function QuickAddModal() {
           {category === "task" && (
             <form onSubmit={handleTaskSubmit} className="space-y-3.5">
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#545f73]">
+                <label className="block text-xs font-bold text-muted-foreground">
                   نام کار / یادآور
                 </label>
                 <input
@@ -559,13 +559,13 @@ export function QuickAddModal() {
                   value={taskTitle}
                   onChange={(e) => setTaskTitle(e.target.value)}
                   placeholder="مثلاً پیگیری دندان‌پزشکی، اظهارنامه مالیاتی"
-                  className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#4f46e5]/40 font-medium"
+                  className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 font-medium"
                   required
                 />
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">
+                  <label className="block text-xs font-bold text-muted-foreground">
                     دسته
                   </label>
                   <select
@@ -575,7 +575,7 @@ export function QuickAddModal() {
                         e.target.value as TaskReminder["category"],
                       )
                     }
-                    className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm focus:outline-none font-medium"
+                    className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3 text-sm focus:outline-none font-medium"
                   >
                     <option value="work">💼 کاری</option>
                     <option value="health">🩺 سلامت</option>
@@ -585,7 +585,7 @@ export function QuickAddModal() {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">
+                  <label className="block text-xs font-bold text-muted-foreground">
                     اولویت
                   </label>
                   <select
@@ -593,7 +593,7 @@ export function QuickAddModal() {
                     onChange={(e) =>
                       setTaskPriority(e.target.value as "high" | "normal")
                     }
-                    className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm focus:outline-none font-medium"
+                    className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3 text-sm focus:outline-none font-medium"
                   >
                     <option value="normal">عادی</option>
                     <option value="high">🚨 فوری (هشدار)</option>
@@ -602,7 +602,7 @@ export function QuickAddModal() {
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">
+                  <label className="block text-xs font-bold text-muted-foreground">
                     موعد
                   </label>
                   <select
@@ -612,7 +612,7 @@ export function QuickAddModal() {
                         e.target.value as TaskReminder["dueDateCategory"],
                       )
                     }
-                    className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm focus:outline-none font-medium"
+                    className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3 text-sm focus:outline-none font-medium"
                   >
                     <option value="today">امروز</option>
                     <option value="tomorrow">فردا</option>
@@ -620,7 +620,7 @@ export function QuickAddModal() {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#545f73]">
+                  <label className="block text-xs font-bold text-muted-foreground">
                     ساعت
                   </label>
                   <input
@@ -628,12 +628,12 @@ export function QuickAddModal() {
                     value={taskTime}
                     onChange={(e) => setTaskTime(e.target.value)}
                     placeholder="۱۴:۰۰"
-                    className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm focus:outline-none font-medium"
+                    className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3 text-sm focus:outline-none font-medium"
                   />
                 </div>
               </div>
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#545f73]">
+                <label className="block text-xs font-bold text-muted-foreground">
                   مکان (اختیاری)
                 </label>
                 <input
@@ -641,13 +641,13 @@ export function QuickAddModal() {
                   value={taskLocation}
                   onChange={(e) => setTaskLocation(e.target.value)}
                   placeholder="مثلاً داروخانه، پرتال بیمه"
-                  className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm focus:outline-none"
+                  className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3 text-sm focus:outline-none"
                 />
               </div>
               <div className="pt-2 space-y-2">
                 <button
                   type="submit"
-                  className="w-full h-12 rounded-xl bg-[#4f46e5] text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#3525cd] active:scale-[0.98] transition-all"
+                  className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary active:scale-[0.98] transition-all"
                 >
                   <span>زمان‌بندی یادآور</span>
                   <AppIcon name="arrow_forward" className="size-[18px]" />
@@ -655,7 +655,7 @@ export function QuickAddModal() {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="w-full h-10 rounded-xl text-[#545f73] font-semibold text-xs hover:bg-[#eff4ff]"
+                  className="w-full h-10 rounded-xl text-muted-foreground font-semibold text-xs hover:bg-primary/5"
                 >
                   انصراف
                 </button>
@@ -666,13 +666,13 @@ export function QuickAddModal() {
           {category === "checklist" && (
             <form onSubmit={handleChecklistSubmit} className="space-y-3.5">
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#545f73]">
+                <label className="block text-xs font-bold text-muted-foreground">
                   بسته چک‌لیست مقصد
                 </label>
                 <select
                   value={selectedPackId}
                   onChange={(e) => setSelectedPackId(e.target.value)}
-                  className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3 text-sm focus:outline-none font-medium"
+                  className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3 text-sm focus:outline-none font-medium"
                 >
                   {checklists.map((pack) => (
                     <option key={pack.id} value={pack.id}>
@@ -682,7 +682,7 @@ export function QuickAddModal() {
                 </select>
               </div>
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#545f73]">
+                <label className="block text-xs font-bold text-muted-foreground">
                   قلم موردنظر
                 </label>
                 <input
@@ -690,14 +690,14 @@ export function QuickAddModal() {
                   value={checklistItemText}
                   onChange={(e) => setChecklistItemText(e.target.value)}
                   placeholder="مثلاً شارژر خورشیدی، کفش کوه"
-                  className="w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#4f46e5]/40 font-medium"
+                  className="w-full h-12 bg-primary/5 text-foreground rounded-xl px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 font-medium"
                   required
                 />
               </div>
               <div className="pt-2 space-y-2">
                 <button
                   type="submit"
-                  className="w-full h-12 rounded-xl bg-[#4f46e5] text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#3525cd] active:scale-[0.98] transition-all"
+                  className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary active:scale-[0.98] transition-all"
                 >
                   <span>افزودن به چک‌لیست</span>
                   <AppIcon name="add" className="size-[18px]" />
@@ -705,7 +705,7 @@ export function QuickAddModal() {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="w-full h-10 rounded-xl text-[#545f73] font-semibold text-xs hover:bg-[#eff4ff]"
+                  className="w-full h-10 rounded-xl text-muted-foreground font-semibold text-xs hover:bg-primary/5"
                 >
                   انصراف
                 </button>

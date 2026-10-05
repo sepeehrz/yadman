@@ -17,16 +17,18 @@ export function EmptyState({
   onAction,
 }: IProps) {
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-xs border border-[#e2e8f0]/70 text-center">
-      <AppIcon name={icon} className="size-[32px] text-[#c7c4d8]" />
-      <p className="text-sm font-bold text-[#0b1c30] mt-1">{title}</p>
-      {hint ? <p className="text-xs text-[#545f73] mt-1">{hint}</p> : null}
+    <div className="rounded-2xl bg-card p-6 shadow-xs border border-border/70 text-center">
+      <AppIcon name={icon} className="size-8 text-muted-foreground/60" />
+      <p className="text-sm font-bold text-foreground mt-1">{title}</p>
+      {hint ? (
+        <p className="text-xs text-muted-foreground mt-1">{hint}</p>
+      ) : null}
       {actionLabel && onAction ? (
         <button
           onClick={onAction}
-          className="mt-4 w-full h-11 rounded-xl bg-[#4f46e5] text-white font-bold text-xs hover:bg-[#3525cd] active:scale-95 transition-all flex items-center justify-center gap-1"
+          className="mt-4 w-full h-11 rounded-xl bg-primary text-primary-foreground font-bold text-xs hover:bg-primary active:scale-95 transition-all flex items-center justify-center gap-1"
         >
-          <AppIcon name="add_circle" className="size-[16px]" />
+          <AppIcon name="add_circle" className="size-4" />
           {actionLabel}
         </button>
       ) : null}

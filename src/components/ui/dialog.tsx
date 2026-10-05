@@ -90,10 +90,11 @@ export function BaseDialog({
 
   return createPortal(
     <div className={`fixed inset-0 z-50 flex ${alignClass}`}>
+      {/* پرده‌ی پس‌زمینه از توکن scrim استفاده می‌کند تا در هر دو تم تیره بماند. */}
       <div
         aria-hidden="true"
         onClick={onClose}
-        className={`fixed inset-0 bg-[#0b1c30]/50 backdrop-blur-sm transition-opacity duration-200 ${
+        className={`fixed inset-0 bg-scrim/50 backdrop-blur-sm transition-opacity duration-200 ${
           visible ? "opacity-100" : "opacity-0"
         }`}
       />
@@ -106,7 +107,7 @@ export function BaseDialog({
         aria-describedby={description ? descriptionId : undefined}
         tabIndex={-1}
         onClick={(event) => event.stopPropagation()}
-        className={`relative z-10 w-full ${SIZE_CLASS[size]} bg-white rounded-t-[28px] sm:rounded-3xl shadow-2xl max-h-[88vh] overflow-y-auto no-scrollbar outline-none transition-all duration-200 ${
+        className={`relative z-10 w-full ${SIZE_CLASS[size]} bg-card rounded-t-[28px] sm:rounded-3xl shadow-2xl max-h-[88vh] overflow-y-auto no-scrollbar outline-none transition-all duration-200 ${
           visible
             ? "opacity-100 translate-y-0 scale-100"
             : "opacity-0 translate-y-6 sm:translate-y-3 sm:scale-[0.98]"
@@ -141,15 +142,15 @@ export function DialogHeader({ title, onClose }: IHeaderProps) {
   return (
     <div>
       <div className="w-full flex justify-center pt-2" aria-hidden="true">
-        <div className="w-12 h-1.5 rounded-full bg-[#c7c4d8]/70" />
+        <div className="w-12 h-1.5 rounded-full bg-muted-foreground/70" />
       </div>
-      <div className="flex items-center justify-between px-5 sm:px-6 py-3 border-b border-[#e2e8f0]">
-        <h3 className="text-base font-bold text-[#0b1c30]">{title}</h3>
+      <div className="flex items-center justify-between px-5 sm:px-6 py-3 border-b border-border">
+        <h3 className="text-base font-bold text-foreground">{title}</h3>
         <button
           type="button"
           onClick={onClose}
           aria-label="بستن گفتگو"
-          className="w-8 h-8 rounded-full bg-[#eff4ff] text-[#545f73] flex items-center justify-center hover:bg-[#e5eeff] focus-visible:outline-2 focus-visible:outline-[#4f46e5] active:scale-95 transition-all"
+          className="w-8 h-8 rounded-full bg-primary/5 text-muted-foreground flex items-center justify-center hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-primary active:scale-95 transition-all"
         >
           <AppIcon name="close" className="size-[18px]" />
         </button>

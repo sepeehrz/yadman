@@ -10,10 +10,10 @@ export function LoadingSkeleton({ rows = 3 }: IProps) {
       {Array.from({ length: rows }).map((_, index) => (
         <div
           key={index}
-          className="rounded-2xl bg-white p-4 shadow-xs border border-[#e2e8f0]/70 animate-pulse"
+          className="rounded-2xl bg-card p-4 shadow-xs border border-border/70 animate-pulse"
         >
-          <div className="h-4 w-2/3 rounded bg-[#e5eeff]" />
-          <div className="h-3 w-1/3 rounded bg-[#eff4ff] mt-2" />
+          <div className="h-4 w-2/3 rounded bg-primary/10" />
+          <div className="h-3 w-1/3 rounded bg-primary/5 mt-2" />
         </div>
       ))}
     </div>

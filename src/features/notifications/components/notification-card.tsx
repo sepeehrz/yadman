@@ -9,18 +9,18 @@ const SEVERITY_STYLE: Record<
   { card: string; badge: string; label: string }
 > = {
   overdue: {
-    card: "bg-[#ffdad6]/40 hover:bg-[#ffdad6]/70 border-r-[#ba1a1a]",
-    badge: "bg-[#ffdad6] text-[#93000a]",
+    card: "bg-destructive/10 hover:bg-destructive/20 border-r-destructive",
+    badge: "bg-destructive/15 text-destructive",
     label: "گذشته از موعد",
   },
   urgent: {
-    card: "bg-amber-50 hover:bg-amber-100/70 border-r-amber-500",
-    badge: "bg-amber-100 text-amber-900",
+    card: "bg-warning/10 hover:bg-warning/20 border-r-warning",
+    badge: "bg-warning text-warning-foreground",
     label: "فوری",
   },
   soon: {
-    card: "bg-[#eff4ff] hover:bg-[#e5eeff] border-r-[#4f46e5]",
-    badge: "bg-[#e5eeff] text-[#3525cd]",
+    card: "bg-primary/5 hover:bg-primary/10 border-r-primary",
+    badge: "bg-primary/10 text-primary",
     label: "نزدیک",
   },
 };
@@ -66,7 +66,7 @@ export function NotificationCard({ notification, onSelect }: IProps) {
       type="button"
       onClick={onSelect}
       className={`w-full text-right p-3 rounded-xl border-r-4 transition-all ${style.card} ${
-        unread ? "ring-1 ring-[#4f46e5]/25" : "opacity-75"
+        unread ? "ring-1 ring-primary/25" : "opacity-75"
       }`}
     >
       <div className="flex items-start justify-between gap-2">
@@ -75,14 +75,14 @@ export function NotificationCard({ notification, onSelect }: IProps) {
         >
           {notification.category}
         </span>
-        <span className="text-[10px] text-[#545f73] whitespace-nowrap">
+        <span className="text-[10px] text-muted-foreground whitespace-nowrap">
           {formatTimeDistance(notification.dueAt)}
         </span>
       </div>
-      <h4 className="text-xs font-bold text-[#0b1c30] mt-1">
+      <h4 className="text-xs font-bold text-foreground mt-1">
         {notification.title}
       </h4>
-      <p className="text-[11px] text-[#464555] mt-0.5 line-clamp-2">
+      <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-2">
         {notification.body}
       </p>
     </button>

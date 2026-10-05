@@ -15,10 +15,10 @@ export function VehicleList({ vehicles, selectedId, onSelect, onAdd }: IProps) {
   return (
     <div className="space-y-2.5">
       <div className="flex items-center justify-between px-1">
-        <h2 className="text-sm font-bold text-[#0b1c30]">خودروهای من</h2>
+        <h2 className="text-sm font-bold text-foreground">خودروهای من</h2>
         <button
           onClick={onAdd}
-          className="flex items-center gap-1 text-xs font-bold text-[#3525cd] hover:underline"
+          className="flex items-center gap-1 text-xs font-bold text-primary hover:underline"
         >
           <AppIcon name="add_circle" className="size-[16px]" />
           خودرو جدید
@@ -32,35 +32,35 @@ export function VehicleList({ vehicles, selectedId, onSelect, onAdd }: IProps) {
             key={vehicle.id}
             onClick={() => onSelect(vehicle.id)}
             aria-pressed={selected}
-            className={`w-full text-right rounded-2xl bg-white p-4 shadow-xs border transition-all flex items-center gap-3 ${
+            className={`w-full text-right rounded-2xl bg-card p-4 shadow-xs border transition-all flex items-center gap-3 ${
               selected
-                ? "border-[#4f46e5] ring-2 ring-[#4f46e5]/20"
-                : "border-[#e2e8f0]/70 hover:border-[#c7c4d8]"
+                ? "border-primary ring-2 ring-primary/20"
+                : "border-border/70 hover:border-border"
             }`}
           >
             <span
               className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${
                 selected
-                  ? "bg-[#4f46e5] text-white"
-                  : "bg-[#eff4ff] text-[#3525cd]"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-primary/5 text-primary"
               }`}
             >
               <AppIcon name="directions_car" className="size-[24px]" />
             </span>
             <span className="flex-1 min-w-0">
-              <span className="font-bold text-sm text-[#0b1c30] block truncate">
+              <span className="font-bold text-sm text-foreground block truncate">
                 {vehicle.name}
               </span>
-              <span className="text-xs text-[#545f73] block truncate">
+              <span className="text-xs text-muted-foreground block truncate">
                 {vehicle.model} • <span dir="ltr">{vehicle.plateNumber}</span>
               </span>
             </span>
             <span className="text-left flex-shrink-0">
-              <span className="text-xs font-extrabold text-[#0b1c30] block">
+              <span className="text-xs font-extrabold text-foreground block">
                 {faKm(vehicle.odometerKm)}
               </span>
               {selected ? (
-                <span className="text-[10px] font-bold text-[#3525cd]">
+                <span className="text-[10px] font-bold text-primary">
                   انتخاب شده
                 </span>
               ) : null}

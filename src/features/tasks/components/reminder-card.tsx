@@ -22,9 +22,9 @@ interface IProps {
 }
 
 const STRIPE_CLASS: Record<Reminder["priority"], string> = {
-  high: "bg-[#ba1a1a]",
-  normal: "bg-[#4f46e5]",
-  low: "bg-[#c7c4d8]",
+  high: "bg-destructive",
+  normal: "bg-primary",
+  low: "bg-muted-foreground/30",
 };
 
 export function ReminderCard({
@@ -40,8 +40,8 @@ export function ReminderCard({
 
   return (
     <div
-      className={`bg-white rounded-2xl p-4 shadow-xs border relative overflow-hidden transition-all duration-300 ${
-        reminder.done ? "opacity-60 bg-[#f8f9ff]" : "border-[#e2e8f0]/80"
+      className={`bg-card rounded-2xl p-4 shadow-xs border relative overflow-hidden transition-all duration-300 ${
+        reminder.done ? "opacity-60 bg-background" : "border-border/80"
       }`}
     >
       <div
@@ -58,8 +58,8 @@ export function ReminderCard({
           aria-pressed={reminder.done}
           className={`mt-0.5 w-6 h-6 rounded-full flex items-center justify-center transition-all active:scale-90 ${
             reminder.done
-              ? "bg-[#006e4b] text-white"
-              : "bg-[#eff4ff] text-transparent hover:bg-[#e5eeff] border border-[#c7c4d8]"
+              ? "bg-success text-success-foreground"
+              : "bg-primary/5 text-transparent hover:bg-primary/10 border border-border"
           }`}
         >
           <AppIcon name="check" className="size-[16px]" />
@@ -72,46 +72,46 @@ export function ReminderCard({
                 <span
                   className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                     reminder.priority === "high"
-                      ? "bg-[#ffdad6] text-[#93000a]"
-                      : "bg-[#e5eeff] text-[#545f73]"
+                      ? "bg-destructive/15 text-destructive"
+                      : "bg-primary/10 text-muted-foreground"
                   }`}
                 >
                   اولویت {PRIORITY_LABEL[reminder.priority]}
                 </span>
               ) : null}
               {reminder.recurrence !== "none" ? (
-                <span className="inline-flex items-center gap-0.5 text-[#545f73] text-[10px] font-semibold">
+                <span className="inline-flex items-center gap-0.5 text-muted-foreground text-[10px] font-semibold">
                   <AppIcon name="sync" className="size-[12px]" />{" "}
                   {RECURRENCE_LABEL[reminder.recurrence]}
                 </span>
               ) : null}
               {reminder.snoozedUntil ? (
-                <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-[#3525cd]">
+                <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-primary">
                   <AppIcon name="schedule" className="size-[12px]" /> به تعویق
                   افتاد
                 </span>
               ) : null}
               {overdue ? (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#ffdad6] text-[#93000a]">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-destructive/15 text-destructive">
                   گذشته از موعد
                 </span>
               ) : null}
             </div>
-            <span className="text-[11px] font-semibold flex items-center gap-1 text-[#545f73]">
+            <span className="text-[11px] font-semibold flex items-center gap-1 text-muted-foreground">
               <AppIcon name="schedule" className="size-[13px]" /> {dueLabel}
             </span>
           </div>
 
           <p
-            className={`text-sm sm:text-base font-bold text-[#0b1c30] mt-1 transition-all ${
-              reminder.done ? "line-through text-[#545f73]" : ""
+            className={`text-sm sm:text-base font-bold text-foreground mt-1 transition-all ${
+              reminder.done ? "line-through text-muted-foreground" : ""
             }`}
           >
             {reminder.title}
           </p>
 
           {reminder.description ? (
-            <p className="text-xs text-[#545f73] mt-1 leading-snug">
+            <p className="text-xs text-muted-foreground mt-1 leading-snug">
               {reminder.description}
             </p>
           ) : null}
@@ -127,7 +127,7 @@ export function ReminderCard({
                 onClick={() => onEdit(reminder)}
                 disabled={pending}
                 aria-label={`ویرایش ${reminder.title}`}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#eff4ff] text-[#545f73] text-[11px] font-bold hover:bg-[#e5eeff] active:scale-95 transition-all"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary/5 text-muted-foreground text-[11px] font-bold hover:bg-primary/10 active:scale-95 transition-all"
               >
                 <AppIcon name="edit" className="size-[14px]" />
                 <span>ویرایش</span>
@@ -137,7 +137,7 @@ export function ReminderCard({
                 onClick={() => onDelete(reminder)}
                 disabled={pending}
                 aria-label={`حذف ${reminder.title}`}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#ffdad6]/50 text-[#93000a] text-[11px] font-bold hover:bg-[#ffdad6] active:scale-95 transition-all"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-destructive/50 text-destructive text-[11px] font-bold hover:bg-destructive/15 active:scale-95 transition-all"
               >
                 <AppIcon name="delete" className="size-[14px]" />
                 <span>حذف</span>

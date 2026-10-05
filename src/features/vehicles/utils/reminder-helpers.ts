@@ -9,10 +9,10 @@ export const INSURANCE_TYPE_LABEL: Record<InsuranceType, string> = {
 
 const SEVERITY_STYLE: Record<ReminderSeverity, { badge: string; dot: string }> =
   {
-    overdue: { badge: "bg-[#ffdad6] text-[#93000a]", dot: "bg-[#ba1a1a]" },
-    urgent: { badge: "bg-amber-100 text-amber-900", dot: "bg-amber-500" },
-    soon: { badge: "bg-[#e5eeff] text-[#3525cd]", dot: "bg-[#4f46e5]" },
-    ok: { badge: "bg-[#6ffbbe]/30 text-[#005338]", dot: "bg-[#006e4b]" },
+    overdue: { badge: "bg-destructive/15 text-destructive", dot: "bg-destructive" },
+    urgent: { badge: "bg-warning text-warning-foreground", dot: "bg-warning" },
+    soon: { badge: "bg-primary/10 text-primary", dot: "bg-primary" },
+    ok: { badge: "bg-success/30 text-success", dot: "bg-success" },
   };
 
 export function severityStyle(severity: ReminderSeverity): {

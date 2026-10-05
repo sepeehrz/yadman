@@ -27,15 +27,15 @@ export function ConfirmDialog({
         aria-hidden="true"
         className={`mx-auto w-12 h-12 rounded-full flex items-center justify-center ${
           danger
-            ? "bg-[#ffdad6]/60 text-[#ba1a1a]"
-            : "bg-[#e2dfff] text-[#3525cd]"
+            ? "bg-destructive/60 text-destructive"
+            : "bg-primary/15 text-primary"
         }`}
       >
         <AppIcon name="warning" className="size-6" />
       </div>
 
-      <h3 className="mt-3 text-base font-bold text-[#0b1c30]">{title}</h3>
-      <p className="mt-1.5 text-xs leading-6 font-medium text-[#545f73]">
+      <h3 className="mt-3 text-base font-bold text-foreground">{title}</h3>
+      <p className="mt-1.5 text-xs leading-6 font-medium text-muted-foreground">
         {message}
       </p>
 
@@ -43,7 +43,7 @@ export function ConfirmDialog({
         <button
           type="button"
           onClick={closeDialog}
-          className="flex-1 h-11 rounded-xl bg-[#eff4ff] text-[#545f73] font-semibold text-xs hover:bg-[#e5eeff] active:scale-95 transition-all"
+          className="flex-1 h-11 rounded-xl bg-primary/5 text-muted-foreground font-semibold text-xs hover:bg-primary/10 active:scale-95 transition-all"
         >
           {cancelLabel}
         </button>
@@ -53,8 +53,8 @@ export function ConfirmDialog({
           autoFocus
           className={`flex-1 h-11 rounded-xl font-bold text-xs active:scale-95 transition-all ${
             danger
-              ? "bg-[#ba1a1a] text-white hover:bg-[#930e0e]"
-              : "bg-[#4f46e5] text-white hover:bg-[#3525cd]"
+              ? "bg-destructive text-destructive-foreground hover:bg-destructive"
+              : "bg-primary text-primary-foreground hover:bg-primary"
           }`}
         >
           {confirmLabel}

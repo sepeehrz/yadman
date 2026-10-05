@@ -28,7 +28,7 @@ export function ChecklistAddItemForm({ disabled = false, onAdd }: IProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="pt-2 mt-1 border-t border-[#f1f5f9]">
+    <form onSubmit={handleSubmit} className="pt-2 mt-1 border-t border-border">
       <div className="flex items-center gap-2">
         <input
           type="text"
@@ -41,19 +41,19 @@ export function ChecklistAddItemForm({ disabled = false, onAdd }: IProps) {
           }}
           placeholder="قلم جدید به چک‌لیست..."
           aria-label="افزودن قلم جدید"
-          className="flex-1 h-11 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3.5 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#4f46e5]/40"
+          className="flex-1 h-11 bg-primary/5 text-foreground rounded-xl px-3.5 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/40"
         />
         <button
           type="submit"
           disabled={disabled}
-          className="h-11 px-4 rounded-xl bg-[#4f46e5] text-white text-xs font-bold hover:bg-[#3525cd] active:scale-95 transition-all disabled:opacity-60 flex items-center gap-1"
+          className="h-11 px-4 rounded-xl bg-primary text-primary-foreground text-xs font-bold hover:bg-primary active:scale-95 transition-all disabled:opacity-60 flex items-center gap-1"
         >
           <AppIcon name="add" className="size-[15px]" />
           <span>افزودن</span>
         </button>
       </div>
       {error ? (
-        <p className="text-[11px] text-[#ba1a1a] font-semibold mt-1">{error}</p>
+        <p className="text-[11px] text-destructive font-semibold mt-1">{error}</p>
       ) : null}
     </form>
   );

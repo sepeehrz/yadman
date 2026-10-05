@@ -53,16 +53,16 @@ export function NotificationsCenter({ closeDialog }: { closeDialog: () => void }
     browserSupported && Notification.permission === "granted";
 
   return (
-    <div className="bg-white rounded-t-[28px] sm:rounded-2xl border border-[#e2e8f0] overflow-hidden flex flex-col max-h-[85vh]">
-      <div className="p-4 border-b border-[#e2e8f0] flex items-center justify-between bg-[#f8f9ff]">
+    <div className="bg-card rounded-t-[28px] sm:rounded-2xl border border-border overflow-hidden flex flex-col max-h-[85vh]">
+      <div className="p-4 border-b border-border flex items-center justify-between bg-background">
         <div className="flex items-center gap-2">
           <AppIcon
             name={unreadCount > 0 ? "notifications_active" : "notifications"}
-            className="text-[#4f46e5] size-[22px]"
+            className="text-primary size-[22px]"
           />
-          <h3 className="font-bold text-base text-[#0b1c30]">اعلان‌ها و هشدارها</h3>
+          <h3 className="font-bold text-base text-foreground">اعلان‌ها و هشدارها</h3>
           {unreadCount > 0 && (
-            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#4f46e5] text-white">
+            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground">
               {unreadCount.toLocaleString("fa-IR")}
             </span>
           )}
@@ -70,7 +70,7 @@ export function NotificationsCenter({ closeDialog }: { closeDialog: () => void }
         <button
           onClick={closeDialog}
           aria-label="بستن اعلان‌ها"
-          className="w-7 h-7 rounded-full bg-[#e5eeff] text-[#545f73] flex items-center justify-center hover:bg-[#dce9ff]"
+          className="w-7 h-7 rounded-full bg-primary/10 text-muted-foreground flex items-center justify-center hover:bg-primary/10"
         >
           <AppIcon name="close" className="size-[16px]" />
         </button>
@@ -100,8 +100,8 @@ export function NotificationsCenter({ closeDialog }: { closeDialog: () => void }
         </div>
       )}
 
-      <div className="p-3 border-t border-[#e2e8f0] bg-[#f8f9ff] flex flex-wrap items-center justify-between gap-2">
-        <span className="text-[11px] text-[#545f73]">
+      <div className="p-3 border-t border-border bg-background flex flex-wrap items-center justify-between gap-2">
+        <span className="text-[11px] text-muted-foreground">
           {notifications.length > 0
             ? `${notifications.length.toLocaleString("fa-IR")} اعلان • ${unreadCount.toLocaleString("fa-IR")} خوانده‌نشده`
             : "همه سیستم‌ها پایدارند"}
@@ -110,7 +110,7 @@ export function NotificationsCenter({ closeDialog }: { closeDialog: () => void }
           {browserSupported && !browserGranted && (
             <button
               onClick={handleEnableBrowser}
-              className="text-xs font-bold text-[#4f46e5] hover:underline"
+              className="text-xs font-bold text-primary hover:underline"
             >
               فعال‌سازی نوتیفیکیشن مرورگر
             </button>
@@ -121,7 +121,7 @@ export function NotificationsCenter({ closeDialog }: { closeDialog: () => void }
                 markAllRead();
                 toast.success("همه اعلان‌ها خوانده شد");
               }}
-              className="text-xs font-bold text-[#4f46e5] hover:underline"
+              className="text-xs font-bold text-primary hover:underline"
             >
               علامت‌گذاری همه به‌عنوان خوانده‌شده
             </button>
@@ -133,7 +133,7 @@ export function NotificationsCenter({ closeDialog }: { closeDialog: () => void }
                 toast.success("اعلان‌ها پاک شد");
               }}
               aria-label="پاک کردن همه اعلان‌ها"
-              className="text-[#ba1a1a] hover:underline"
+              className="text-destructive hover:underline"
             >
               <AppIcon name="delete" className="size-4" />
             </button>

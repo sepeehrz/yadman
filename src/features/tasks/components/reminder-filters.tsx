@@ -30,16 +30,16 @@ export function ReminderFilters({ active, counts, onChange }: IProps) {
             onClick={() => onChange(filter)}
             className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
               isActive
-                ? "bg-[#4f46e5] text-white shadow-xs font-bold"
-                : "bg-[#eff4ff] text-[#464555] hover:bg-[#e5eeff]"
+                ? "bg-primary text-primary-foreground shadow-xs font-bold"
+                : "bg-primary/5 text-muted-foreground hover:bg-primary/10"
             }`}
           >
             <span>{PERIOD_LABEL[filter]}</span>
             <span
               className={`text-[10px] px-1.5 rounded-full font-bold ${
                 isActive
-                  ? "bg-white/25 text-white"
-                  : "bg-[#e5eeff] text-[#545f73]"
+                  ? "bg-primary-foreground/25 text-primary-foreground"
+                  : "bg-primary/10 text-muted-foreground"
               }`}
             >
               {faNum(counts[filter])}

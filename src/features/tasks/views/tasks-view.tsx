@@ -28,35 +28,35 @@ export function TasksView() {
       <div className="pt-1">
         <div className="flex items-center justify-between mb-2">
           <div className="flex flex-col">
-            <span className="text-[11px] text-[#3525cd] font-bold">
+            <span className="text-[11px] text-primary font-bold">
               بهره‌وری و لجستیک
             </span>
-            <h1 className="text-2xl sm:text-[26px] font-bold text-[#0b1c30] tracking-tight">
+            <h1 className="text-2xl sm:text-[26px] font-bold text-foreground tracking-tight">
               کارها و لیست‌ها
             </h1>
           </div>
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#d5e0f8] text-[#111c2d]">
+          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary/15 text-foreground">
             {faNum(activeCount)} فعال
           </span>
         </div>
 
         <div className="flex items-center gap-2 mt-1">
-          <div className="flex-1 flex items-center h-12 bg-white rounded-xl px-3.5 shadow-xs border border-[#e2e8f0]/80">
-            <AppIcon name="search" className="text-[#545f73] size-[20px] ml-2" />
+          <div className="flex-1 flex items-center h-12 bg-card rounded-xl px-3.5 shadow-xs border border-border/80">
+            <AppIcon name="search" className="text-muted-foreground size-[20px] ml-2" />
             <input
               type="text"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="جست‌وجوی یادآورها، اقلام، چک‌لیست‌ها..."
               aria-label="جست‌وجو"
-              className="w-full bg-transparent text-sm text-[#0b1c30] placeholder:text-[#545f73] focus:outline-none font-medium"
+              className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none font-medium"
             />
             {search ? (
               <button
                 type="button"
                 onClick={() => setSearch("")}
                 aria-label="پاک کردن جست‌وجو"
-                className="text-xs text-[#545f73] hover:text-[#0b1c30]"
+                className="text-xs text-muted-foreground hover:text-foreground"
               >
                 ✕
               </button>
@@ -65,23 +65,23 @@ export function TasksView() {
         </div>
       </div>
 
-      <div className="p-1 bg-[#e5eeff] rounded-xl grid grid-cols-2">
+      <div className="p-1 bg-primary/10 rounded-xl grid grid-cols-2">
         <button
           type="button"
           onClick={() => setMainTab("reminders")}
           aria-pressed={mainTab === "reminders"}
           className={`py-2 px-3 rounded-lg text-xs font-semibold transition-all text-center flex items-center justify-center gap-1.5 ${
             mainTab === "reminders"
-              ? "bg-white text-[#3525cd] shadow-xs font-bold"
-              : "text-[#545f73] hover:text-[#0b1c30]"
+              ? "bg-card text-primary shadow-xs font-bold"
+              : "text-muted-foreground hover:text-foreground"
           }`}
         >
           <span>یادآورها</span>
           <span
             className={`text-[10px] px-1.5 py-0.2 rounded-full ${
               mainTab === "reminders"
-                ? "bg-[#e2dfff] text-[#0f0069] font-bold"
-                : "bg-[#dce9ff] text-[#545f73]"
+                ? "bg-primary/15 text-primary font-bold"
+                : "bg-primary/10 text-muted-foreground"
             }`}
           >
             {faNum(remindersCount)}
@@ -93,16 +93,16 @@ export function TasksView() {
           aria-pressed={mainTab === "checklists"}
           className={`py-2 px-3 rounded-lg text-xs font-semibold transition-all text-center flex items-center justify-center gap-1.5 ${
             mainTab === "checklists"
-              ? "bg-white text-[#3525cd] shadow-xs font-bold"
-              : "text-[#545f73] hover:text-[#0b1c30]"
+              ? "bg-card text-primary shadow-xs font-bold"
+              : "text-muted-foreground hover:text-foreground"
           }`}
         >
           <span>چک‌لیست‌ها</span>
           <span
             className={`text-[10px] px-1.5 py-0.2 rounded-full ${
               mainTab === "checklists"
-                ? "bg-[#e2dfff] text-[#0f0069] font-bold"
-                : "bg-[#dce9ff] text-[#545f73]"
+                ? "bg-primary/15 text-primary font-bold"
+                : "bg-primary/10 text-muted-foreground"
             }`}
           >
             {faNum(checklistsCount)}

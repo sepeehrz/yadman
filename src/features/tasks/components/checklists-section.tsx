@@ -83,17 +83,17 @@ export function ChecklistsSection({ search }: IProps) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-sm sm:text-base font-bold text-[#0b1c30]">
+          <h2 className="text-sm sm:text-base font-bold text-foreground">
             چک‌لیست‌های من
           </h2>
-          <p className="text-xs text-[#545f73]">
+          <p className="text-xs text-muted-foreground">
             پیشرفت هر چک‌لیست به‌صورت زنده محاسبه می‌شود
           </p>
         </div>
         <button
           type="button"
           onClick={() => setCreateOpen(true)}
-          className="flex flex-shrink-0 items-center gap-1.5 h-9 px-3.5 rounded-full bg-[#4f46e5] text-white text-xs font-bold whitespace-nowrap shadow-[0_6px_16px_rgba(79,70,229,0.25)] hover:bg-[#3525cd] active:scale-95 transition-all"
+          className="flex flex-shrink-0 items-center gap-1.5 h-9 px-3.5 rounded-full bg-primary text-primary-foreground text-xs font-bold whitespace-nowrap shadow-[0_6px_16px_var(--primary)]/25 hover:bg-primary active:scale-95 transition-all"
         >
           <AppIcon name="add" className="size-[16px] flex-shrink-0" />
           <span>چک‌لیست جدید</span>

@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fa" dir="rtl">
+    <html lang="fa" dir="rtl" suppressHydrationWarning>
       <head>
         <meta
           name="viewport"
@@ -26,7 +26,7 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "bg-[#f8f9ff] text-[#0b1c30] antialiased selection:bg-[#4f46e5]/15 selection:text-[#3525cd]",
+          "bg-background text-foreground antialiased selection:bg-primary/15 selection:text-primary",
           vazirmatn.className,
         )}
       >

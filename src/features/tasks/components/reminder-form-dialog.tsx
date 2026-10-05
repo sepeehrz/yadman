@@ -21,7 +21,7 @@ interface IProps {
 }
 
 const inputClass =
-  "w-full h-12 bg-[#eff4ff] text-[#0b1c30] rounded-xl px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#4f46e5]/40 font-medium";
+  "w-full h-12 bg-primary/5 text-foreground rounded-xl px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 font-medium";
 
 const PRIORITY_OPTIONS = [
   { value: "low", label: "کم" },
@@ -41,7 +41,7 @@ function FieldError({ message }: { message?: string }) {
   if (!message) {
     return null;
   }
-  return <p className="text-[11px] text-[#ba1a1a] font-semibold">{message}</p>;
+  return <p className="text-[11px] text-destructive font-semibold">{message}</p>;
 }
 
 function emptyForm(): ReminderForm {
@@ -98,15 +98,15 @@ export function ReminderFormDialog({
       size="lg"
     >
       <div className="p-5 sm:p-6">
-        <div className="flex items-center justify-between pb-3 border-b border-[#e2e8f0]">
-          <h3 className="text-base font-bold text-[#0b1c30]">
+        <div className="flex items-center justify-between pb-3 border-b border-border">
+          <h3 className="text-base font-bold text-foreground">
             {initial ? "ویرایش یادآور" : "یادآور جدید"}
           </h3>
           <button
             type="button"
             onClick={onClose}
             aria-label="بستن"
-            className="w-8 h-8 rounded-full bg-[#eff4ff] text-[#545f73] flex items-center justify-center hover:bg-[#e5eeff]"
+            className="w-8 h-8 rounded-full bg-primary/5 text-muted-foreground flex items-center justify-center hover:bg-primary/10"
           >
             <AppIcon name="close" className="size-[18px]" />
           </button>
@@ -114,7 +114,7 @@ export function ReminderFormDialog({
 
         <form onSubmit={handleSubmit} className="space-y-3 pt-4">
           <div className="space-y-1">
-            <label className="text-xs font-bold text-[#545f73]" htmlFor="reminder-title">
+            <label className="text-xs font-bold text-muted-foreground" htmlFor="reminder-title">
               نام یادآور
             </label>
             <input
@@ -129,7 +129,7 @@ export function ReminderFormDialog({
 
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="reminder-date">
+              <label className="text-xs font-bold text-muted-foreground" htmlFor="reminder-date">
                 تاریخ یادآور
               </label>
               <input
@@ -142,7 +142,7 @@ export function ReminderFormDialog({
               <FieldError message={errors.dueDate} />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="reminder-time">
+              <label className="text-xs font-bold text-muted-foreground" htmlFor="reminder-time">
                 ساعت یادآور
               </label>
               <input
@@ -158,7 +158,7 @@ export function ReminderFormDialog({
 
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="reminder-priority">
+              <label className="text-xs font-bold text-muted-foreground" htmlFor="reminder-priority">
                 سطح اولویت
               </label>
               <select
@@ -175,7 +175,7 @@ export function ReminderFormDialog({
               </select>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-[#545f73]" htmlFor="reminder-recurrence">
+              <label className="text-xs font-bold text-muted-foreground" htmlFor="reminder-recurrence">
                 تکرار
               </label>
               <select
@@ -197,7 +197,7 @@ export function ReminderFormDialog({
 
           <div className="space-y-1">
             <label
-              className="text-xs font-bold text-[#545f73]"
+              className="text-xs font-bold text-muted-foreground"
               htmlFor="reminder-description"
             >
               توضیحات تکمیلی
@@ -208,7 +208,7 @@ export function ReminderFormDialog({
               onChange={(e) => set("description", e.target.value)}
               rows={2}
               placeholder="یادداشت اختیاری برای این یادآور"
-              className="w-full p-3 rounded-xl bg-[#eff4ff] text-sm text-[#0b1c30] outline-none focus:ring-2 focus:ring-[#4f46e5]/40"
+              className="w-full p-3 rounded-xl bg-primary/5 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/40"
             />
             <FieldError message={errors.description} />
           </div>
@@ -217,14 +217,14 @@ export function ReminderFormDialog({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 h-11 rounded-xl bg-[#eff4ff] text-[#545f73] font-semibold text-xs hover:bg-[#e5eeff]"
+              className="flex-1 h-11 rounded-xl bg-primary/5 text-muted-foreground font-semibold text-xs hover:bg-primary/10"
             >
               انصراف
             </button>
             <button
               type="submit"
               disabled={pending}
-              className="flex-1 h-11 rounded-xl bg-[#4f46e5] text-white font-bold text-xs hover:bg-[#3525cd] active:scale-95 transition-all disabled:opacity-60"
+              className="flex-1 h-11 rounded-xl bg-primary text-primary-foreground font-bold text-xs hover:bg-primary active:scale-95 transition-all disabled:opacity-60"
             >
               {pending
                 ? "در حال ذخیره..."

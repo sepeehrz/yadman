@@ -37,18 +37,18 @@ export function ExpiringAlerts({ vehicleId }: IProps) {
         return (
           <div
             key={`${reminder.kind}-${reminder.refId}`}
-            className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-white shadow-xs border border-[#e2e8f0]/60"
+            className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-card shadow-xs border border-border/60"
           >
             <span
               className={`w-2 h-2 rounded-full flex-shrink-0 ${style.dot}`}
             />
             <AppIcon
               name={KIND_ICON[reminder.kind]}
-              className="size-[18px] text-[#545f73]"
+              className="size-[18px] text-muted-foreground"
             />
-            <span className="text-xs text-[#0b1c30] truncate flex-1">
+            <span className="text-xs text-foreground truncate flex-1">
               <span className="font-bold">{reminder.title}</span>
-              <span className="text-[#545f73]"> • {reminder.vehicleName}</span>
+              <span className="text-muted-foreground"> • {reminder.vehicleName}</span>
             </span>
             <span
               className={`text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap ${style.badge}`}

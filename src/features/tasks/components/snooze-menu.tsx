@@ -107,7 +107,7 @@ export function SnoozeMenu({ disabled = false, onSelect }: IProps) {
             role="menu"
             aria-label="مدت تعویق"
             style={{ top: position.top, left: position.left }}
-            className="fixed z-[70] w-44 rounded-xl bg-white shadow-[0_12px_28px_-6px_rgba(11,28,48,0.28)] border border-[#e2e8f0] py-1"
+            className="fixed z-[70] w-44 rounded-xl bg-card shadow-[0_12px_28px_-6px_var(--shadow-color)]/30 border border-border py-1"
           >
             {SNOOZE_OPTIONS.map((option) => (
               <button
@@ -118,7 +118,7 @@ export function SnoozeMenu({ disabled = false, onSelect }: IProps) {
                   setOpen(false);
                   onSelect(option.minutes);
                 }}
-                className="w-full h-10 text-right px-3 text-xs font-semibold text-[#0b1c30] hover:bg-[#eff4ff] transition-colors"
+                className="w-full h-10 text-right px-3 text-xs font-semibold text-foreground hover:bg-primary/5 transition-colors"
               >
                 {option.label}
               </button>
@@ -138,7 +138,7 @@ export function SnoozeMenu({ disabled = false, onSelect }: IProps) {
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label="به تعویق انداختن یادآور"
-        className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#eff4ff] text-[#3525cd] text-[11px] font-bold hover:bg-[#e5eeff] active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none"
+        className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary/5 text-primary text-[11px] font-bold hover:bg-primary/10 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none"
       >
         <AppIcon name="notifications_active" className="size-[14px]" />
         <span>تعویق</span>

@@ -6,6 +6,7 @@ import { useDialog } from "@/hooks/use-dialog";
 import { NotificationsCenter } from "@/features/notifications/components/notifications-center";
 import { useNotificationsContext } from "@/features/notifications/providers/notifications-provider";
 import { AppIcon } from "@/components/ui/app-icon";
+import { ThemeToggle } from "@/components/common/theme-toggle";
 
 export function Header({ title }: { title: string }) {
   const { setProfileOpen } = useLifeHub();
@@ -13,7 +14,7 @@ export function Header({ title }: { title: string }) {
   const { unreadCount } = useNotificationsContext();
 
   return (
-    <header className="fixed top-0 w-full z-40 pt-safe bg-[#f8f9ff]/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] border-b border-[#e2e8f0]/40 transition-all">
+    <header className="fixed top-0 w-full z-40 pt-safe bg-background/85 backdrop-blur-xl shadow-[0_1px_8px_var(--shadow-color)]/5 border-b border-border/40 transition-all">
       <div className="max-w-2xl mx-auto h-16 px-4 sm:px-6 flex items-center justify-between">
         <div className="flex items-center gap-2 sm:gap-3">
           <img
@@ -22,10 +23,10 @@ export function Header({ title }: { title: string }) {
             src={ASSETS.logo}
           />
           <div className="flex items-baseline gap-2">
-            <span className="font-bold text-xl sm:text-[22px] text-[#0b1c30] tracking-tight">
+            <span className="font-bold text-xl sm:text-[22px] text-foreground tracking-tight">
               لایف‌هاب
             </span>
-            <span className="hidden sm:inline-block text-xs font-semibold px-2 py-0.5 rounded-full bg-[#e5eeff] text-[#3525cd]">
+            <span className="hidden sm:inline-block text-xs font-semibold px-2 py-0.5 rounded-full bg-accent text-accent-foreground">
               {title}
             </span>
           </div>
@@ -35,27 +36,29 @@ export function Header({ title }: { title: string }) {
           <button
             onClick={() => openDialog(NotificationsCenter)}
             aria-label="مشاهده اعلان‌ها"
-            className="w-10 h-10 flex items-center justify-center rounded-full text-[#545f73] hover:text-[#0b1c30] hover:bg-[#dce9ff]/50 active:scale-95 transition-all relative"
+            className="w-10 h-10 flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-accent/50 active:scale-95 transition-all relative"
           >
             <AppIcon
               name={unreadCount > 0 ? "notifications_active" : "notifications"}
               className="size-5.5"
             />
             {unreadCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 rounded-full bg-[#ba1a1a] text-white text-[9px] font-bold flex items-center justify-center ring-2 ring-[#f8f9ff]">
+              <span className="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 rounded-full bg-destructive text-destructive-foreground text-[9px] font-bold flex items-center justify-center ring-2 ring-background">
                 {unreadCount > 99 ? "۹۹+" : unreadCount.toLocaleString("fa-IR")}
               </span>
             )}
           </button>
 
+          <ThemeToggle />
+
           <button
             onClick={() => setProfileOpen(true)}
             aria-label="باز کردن پروفایل"
-            className="ml-1 p-0.5 rounded-full ring-2 ring-transparent hover:ring-[#4f46e5]/40 focus:ring-[#3525cd] transition-all active:scale-95"
+            className="ml-1 p-0.5 rounded-full ring-2 ring-transparent hover:ring-primary/40 focus:ring-primary transition-all active:scale-95"
           >
             <img
               alt="پروفایل کاربر"
-              className="w-8 h-8 rounded-full object-cover shadow-xs border border-white/60"
+              className="w-8 h-8 rounded-full object-cover shadow-xs border border-card/60"
               src={ASSETS.avatar}
             />
           </button>

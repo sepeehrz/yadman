@@ -42,10 +42,10 @@ export function InsuranceSection({ vehicleId }: IProps) {
   return (
     <div className="space-y-2.5">
       <div className="flex items-center justify-between px-1">
-        <h3 className="text-sm font-bold text-[#0b1c30]">بیمه‌نامه‌ها</h3>
+        <h3 className="text-sm font-bold text-foreground">بیمه‌نامه‌ها</h3>
         <button
           onClick={() => setDialogOpen(true)}
-          className="flex items-center gap-1 text-xs font-bold text-[#3525cd] hover:underline"
+          className="flex items-center gap-1 text-xs font-bold text-primary hover:underline"
         >
           <AppIcon name="add_circle" className="size-[16px]" />
           بیمه جدید
@@ -79,19 +79,19 @@ export function InsuranceSection({ vehicleId }: IProps) {
         return (
           <div
             key={insurance.id}
-            className="bg-white p-4 rounded-2xl shadow-xs border border-[#e2e8f0]/80"
+            className="bg-card p-4 rounded-2xl shadow-xs border border-border/80"
           >
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2.5">
-                <span className="w-10 h-10 rounded-xl bg-[#d5e0f8] text-[#111c2d] flex items-center justify-center flex-shrink-0">
+                <span className="w-10 h-10 rounded-xl bg-primary/15 text-foreground flex items-center justify-center flex-shrink-0">
                   <AppIcon name="security" className="size-[22px]" />
                 </span>
                 <div>
-                  <h4 className="font-bold text-sm text-[#0b1c30]">
+                  <h4 className="font-bold text-sm text-foreground">
                     بیمه {INSURANCE_TYPE_LABEL[insurance.type]} •{" "}
                     {insurance.company}
                   </h4>
-                  <p className="text-xs text-[#545f73]">
+                  <p className="text-xs text-muted-foreground">
                     {formatFaDate(insurance.startDate)} تا{" "}
                     {formatFaDate(insurance.endDate)}
                   </p>
@@ -115,7 +115,7 @@ export function InsuranceSection({ vehicleId }: IProps) {
                 }}
                 disabled={deleteInsurance.isPending}
                 aria-label={`حذف بیمه ${insurance.company}`}
-                className="text-[11px] font-bold text-[#ba1a1a] hover:underline disabled:opacity-50"
+                className="text-[11px] font-bold text-destructive hover:underline disabled:opacity-50"
               >
                 حذف
               </button>
