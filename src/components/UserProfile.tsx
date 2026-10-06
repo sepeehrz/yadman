@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { BaseDialog } from "@/components/ui/dialog";
 import { AppIcon } from "@/components/ui/app-icon";
 import { useLogout } from "@/features/auth/hooks/use-logout";
 import { useProfile } from "@/features/profile/hooks/use-profile";
+import { useConfirm } from "@/hooks/use-confirm";
 import { ProfileEditForm } from "@/features/profile/components/profile-edit-form";
 import { ChangePasswordForm } from "@/features/profile/components/change-password-form";
 
@@ -15,12 +15,25 @@ interface IProps {
 export function UserProfileComponent({ closeDialog }: IProps) {
   const { data: profile } = useProfile();
   const logoutMutation = useLogout();
+  const confirm = useConfirm();
   const [tab, setTab] = useState<Tab>("info");
 
   const initials = profile
     ? `${profile.name[0] ?? ""}${profile.lastName[0] ?? ""}`.trim()
     : "؟";
 
+  async function logout() {
+    const ok = await confirm({
+      title: "خروج از حساب؟",
+      message:
+        "از پنل خارج شوید. اگر داده‌ای ذخیره نکرده‌اید ممکن است از بین برود.",
+      confirmLabel: "خروج",
+      danger: true,
+    });
+    if (ok) {
+      logoutMutation.mutate();
+    }
+  }
   return (
     <div>
       <div className="bg-card rounded-t-[28px] sm:rounded-3xl border border-border overflow-hidden flex flex-col">
@@ -86,7 +99,7 @@ export function UserProfileComponent({ closeDialog }: IProps) {
 
           <div className="pt-2 border-t border-border">
             <button
-              onClick={() => logoutMutation.mutate()}
+              onClick={logout}
               disabled={logoutMutation.isPending}
               className="w-full py-2.5 rounded-xl bg-destructive/10 text-destructive font-bold text-xs hover:bg-destructive/20 transition-colors flex items-center justify-center gap-1.5 disabled:opacity-60"
             >
