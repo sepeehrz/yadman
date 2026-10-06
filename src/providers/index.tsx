@@ -23,10 +23,6 @@ export default function Providers({ children }: IProps) {
       storageKey="life-hub-theme"
     >
       <QueryClientProvider client={queryClient}>
-        {/* NotificationsProvider و DialogProvider عمداً اینجا نیستند: اعلان‌سنتر
-            با کوئری‌های زنده سرویس‌های داخلی پنل را صدا می‌زند و نباید در صفحات
-            عمومی (ورود/ثبت‌نام/بازیابی رمز) اجرا شود — داخل لایه‌ی (app) mount
-            می‌شوند. LifeHubProvider فقط وضعیت UI (مودال و toast) است. */}
         <LifeHubProvider>{children}</LifeHubProvider>
 
         <ReactQueryDevtools initialIsOpen={false} />

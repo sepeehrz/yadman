@@ -4,9 +4,6 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { Header } from "@/components/layout/Header";
 import { NavigationDock } from "@/components/layout/NavigationDock";
-import { QuickAddModal } from "@/components/modals/QuickAddModal";
-import { SearchModal } from "@/components/modals/SearchModal";
-import { ProfileModal } from "@/components/modals/ProfileModal";
 import { ROUTE_TITLES } from "@/lib/mock-data";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -27,10 +24,6 @@ export function AppShell({ children }: { children: ReactNode }) {
       <Header title={title} />
       <main className="flex-1 w-full pt-16">{children}</main>
       <NavigationDock />
-
-      <QuickAddModal />
-      <SearchModal />
-      <ProfileModal />
       <Toaster />
     </div>
   );
