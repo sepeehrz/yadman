@@ -1,6 +1,7 @@
 "use client";
 
 import { ASSETS } from "@/lib/mock-data";
+import { AppLogo } from "@/components/common/app-logo";
 import { useLifeHub } from "@/store/LifeHubContext";
 import { useDialog } from "@/hooks/use-dialog";
 import { NotificationsCenter } from "@/features/notifications/components/notifications-center";
@@ -17,11 +18,7 @@ export function Header({ title }: { title: string }) {
     <header className="fixed top-0 w-full z-40 pt-safe bg-background/85 backdrop-blur-xl shadow-[0_1px_8px_var(--shadow-color)]/5 border-b border-border/40 transition-all">
       <div className="max-w-2xl mx-auto h-16 px-4 sm:px-6 flex items-center justify-between">
         <div className="flex items-center gap-2 sm:gap-3">
-          <img
-            alt="آیکون لایف‌هاب"
-            className="h-8 w-8 object-contain rounded-lg shadow-xs"
-            src={ASSETS.logo}
-          />
+          <AppLogo className="h-8 w-8 rounded-lg" />
           <div className="flex items-baseline gap-2">
             <span className="font-bold text-xl sm:text-[22px] text-foreground tracking-tight">
               لایف‌هاب

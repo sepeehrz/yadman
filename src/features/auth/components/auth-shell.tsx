@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { ASSETS } from "@/lib/mock-data";
+import { AppLogo } from "@/components/common/app-logo";
 
 interface IProps {
   title: string;
@@ -25,11 +25,7 @@ export function AuthShell({ title, subtitle, children, footer }: IProps) {
 
       <div className="relative z-10 w-full max-w-md">
         <div className="mb-6 flex flex-col items-center gap-2">
-          <img
-            src={ASSETS.logo}
-            alt="آیکون لایف‌هاب"
-            className="h-14 w-14 rounded-2xl object-contain shadow-md"
-          />
+          <AppLogo className="h-14 w-14" />
           <span className="text-xl font-bold tracking-tight text-foreground">
             لایف‌هاب
           </span>

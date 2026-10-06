@@ -8,7 +8,6 @@ interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   pendingLabel?: string;
 }
 
-/** دکمه ارسال فرم با حالت لودینگ و جلوگیری از دوبار کلیک */
 export function FormSubmitButton({
   isPending = false,
   label,
@@ -25,13 +24,13 @@ export function FormSubmitButton({
     >
       {isPending ? (
         <>
-          <AppIcon name="progress_activity" className="size-[18px] animate-spin" />
+          <AppIcon name="progress_activity" className="size-4.5 animate-spin" />
           <span>{pendingLabel}</span>
         </>
       ) : (
         <>
           <span>{label}</span>
-          <AppIcon name="arrow_back" className="size-[18px]" />
+          <AppIcon name="arrow_back" className="size-4.5 rotate-180" />
         </>
       )}
     </button>

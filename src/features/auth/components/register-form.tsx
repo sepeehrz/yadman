@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AppIcon } from "@/components/ui/app-icon";
@@ -14,6 +13,7 @@ import {
 } from "../validations/register-schema";
 import type { RegisterRequest } from "../types";
 import type { Gender } from "../types";
+import Link from "next/link";
 
 const GENDER_OPTIONS: { value: Gender; label: string; icon: string }[] = [
   { value: "male", label: "مرد", icon: "man" },
@@ -45,7 +45,11 @@ export function RegisterForm() {
 
   const onSubmit = (values: RegisterFormValues) => {
     registerMutation.mutate(
-      { ...values, securityQuestion: values.securityQuestion as RegisterRequest["securityQuestion"] },
+      {
+        ...values,
+        securityQuestion:
+          values.securityQuestion as RegisterRequest["securityQuestion"],
+      },
       {
         onError: () => {
           // نام کاربری تکراری از سرور به فیلد مربوطه برمی‌گردد
@@ -60,11 +64,7 @@ export function RegisterForm() {
   const isPending = registerMutation.isPending || isSubmitting;
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      noValidate
-      className="space-y-4"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
         <FormInput
           label="نام"

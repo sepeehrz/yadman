@@ -1,10 +1,8 @@
 "use client";
 
 import { ReactNode } from "react";
-import { DialogProvider } from "./dialog-provider";
 import { ThemeProvider } from "./theme-provider";
 import { LifeHubProvider } from "@/store/LifeHubContext";
-import { NotificationsProvider } from "@/features/notifications/providers/notifications-provider";
 import { getQueryClient } from "@/lib/query-client";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -25,14 +23,11 @@ export default function Providers({ children }: IProps) {
       storageKey="life-hub-theme"
     >
       <QueryClientProvider client={queryClient}>
-        {/* NotificationsProvider باید بیرون از DialogProvider باشد، چون
-            DialogProvider بدنه‌ی دیالوگ را کنار children رندر می‌کند و اعلان‌سنتر
-            به context اعلان‌ها نیاز دارد */}
-        <NotificationsProvider>
-          <DialogProvider>
-            <LifeHubProvider>{children}</LifeHubProvider>
-          </DialogProvider>
-        </NotificationsProvider>
+        {/* NotificationsProvider و DialogProvider عمداً اینجا نیستند: اعلان‌سنتر
+            با کوئری‌های زنده سرویس‌های داخلی پنل را صدا می‌زند و نباید در صفحات
+            عمومی (ورود/ثبت‌نام/بازیابی رمز) اجرا شود — داخل لایه‌ی (app) mount
+            می‌شوند. LifeHubProvider فقط وضعیت UI (مودال و toast) است. */}
+        <LifeHubProvider>{children}</LifeHubProvider>
 
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
