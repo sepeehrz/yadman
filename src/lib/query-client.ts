@@ -8,6 +8,17 @@ import { isApiError } from "@/lib/api";
 /** رویداد سراسری برای هدایت به صفحه لاگین هنگام ۴۰۱ (انقضای توکن) */
 export const UNAUTHORIZED_EVENT = "lifehub:unauthorized";
 
+/**
+ * در طول لاگ‌اوت دستی، کوکی‌ها پاک می‌شوند و کوئری‌های درحال‌اجرا ممکن است ۴۰۱ بگیرند؛ این پرچم جلوی
+ * پخش شدن رویداد منقضی‌شدن نشست می‌گذارد تا هنگام لاگ‌اوت دستی، کاربر به‌جای /login?expired=1
+ * صرفاً به /login هدایت شود.
+ */
+let suppressUnauthorizedRedirect = false;
+
+export function setLogoutInProgress(value: boolean): void {
+  suppressUnauthorizedRedirect = value;
+}
+
 /** مسیرهای احراز هویت که ۴۰۱ آن‌ها خطای ورود است، نه انقضای نشست */
 const AUTH_EXEMPT_PATHS = [
   "/auth/login",
@@ -28,7 +39,11 @@ export function makeQueryClient() {
     queryCache: new QueryCache({
       onError: (error) => {
         // انقضای توکن در هر کوئری → خروج خودکار و هدایت به لاگین
-        if (isSessionExpiredError(error) && typeof window !== "undefined") {
+        if (
+          isSessionExpiredError(error) &&
+          !suppressUnauthorizedRedirect &&
+          typeof window !== "undefined"
+        ) {
           window.dispatchEvent(new CustomEvent(UNAUTHORIZED_EVENT));
         }
       },
