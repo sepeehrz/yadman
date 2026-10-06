@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { BaseDialog } from "@/components/ui/dialog";
+import { NumberInput } from "@/components/common/number-input";
 import type { CreateVehicleInput, Vehicle } from "../types";
 import {
   parseVehicleForm,
@@ -18,14 +19,6 @@ interface IProps {
   onSubmit: (input: CreateVehicleInput) => void;
 }
 
-const FUEL_OPTIONS = [
-  { value: "benzin", label: "بنزین" },
-  { value: "diesel", label: "گازوئیل" },
-  { value: "dual", label: "دوگانه‌سوز" },
-  { value: "hybrid", label: "هیبرید" },
-  { value: "electric", label: "برقی" },
-];
-
 const inputClass =
   "w-full h-12 bg-primary/5 text-foreground rounded-xl px-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 font-medium";
 
@@ -36,17 +29,17 @@ function FieldError({ message }: { message?: string }) {
   return <p className="text-[11px] text-destructive font-semibold">{message}</p>;
 }
 
-function toForm(initial: Vehicle | null): CreateVehicleForm {
+/** وضعیت فرم — کیلومتر به شکل رشته نگه داشته می‌شود تا تایپ عددی راحت باشد. */
+type VehicleFormState = Omit<CreateVehicleForm, "odometerKm"> & {
+  odometerKm: string;
+};
+
+function toForm(initial: Vehicle | null): VehicleFormState {
   return {
     name: initial?.name ?? "",
-    brand: initial?.brand ?? "",
-    model: initial?.model ?? "",
     year: initial?.year ?? null,
-    color: initial?.color ?? "",
-    plateNumber: initial?.plateNumber ?? "",
-    vin: initial?.vin ?? "",
-    fuelType: initial?.fuelType ?? "benzin",
-    odometerKm: initial?.odometerKm ?? 0,
+    odometerKm:
+      initial && initial.odometerKm > 0 ? String(initial.odometerKm) : "",
     imageUrl: initial?.imageUrl ?? "",
   };
 }
@@ -58,7 +51,7 @@ export function VehicleFormDialog({
   onClose,
   onSubmit,
 }: IProps) {
-  const [form, setForm] = useState<CreateVehicleForm>(() => toForm(initial));
+  const [form, setForm] = useState<VehicleFormState>(() => toForm(initial));
   const [errors, setErrors] = useState<FieldErrors>({});
 
   const initialRef = useRef(initial);
@@ -71,9 +64,9 @@ export function VehicleFormDialog({
     }
   }, [open]);
 
-  function set<K extends keyof CreateVehicleForm>(
+  function set<K extends keyof VehicleFormState>(
     key: K,
-    value: CreateVehicleForm[K],
+    value: VehicleFormState[K],
   ): void {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
@@ -132,40 +125,6 @@ export function VehicleFormDialog({
             <div className="space-y-1">
               <label
                 className="text-xs font-bold text-muted-foreground"
-                htmlFor="vehicle-brand"
-              >
-                برند
-              </label>
-              <input
-                id="vehicle-brand"
-                value={form.brand}
-                onChange={(e) => set("brand", e.target.value)}
-                placeholder="تسلا"
-                className={inputClass}
-              />
-            </div>
-            <div className="space-y-1">
-              <label
-                className="text-xs font-bold text-muted-foreground"
-                htmlFor="vehicle-model"
-              >
-                مدل
-              </label>
-              <input
-                id="vehicle-model"
-                value={form.model}
-                onChange={(e) => set("model", e.target.value)}
-                placeholder="لانگ‌رنج"
-                className={inputClass}
-              />
-              <FieldError message={errors.model} />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <div className="space-y-1">
-              <label
-                className="text-xs font-bold text-muted-foreground"
                 htmlFor="vehicle-year"
               >
                 سال ساخت
@@ -188,91 +147,17 @@ export function VehicleFormDialog({
             <div className="space-y-1">
               <label
                 className="text-xs font-bold text-muted-foreground"
-                htmlFor="vehicle-color"
-              >
-                رنگ
-              </label>
-              <input
-                id="vehicle-color"
-                value={form.color}
-                onChange={(e) => set("color", e.target.value)}
-                placeholder="سفید"
-                className={inputClass}
-              />
-              <FieldError message={errors.color} />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <div className="space-y-1">
-              <label
-                className="text-xs font-bold text-muted-foreground"
-                htmlFor="vehicle-plate"
-              >
-                پلاک
-              </label>
-              <input
-                id="vehicle-plate"
-                value={form.plateNumber}
-                onChange={(e) => set("plateNumber", e.target.value)}
-                placeholder="۱۲ب۳۴۵-۶۷"
-                className={inputClass}
-              />
-              <FieldError message={errors.plateNumber} />
-            </div>
-            <div className="space-y-1">
-              <label
-                className="text-xs font-bold text-muted-foreground"
-                htmlFor="vehicle-fuel"
-              >
-                سوخت
-              </label>
-              <select
-                id="vehicle-fuel"
-                value={form.fuelType}
-                onChange={(e) => set("fuelType", e.target.value)}
-                className={inputClass}
-              >
-                {FUEL_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <div className="space-y-1">
-              <label
-                className="text-xs font-bold text-muted-foreground"
                 htmlFor="vehicle-km"
               >
                 کیلومتر فعلی
               </label>
-              <input
+              <NumberInput
                 id="vehicle-km"
-                type="number"
                 value={form.odometerKm}
-                onChange={(e) => set("odometerKm", Number(e.target.value))}
-                className={inputClass}
+                onChange={(value) => set("odometerKm", value)}
+                placeholder="مثلاً 85,420"
               />
               <FieldError message={errors.odometerKm} />
-            </div>
-            <div className="space-y-1">
-              <label
-                className="text-xs font-bold text-muted-foreground"
-                htmlFor="vehicle-vin"
-              >
-                شماره شاسی (اختیاری)
-              </label>
-              <input
-                id="vehicle-vin"
-                value={form.vin}
-                onChange={(e) => set("vin", e.target.value)}
-                className={inputClass}
-                dir="ltr"
-              />
             </div>
           </div>
 

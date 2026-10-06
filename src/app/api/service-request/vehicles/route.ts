@@ -42,13 +42,7 @@ export async function POST(request: Request) {
         id: crypto.randomUUID(),
         userId: user.userId,
         name: input.name,
-        brand: input.brand ?? "",
-        model: input.model,
         year: input.year ?? null,
-        color: input.color,
-        plateNumber: input.plateNumber,
-        vin: input.vin || null,
-        fuelType: input.fuelType ?? "benzin",
         odometerKm: input.odometerKm ?? 0,
         imageUrl: input.imageUrl || null,
       })

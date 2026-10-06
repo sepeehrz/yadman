@@ -2,20 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import { BaseDialog } from "@/components/ui/dialog";
+import { NumberInput } from "@/components/common/number-input";
+import { DatePickerComponent } from "@/components/common/date-picker";
 import { faNum } from "@/lib/format";
 import { toISODateOnly } from "@/utils";
-import type { CreateServiceInput, ServiceCategory } from "../types";
+import type { CreateServiceInput } from "../types";
 import {
   parseServiceForm,
-  type CreateServiceForm,
 } from "../validations/service-schema";
 import type { FieldErrors } from "../validations/shared-schema";
-import { suggestNextService } from "../utils/service-helpers";
 import { AppIcon } from "@/components/ui/app-icon";
 
 interface IProps {
   open: boolean;
-  categories: ServiceCategory[];
   defaultOdometer: number;
   pending: boolean;
   onClose: () => void;
@@ -32,25 +31,43 @@ function FieldError({ message }: { message?: string }) {
   return <p className="text-[11px] text-destructive font-semibold">{message}</p>;
 }
 
+/**
+ * وضعیت فرم — کیلومترها به شکل رشته نگه داشته می‌شوند تا ورود عدد با جداکننده هزارگان راحت باشد.
+ */
+interface ServiceFormState {
+  title: string;
+  serviceDate: string;
+  provider: string;
+  odometerKm: string;
+  cost: string;
+  notes: string;
+  nextDueDate: string | undefined;
+  nextDueKm: string;
+}
+
+function toEmptyForm(defaultOdometer: number): ServiceFormState {
+  return {
+    title: "",
+    serviceDate: toISODateOnly(new Date()),
+    provider: "",
+    odometerKm: defaultOdometer > 0 ? String(defaultOdometer) : "",
+    cost: "",
+    notes: "",
+    nextDueDate: undefined,
+    nextDueKm: "",
+  };
+}
+
 export function ServiceFormDialog({
   open,
-  categories,
   defaultOdometer,
   pending,
   onClose,
   onSubmit,
 }: IProps) {
-  const [form, setForm] = useState<CreateServiceForm>(() => ({
-    title: "",
-    categoryId: null,
-    serviceDate: toISODateOnly(new Date()),
-    provider: "",
-    odometerKm: defaultOdometer,
-    cost: 0,
-    notes: "",
-    nextDueDate: undefined,
-    nextDueKm: null,
-  }));
+  const [form, setForm] = useState<ServiceFormState>(() =>
+    toEmptyForm(defaultOdometer),
+  );
   const [errors, setErrors] = useState<FieldErrors>({});
 
   const odometerRef = useRef(defaultOdometer);
@@ -58,47 +75,25 @@ export function ServiceFormDialog({
 
   useEffect(() => {
     if (open) {
-      setForm({
-        title: "",
-        categoryId: null,
-        serviceDate: toISODateOnly(new Date()),
-        provider: "",
-        odometerKm: odometerRef.current,
-        cost: 0,
-        notes: "",
-        nextDueDate: undefined,
-        nextDueKm: null,
-      });
+      setForm(toEmptyForm(odometerRef.current));
       setErrors({});
     }
   }, [open]);
 
-  function set<K extends keyof CreateServiceForm>(
+  function set<K extends keyof ServiceFormState>(
     key: K,
-    value: CreateServiceForm[K],
+    value: ServiceFormState[K],
   ): void {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
-  function applyCategory(categoryId: string): void {
-    const category = categories.find((item) => item.id === categoryId) ?? null;
-    const suggestion = suggestNextService(
-      category,
-      form.serviceDate,
-      form.odometerKm,
-    );
-    setForm((prev) => ({
-      ...prev,
-      categoryId: categoryId || null,
-      title: prev.title || category?.title || "",
-      nextDueDate: suggestion.nextDueDate ?? prev.nextDueDate,
-      nextDueKm: suggestion.nextDueKm ?? prev.nextDueKm,
-    }));
-  }
-
   function handleSubmit(event: React.FormEvent): void {
     event.preventDefault();
-    const parsed = parseServiceForm(form);
+    const parsed = parseServiceForm({
+      ...form,
+      odometerKm: form.odometerKm,
+      nextDueKm: form.nextDueKm === "" ? null : form.nextDueKm,
+    });
     if (!parsed.ok) {
       setErrors(parsed.errors);
       return;
@@ -125,28 +120,6 @@ export function ServiceFormDialog({
           <div className="space-y-1">
             <label
               className="text-xs font-bold text-muted-foreground"
-              htmlFor="service-category"
-            >
-              دسته‌بندی سرویس
-            </label>
-            <select
-              id="service-category"
-              value={form.categoryId ?? ""}
-              onChange={(e) => applyCategory(e.target.value)}
-              className={inputClass}
-            >
-              <option value="">بدون دسته‌بندی</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.title}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="space-y-1">
-            <label
-              className="text-xs font-bold text-muted-foreground"
               htmlFor="service-title"
             >
               نام سرویس
@@ -169,12 +142,11 @@ export function ServiceFormDialog({
               >
                 تاریخ انجام
               </label>
-              <input
+              <DatePickerComponent
                 id="service-date"
-                type="date"
-                value={form.serviceDate}
-                onChange={(e) => set("serviceDate", e.target.value)}
-                className={inputClass}
+                value={form.serviceDate || null}
+                onChange={(value) => set("serviceDate", value ?? "")}
+                placeholder="انتخاب تاریخ"
               />
               <FieldError message={errors.serviceDate} />
             </div>
@@ -185,12 +157,11 @@ export function ServiceFormDialog({
               >
                 کیلومتر فعلی
               </label>
-              <input
+              <NumberInput
                 id="service-km"
-                type="number"
                 value={form.odometerKm}
-                onChange={(e) => set("odometerKm", Number(e.target.value))}
-                className={inputClass}
+                onChange={(value) => set("odometerKm", value)}
+                placeholder="مثلاً 85,420"
               />
               <FieldError message={errors.odometerKm} />
             </div>
@@ -208,7 +179,7 @@ export function ServiceFormDialog({
                 id="service-cost"
                 type="number"
                 value={form.cost}
-                onChange={(e) => set("cost", Number(e.target.value))}
+                onChange={(e) => set("cost", e.target.value)}
                 className={inputClass}
               />
               <FieldError message={errors.cost} />
@@ -251,31 +222,22 @@ export function ServiceFormDialog({
               مراجعه بعدی (یادآور)
             </p>
             <div className="grid grid-cols-2 gap-2">
-              <input
-                type="date"
-                aria-label="تاریخ مراجعه بعدی"
-                value={form.nextDueDate ?? ""}
-                onChange={(e) =>
-                  set("nextDueDate", e.target.value || undefined)
-                }
-                className="h-11 bg-card rounded-xl px-3 text-xs font-semibold text-foreground outline-none"
+              <DatePickerComponent
+                value={form.nextDueDate ?? null}
+                onChange={(value) => set("nextDueDate", value ?? undefined)}
+                placeholder="تاریخ"
+                className="h-11 text-xs bg-card"
               />
               <div className="h-11 bg-card rounded-xl px-3 flex items-center gap-1">
-                <input
-                  type="number"
+                <NumberInput
                   aria-label="کیلومتر بعدی"
-                  value={form.nextDueKm ?? ""}
-                  onChange={(e) =>
-                    set(
-                      "nextDueKm",
-                      e.target.value === "" ? null : Number(e.target.value),
-                    )
-                  }
+                  value={form.nextDueKm}
+                  onChange={(value) => set("nextDueKm", value)}
                   placeholder="کیلومتر"
-                  className="w-full bg-transparent text-xs font-bold text-foreground focus:outline-none"
+                  className="h-11 flex-1 bg-transparent px-0 text-xs font-bold rounded-none focus:bg-transparent focus:ring-0"
                 />
                 <span className="text-[10px] font-bold text-muted-foreground whitespace-nowrap">
-                  {form.nextDueKm ? `${faNum(form.nextDueKm)}` : "KM"}
+                  {form.nextDueKm ? `${faNum(Number(form.nextDueKm))}` : "KM"}
                 </span>
               </div>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { faKm } from "@/lib/format";
+import { faKm, faNum } from "@/lib/format";
 import type { Vehicle } from "../types";
 import { AppIcon } from "@/components/ui/app-icon";
 
@@ -52,7 +52,7 @@ export function VehicleList({ vehicles, selectedId, onSelect, onAdd }: IProps) {
                 {vehicle.name}
               </span>
               <span className="text-xs text-muted-foreground block truncate">
-                {vehicle.model} • <span dir="ltr">{vehicle.plateNumber}</span>
+                {vehicle.year ? `سال ساخت ${faNum(vehicle.year)}` : ""}
               </span>
             </span>
             <span className="text-left flex-shrink-0">

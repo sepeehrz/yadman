@@ -4,7 +4,6 @@ import { isApiError } from "@/lib/api";
 import {
   createVehicleService,
   deleteVehicleService,
-  getServiceCategories,
   getVehicleServices,
   updateVehicleService,
 } from "../service";
@@ -13,14 +12,6 @@ import { vehicleKeys } from "./vehicle-query-keys";
 
 function toMessage(error: unknown, fallback: string): string {
   return isApiError(error) && error.message ? error.message : fallback;
-}
-
-export function useServiceCategories() {
-  return useQuery({
-    queryKey: vehicleKeys.categories,
-    queryFn: getServiceCategories,
-    staleTime: 5 * 60_000,
-  });
 }
 
 export function useVehicleServices(vehicleId: string | null) {

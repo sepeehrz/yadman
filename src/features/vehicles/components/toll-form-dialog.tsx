@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BaseDialog } from "@/components/ui/dialog";
+import { DatePickerComponent } from "@/components/common/date-picker";
 import type { CreateTollInput } from "../types";
 import { parseTollForm, type CreateTollForm } from "../validations/toll-schema";
 import type { FieldErrors } from "../validations/shared-schema";
@@ -24,15 +25,20 @@ function FieldError({ message }: { message?: string }) {
   return <p className="text-[11px] text-destructive font-semibold">{message}</p>;
 }
 
-const EMPTY_FORM: CreateTollForm = {
+/** مبلغ به شکل رشته نگه داشته می‌شود تا فیلد خالی شروع شود و کاربر خودش وارد کند. */
+type TollFormState = Omit<CreateTollForm, "amount"> & {
+  amount: string;
+};
+
+const EMPTY_FORM: TollFormState = {
   year: "",
-  amount: 0,
+  amount: "",
   dueDate: undefined,
   notes: "",
 };
 
 export function TollFormDialog({ open, pending, onClose, onSubmit }: IProps) {
-  const [form, setForm] = useState<CreateTollForm>({ ...EMPTY_FORM });
+  const [form, setForm] = useState<TollFormState>({ ...EMPTY_FORM });
   const [errors, setErrors] = useState<FieldErrors>({});
 
   useEffect(() => {
@@ -42,9 +48,9 @@ export function TollFormDialog({ open, pending, onClose, onSubmit }: IProps) {
     }
   }, [open]);
 
-  function set<K extends keyof CreateTollForm>(
+  function set<K extends keyof TollFormState>(
     key: K,
-    value: CreateTollForm[K],
+    value: TollFormState[K],
   ): void {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
@@ -110,7 +116,7 @@ export function TollFormDialog({ open, pending, onClose, onSubmit }: IProps) {
                 id="toll-amount"
                 type="number"
                 value={form.amount}
-                onChange={(e) => set("amount", Number(e.target.value))}
+                onChange={(e) => set("amount", e.target.value)}
                 className={inputClass}
               />
               <FieldError message={errors.amount} />
@@ -124,12 +130,11 @@ export function TollFormDialog({ open, pending, onClose, onSubmit }: IProps) {
             >
               مهلت پرداخت (اختیاری)
             </label>
-            <input
+            <DatePickerComponent
               id="toll-due"
-              type="date"
-              value={form.dueDate ?? ""}
-              onChange={(e) => set("dueDate", e.target.value || undefined)}
-              className={inputClass}
+              value={form.dueDate ?? null}
+              onChange={(value) => set("dueDate", value ?? undefined)}
+              placeholder="انتخاب تاریخ"
             />
             <FieldError message={errors.dueDate} />
           </div>

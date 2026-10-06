@@ -22,13 +22,7 @@ export function mapVehicle(row: VehicleRow): Vehicle {
   return {
     id: row.id,
     name: row.name,
-    brand: row.brand,
-    model: row.model,
     year: row.year,
-    color: row.color,
-    plateNumber: row.plateNumber,
-    vin: row.vin,
-    fuelType: row.fuelType,
     odometerKm: row.odometerKm,
     imageUrl: row.imageUrl,
     createdAt: iso(row.createdAt),

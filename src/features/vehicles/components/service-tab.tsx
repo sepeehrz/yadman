@@ -6,7 +6,6 @@ import type { CreateServiceInput } from "../types";
 import {
   useCreateVehicleService,
   useDeleteVehicleService,
-  useServiceCategories,
   useVehicleServices,
 } from "../hooks/use-vehicle-services";
 import { EmptyState } from "@/components/common/empty-state";
@@ -24,7 +23,6 @@ interface IProps {
 export function ServiceTab({ vehicleId, defaultOdometer }: IProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const services = useVehicleServices(vehicleId);
-  const categories = useServiceCategories();
   const createService = useCreateVehicleService();
   const deleteService = useDeleteVehicleService();
   const confirm = useConfirm();
@@ -89,7 +87,6 @@ export function ServiceTab({ vehicleId, defaultOdometer }: IProps) {
 
       <ServiceFormDialog
         open={dialogOpen}
-        categories={categories.data ?? []}
         defaultOdometer={defaultOdometer}
         pending={createService.isPending}
         onClose={() => setDialogOpen(false)}

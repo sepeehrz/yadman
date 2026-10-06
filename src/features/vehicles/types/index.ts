@@ -1,13 +1,7 @@
 export interface Vehicle {
   id: string;
   name: string;
-  brand: string;
-  model: string;
   year: number | null;
-  color: string;
-  plateNumber: string;
-  vin: string | null;
-  fuelType: string;
   odometerKm: number;
   imageUrl: string | null;
   createdAt: string;
@@ -16,13 +10,7 @@ export interface Vehicle {
 
 export interface CreateVehicleInput {
   name: string;
-  brand?: string;
-  model?: string;
   year?: number | null;
-  color: string;
-  plateNumber: string;
-  vin?: string;
-  fuelType?: string;
   odometerKm?: number;
   imageUrl?: string;
 }

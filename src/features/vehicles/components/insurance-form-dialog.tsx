@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BaseDialog } from "@/components/ui/dialog";
+import { DatePickerComponent } from "@/components/common/date-picker";
 import type { CreateInsuranceInput, Insurance } from "../types";
 import {
   parseInsuranceForm,
@@ -148,12 +149,11 @@ export function InsuranceFormDialog({
               >
                 شروع اعتبار
               </label>
-              <input
+              <DatePickerComponent
                 id="insurance-start"
-                type="date"
-                value={form.startDate}
-                onChange={(e) => set("startDate", e.target.value)}
-                className={inputClass}
+                value={form.startDate || null}
+                onChange={(value) => set("startDate", value ?? "")}
+                placeholder="انتخاب تاریخ"
               />
               <FieldError message={errors.startDate} />
             </div>
@@ -164,12 +164,11 @@ export function InsuranceFormDialog({
               >
                 پایان اعتبار
               </label>
-              <input
+              <DatePickerComponent
                 id="insurance-end"
-                type="date"
-                value={form.endDate}
-                onChange={(e) => set("endDate", e.target.value)}
-                className={inputClass}
+                value={form.endDate || null}
+                onChange={(value) => set("endDate", value ?? "")}
+                placeholder="انتخاب تاریخ"
               />
               <FieldError message={errors.endDate} />
             </div>

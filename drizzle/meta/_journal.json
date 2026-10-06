@@ -29,6 +29,13 @@
       "when": 1791024430173,
       "tag": "0003_service-backed-reminders",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791271287620,
+      "tag": "0004_drop-vehicle-details",
+      "breakpoints": true
     }
   ]
 }

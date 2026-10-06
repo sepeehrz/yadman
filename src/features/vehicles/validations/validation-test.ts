@@ -8,32 +8,23 @@ describe("parseVehicleForm", () => {
   it("accepts a complete vehicle", () => {
     const result = parseVehicleForm({
       name: "تسلا مدل ۳",
-      brand: "تسلا",
-      model: "لانگ‌رنج",
       year: 2022,
-      color: "سفید",
-      plateNumber: "۱۲ب۳۴۵-۶۷",
-      fuelType: "electric",
       odometerKm: 85420,
     });
     expect(result.ok).toBe(true);
   });
 
-  it("rejects missing name, model, color and plate", () => {
-    const result = parseVehicleForm({ name: "", model: "", color: "", plateNumber: "" });
+  it("rejects missing name", () => {
+    const result = parseVehicleForm({ name: "" });
     expect(result.ok).toBe(false);
     if (!result.ok) {
       expect(result.errors.name).toBeDefined();
-      expect(result.errors.plateNumber).toBeDefined();
     }
   });
 
   it("rejects negative odometer", () => {
     const result = parseVehicleForm({
       name: "پراید",
-      model: "SX",
-      color: "سفید",
-      plateNumber: "۱۱الف۱۱-۱۱",
       odometerKm: -5,
     });
     expect(result.ok).toBe(false);
