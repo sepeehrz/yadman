@@ -23,9 +23,3 @@ export interface StoredNotification extends AppNotification {
   /** زمان ثبت شدن اعلان در اعلان‌سنتر */
   firedAt: string;
 }
-
-export interface NotificationPreferences {
-  enabled: boolean;
-  /** نمایش نوتیفیکیشن سیستم‌عاملی در کنار اعلان داخل اپ */
-  browserNotifications: boolean;
-}

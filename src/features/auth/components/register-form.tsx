@@ -183,7 +183,7 @@ export function RegisterForm() {
           />
           <span className="text-xs leading-5 text-foreground">
             <span className="font-bold text-primary">قوانین و مقررات</span>{" "}
-            لایف‌هاب را خوانده‌ام و می‌پذیرم.
+            یادمان را خوانده‌ام و می‌پذیرم.
           </span>
         </label>
         {errors.acceptTerms && (

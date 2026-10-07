@@ -11,10 +11,3 @@ export async function fetchOdometer(): Promise<UserPreferencesDto> {
   return data;
 }
 
-export async function updateOdometer(odometerKm: number): Promise<UserPreferencesDto> {
-  const { data } = await apiClient.patch<UserPreferencesDto>(
-    "/user-preferences",
-    { odometerKm },
-  );
-  return data;
-}

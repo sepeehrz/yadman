@@ -8,7 +8,6 @@ import {
   markRead,
   MAX_STORED_NOTIFICATIONS,
   reconcileNotifications,
-  selectUnseenSince,
   syncWithLiveDeadlines,
 } from "./notification-store";
 
@@ -111,28 +110,6 @@ describe("خواندن اعلان‌ها", () => {
 
   it("تعداد خوانده‌نشده‌ها را می‌شمارد", () => {
     expect(countUnread([stored("a"), stored("b", true), stored("c")])).toBe(2);
-  });
-});
-
-describe("selectUnseenSince", () => {
-  it("بدون زمان مرجع چیزی برنمی‌گرداند", () => {
-    expect(selectUnseenSince([stored("a")], null)).toHaveLength(0);
-  });
-
-  it("فقط اعلان‌های بعد از زمان مرجع را برمی‌گرداند", () => {
-    const old: StoredNotification = {
-      ...stored("old"),
-      firedAt: new Date(2025, 9, 15, 9, 0).toISOString(),
-    };
-    const fresh: StoredNotification = {
-      ...stored("fresh"),
-      firedAt: new Date(2025, 9, 15, 11, 0).toISOString(),
-    };
-    const result = selectUnseenSince(
-      [old, fresh],
-      new Date(2025, 9, 15, 10, 0).toISOString(),
-    );
-    expect(result.map((n) => n.id)).toEqual(["fresh"]);
   });
 });
 

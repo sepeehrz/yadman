@@ -30,7 +30,6 @@ export const updateInsuranceSchema = insuranceBaseSchema.partial().refine(
 );
 
 export type CreateInsuranceForm = z.infer<typeof createInsuranceSchema>;
-export type UpdateInsuranceForm = z.infer<typeof updateInsuranceSchema>;
 
 export function parseInsuranceForm(
   input: unknown,

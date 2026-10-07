@@ -5,12 +5,12 @@ import Providers from "@/providers";
 import { vazirmatn } from "@/lib/fonts";
 
 export const metadata: Metadata = {
-  title: "لایف‌هاب | مدیر لجستیک شخصی",
+  title: "یادمان | مدیر لجستیک شخصی",
   description:
     "مدیر لجستیک شخصی آرام و قابل‌اعتماد: خودرو، وام و اقساط، یادآورهای هوشمند و چک‌لیست‌های آماده.",
   appleWebApp: {
     capable: true,
-    title: "لایف‌هاب",
+    title: "یادمان",
     statusBarStyle: "default",
   },
   icons: {

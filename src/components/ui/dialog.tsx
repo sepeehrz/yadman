@@ -132,29 +132,3 @@ export function BaseDialog({
     document.body,
   );
 }
-
-interface IHeaderProps {
-  title: string;
-  onClose: () => void;
-}
-
-export function DialogHeader({ title, onClose }: IHeaderProps) {
-  return (
-    <div>
-      <div className="w-full flex justify-center pt-2" aria-hidden="true">
-        <div className="w-12 h-1.5 rounded-full bg-muted-foreground/70" />
-      </div>
-      <div className="flex items-center justify-between px-5 sm:px-6 py-3 border-b border-border">
-        <h3 className="text-base font-bold text-foreground">{title}</h3>
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="بستن گفتگو"
-          className="w-8 h-8 rounded-full bg-primary/5 text-muted-foreground flex items-center justify-center hover:bg-primary/10 focus-visible:outline-2 focus-visible:outline-primary active:scale-95 transition-all"
-        >
-          <AppIcon name="close" className="size-[18px]" />
-        </button>
-      </div>
-    </div>
-  );
-}

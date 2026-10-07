@@ -40,9 +40,7 @@ export const loanFormSchema = z.object({
   autoPay: z.boolean(),
 });
 
-export type LoanFormValues = z.infer<typeof loanFormSchema>;
 /** ورودی خام فرم قبل از coerce (مقادیر فرم HTML رشته/نامعلوم هستند) */
-export type LoanFormInput = z.input<typeof loanFormSchema>;
 
 /** بدنه API ایجاد وام — فیلدهای مشتق (تعداد اقساط، پیشرفت و ...) در سرور محاسبه می‌شود */
 export const createLoanSchema = loanFormSchema;

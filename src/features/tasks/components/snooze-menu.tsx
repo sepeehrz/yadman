@@ -107,7 +107,7 @@ export function SnoozeMenu({ disabled = false, onSelect }: IProps) {
             role="menu"
             aria-label="مدت تعویق"
             style={{ top: position.top, left: position.left }}
-            className="fixed z-[70] w-44 rounded-xl bg-card shadow-[0_12px_28px_-6px_var(--shadow-color)]/30 border border-border py-1"
+            className="fixed z-70 w-44 rounded-xl bg-card shadow-[0_12px_28px_-6px_var(--shadow-color)]/30 border border-border py-1"
           >
             {SNOOZE_OPTIONS.map((option) => (
               <button
@@ -140,7 +140,7 @@ export function SnoozeMenu({ disabled = false, onSelect }: IProps) {
         aria-label="به تعویق انداختن یادآور"
         className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary/5 text-primary text-[11px] font-bold hover:bg-primary/10 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none"
       >
-        <AppIcon name="notifications_active" className="size-[14px]" />
+        <AppIcon name="notifications_active" className="size-3.5" />
         <span>تعویق</span>
       </button>
       {menu}

@@ -14,7 +14,6 @@ export const updateTollSchema = createTollSchema.partial().extend({
 });
 
 export type CreateTollForm = z.infer<typeof createTollSchema>;
-export type UpdateTollForm = z.infer<typeof updateTollSchema>;
 
 export function parseTollForm(
   input: unknown,

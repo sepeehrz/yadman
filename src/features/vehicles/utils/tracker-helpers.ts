@@ -44,11 +44,3 @@ export function computeTrackerProgress(
 
   return { category, badgeText, badgeType, percentage };
 }
-
-/** آیکون پیش‌فرض بر اساس نام سرویس — مطابق طبقه‌بندی سرویس‌های دوره‌ای */
-export function trackerIconForService(title: string): string {
-  if (title.includes("روغن")) return "oil_barrel";
-  if (title.includes("تایر")) return "tire_repair";
-  if (title.includes("بیمه")) return "security";
-  return "disc_full";
-}

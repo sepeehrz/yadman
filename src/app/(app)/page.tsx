@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { DashboardScreen } from "@/features/dashboard/components/DashboardScreen";
+import { DashboardView } from "@/features/dashboard/views/dashboard-view";
 
 export const metadata: Metadata = {
-  title: "داشبورد | لایف‌هاب",
+  title: "داشبورد | یادمان",
   description: "نمای کلی وضعیت خودرو، مالی و یادآورها",
 };
 
 export default function DashboardPage() {
-  return <DashboardScreen />;
+  return <DashboardView />;
 }

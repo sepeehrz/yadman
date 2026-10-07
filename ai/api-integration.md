@@ -26,12 +26,12 @@ External systems include:
 
 Use these internal API route groups:
 
-- `src/app/api/service-request/*` → main backend REST services
+- `src/app/api/*` → main backend REST services
 
 Examples:
 
-- `/api/service-request/users`
-- `/api/service-request/orders`
+- `/api/users`
+- `/api/orders`
 
 ---
 
@@ -123,9 +123,12 @@ Responsible for:
 src/
   app/
     api/
-      service-request/
   lib/
     api/
+  types/
+    server-types/
+  utils/
+    server-helpers/
 
 features/
   <feature>/
@@ -303,7 +306,7 @@ useUsers()
   ↓
 getUsers()
   ↓
-GET /api/service-request/users
+GET /api/users
   ↓
 Backend REST API
 ```
@@ -316,7 +319,7 @@ When generating code for this project:
 
 1. Follow the layered flow exactly:
    `Component -> Hook -> Service -> Internal API Route -> External System`
-2. Use `app/api/service-request/*` for backend REST integrations.
+2. Use `app/api/*` for backend REST integrations.
 3. Never call external APIs directly from the component.
 4. Put React Query logic in hooks.
 5. Put HTTP logic in services.

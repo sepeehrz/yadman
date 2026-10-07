@@ -8,13 +8,11 @@ import {
   deleteToll,
   getInsurances,
   getTolls,
-  updateInsurance,
   updateToll,
 } from "../service";
 import type {
   CreateInsuranceInput,
   CreateTollInput,
-  UpdateInsuranceInput,
   UpdateTollInput,
 } from "../types";
 import { vehicleKeys } from "./vehicle-query-keys";
@@ -147,30 +145,6 @@ export function useDeleteToll() {
     },
     onError: (error: unknown) => {
       toast.error(toMessage(error, "حذف عوارض ناموفق بود"));
-    },
-  });
-}
-
-export function useUpdateInsurance() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({
-      vehicleId,
-      insuranceId,
-      input,
-    }: {
-      vehicleId: string;
-      insuranceId: string;
-      input: UpdateInsuranceInput;
-    }) => updateInsurance(vehicleId, insuranceId, input),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: vehicleKeys.insurances(variables.vehicleId),
-      });
-      toast.success("بیمه‌نامه به‌روزرسانی شد");
-    },
-    onError: (error: unknown) => {
-      toast.error(toMessage(error, "به‌روزرسانی بیمه‌نامه ناموفق بود"));
     },
   });
 }

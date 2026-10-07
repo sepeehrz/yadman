@@ -1,5 +1,5 @@
 // Reseed script: replaces curl-corrupted sample data with proper UTF-8 rows.
-const BASE = "http://localhost:3457/api/service-request";
+const BASE = "http://localhost:3457/api";
 
 async function api(path, options) {
   const response = await fetch(`${BASE}${path}`, {

@@ -6,5 +6,3 @@ export const SECURITY_QUESTIONS = [
   "نام بهترین دوست دوران کودکی شما چیست؟",
   "اسم وسط مادرتان چه بود؟",
 ] as const;
-
-export type SecurityQuestion = (typeof SECURITY_QUESTIONS)[number];

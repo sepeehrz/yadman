@@ -5,7 +5,7 @@ import { RegisterForm } from "../components/register-form";
 
 export function RegisterView() {
   return (
-    <AuthShell title="ساخت حساب کاربری" subtitle="در چند ثانیه عضو لایف‌هاب شوید">
+    <AuthShell title="ساخت حساب کاربری" subtitle="در چند ثانیه عضو یادمان شوید">
       <RegisterForm />
     </AuthShell>
   );

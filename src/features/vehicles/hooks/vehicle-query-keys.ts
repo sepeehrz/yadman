@@ -9,8 +9,6 @@ export const vehicleKeys = {
     [...vehicleKeys.all, "insurances", vehicleId] as const,
   tolls: (vehicleId: string) =>
     [...vehicleKeys.all, "tolls", vehicleId] as const,
-  categories: ["service-categories"] as const,
   expiring: (days: number, vehicleId?: string) =>
     ["vehicles-expiring", days, vehicleId ?? "all"] as const,
-  trackers: () => [...vehicleKeys.all, "trackers"] as const,
 };

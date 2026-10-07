@@ -1,8 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { formatFaDate, parseISODateOnly, toISODateOnly } from "@/utils";
 import { dueLabel, severityLabel } from "./reminder-helpers";
-import { suggestNextService } from "./service-helpers";
-import type { ServiceCategory } from "../types";
 
 describe("date filters", () => {
   it("parses ISO dates and rejects garbage", () => {
@@ -33,26 +31,5 @@ describe("reminder labels", () => {
     expect(severityLabel("urgent")).toBe("فوری");
     expect(severityLabel("soon")).toBe("نزدیک");
     expect(severityLabel("ok")).toBe("سالم");
-  });
-});
-
-describe("suggestNextService", () => {
-  const category: ServiceCategory = {
-    id: "engine-oil",
-    title: "روغن موتور",
-    description: null,
-    icon: "oil_barrel",
-    defaultIntervalKm: 5000,
-    defaultIntervalMonths: 6,
-  };
-
-  it("suggests next date and km from category intervals", () => {
-    const suggestion = suggestNextService(category, "2024-10-25", 85000);
-    expect(suggestion.nextDueKm).toBe(90000);
-    expect(suggestion.nextDueDate).toBe("2025-04-25");
-  });
-
-  it("returns empty suggestion without a category", () => {
-    expect(suggestNextService(null, "2024-10-25", 85000)).toEqual({});
   });
 });

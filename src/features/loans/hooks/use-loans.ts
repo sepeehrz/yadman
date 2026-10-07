@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/components/common/toast";
 import { getApiErrorMessage } from "@/lib/api/error-message";
-import { createLoan, deleteLoan, getLoans, updateLoan } from "../service";
-import type { CreateLoanRequest, UpdateLoanRequest } from "../validations/loan-schema";
+import { getLoans, updateLoan } from "../service";
+import type { UpdateLoanRequest } from "../validations/loan-schema";
 
 export const loanKeys = {
   all: ["loans"] as const,
@@ -13,20 +13,6 @@ export function useLoans() {
   return useQuery({
     queryKey: loanKeys.lists(),
     queryFn: getLoans,
-  });
-}
-
-export function useCreateLoan() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (input: CreateLoanRequest) => createLoan(input),
-    onSuccess: (loan) => {
-      queryClient.invalidateQueries({ queryKey: loanKeys.lists() });
-      toast.success(`وام «${loan.title}» اضافه شد`);
-    },
-    onError: (error: unknown) => {
-      toast.error(getApiErrorMessage(error, "افزودن وام ناموفق بود"));
-    },
   });
 }
 
@@ -52,20 +38,6 @@ export function useUpdateLoan() {
     },
     onError: (error: unknown) => {
       toast.error(getApiErrorMessage(error, "به‌روزرسانی وام ناموفق بود"));
-    },
-  });
-}
-
-export function useDeleteLoan() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (loanId: string) => deleteLoan(loanId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: loanKeys.lists() });
-      toast.success("وام حذف شد");
-    },
-    onError: (error: unknown) => {
-      toast.error(getApiErrorMessage(error, "حذف وام ناموفق بود"));
     },
   });
 }

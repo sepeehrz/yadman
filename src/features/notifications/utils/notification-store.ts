@@ -116,22 +116,3 @@ export function countUnread(
 export function clearAll(_stored: StoredNotification[]): StoredNotification[] {
   return [];
 }
-
-/**
- * اعلان‌هایی که از آخرین بازدید کاربر جدید بوده‌اند.
- * برای نمایش نوتیفیکیشن سیستم‌عاملی استفاده می‌شود تا برای اعلان‌های تکراری
- * هر بار پیام تکراری نشود.
- */
-export function selectUnseenSince(
-  stored: StoredNotification[],
-  since: string | null,
-): StoredNotification[] {
-  if (!since) {
-    return [];
-  }
-  const threshold = new Date(since).getTime();
-  if (Number.isNaN(threshold)) {
-    return [];
-  }
-  return stored.filter((n) => new Date(n.firedAt).getTime() > threshold);
-}

@@ -10,7 +10,7 @@ interface IProps {
   footer?: ReactNode;
 }
 
-/** پوسته مشترک صفحات احراز هویت — کارت مرکزی با هویت بصری لایف‌هاب */
+/** پوسته مشترک صفحات احراز هویت — کارت مرکزی با هویت بصری یادمان */
 export function AuthShell({ title, subtitle, children, footer }: IProps) {
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-4 py-10">
@@ -27,7 +27,7 @@ export function AuthShell({ title, subtitle, children, footer }: IProps) {
         <div className="mb-6 flex flex-col items-center gap-2">
           <AppLogo className="h-14 w-14" />
           <span className="text-xl font-bold tracking-tight text-foreground">
-            لایف‌هاب
+            یادمان
           </span>
         </div>
 

@@ -1,21 +1,19 @@
 "use client";
 
-import { ASSETS } from "@/lib/mock-data";
+import { ASSETS } from "@/constant";
 import { AppLogo } from "@/components/common/app-logo";
-// import { useLifeHub } from "@/store/LifeHubContext";
 import { useDialog } from "@/hooks/use-dialog";
 import { NotificationsCenter } from "@/features/notifications/components/notifications-center";
 import { useNotificationsContext } from "@/features/notifications/providers/notifications-provider";
 import { AppIcon } from "@/components/ui/app-icon";
 import { ThemeToggle } from "@/components/common/theme-toggle";
-import { UserProfileComponent } from "../UserProfile";
+import { UserProfile } from "@/components/common/user-profile";
 
 export function Header({ title }: { title: string }) {
-  // const { setProfileOpen } = useLifeHub();
   const { openDialog, closeDialog } = useDialog();
   const { unreadCount } = useNotificationsContext();
   function openProfileDialog() {
-    openDialog(UserProfileComponent, { closeDialog });
+    openDialog(UserProfile, { closeDialog });
   }
   return (
     <header className="fixed top-0 w-full z-40 pt-safe bg-background/85 backdrop-blur-xl shadow-[0_1px_8px_var(--shadow-color)]/5 border-b border-border/40 transition-all">
@@ -24,7 +22,7 @@ export function Header({ title }: { title: string }) {
           <AppLogo className="h-8 w-8 rounded-lg" />
           <div className="flex items-baseline gap-2">
             <span className="font-bold text-xl sm:text-[22px] text-foreground tracking-tight">
-              لایف‌هاب
+              یادمان
             </span>
             <span className="hidden sm:inline-block text-xs font-semibold px-2 py-0.5 rounded-full bg-accent text-accent-foreground">
               {title}

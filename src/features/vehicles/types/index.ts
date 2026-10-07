@@ -55,7 +55,6 @@ export interface CreateServiceInput {
   nextDueKm?: number | null;
 }
 
-export type UpdateServiceInput = Partial<CreateServiceInput>;
 
 export type InsuranceType = "third-party" | "body";
 
@@ -82,7 +81,6 @@ export interface CreateInsuranceInput {
   notes?: string;
 }
 
-export type UpdateInsuranceInput = Partial<CreateInsuranceInput>;
 
 export interface Toll {
   id: string;
@@ -111,9 +109,6 @@ export interface UpdateTollInput {
   dueDate?: string;
   notes?: string;
 }
-
-export type CreateTrackerRequest = import("../validations/tracker-schema").CreateTrackerRequest;
-export type UpdateTrackerRequest = import("../validations/tracker-schema").UpdateTrackerRequest;
 
 export type ExpiringKind = "insurance" | "toll" | "service";
 

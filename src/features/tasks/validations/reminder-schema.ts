@@ -79,8 +79,6 @@ export const updateReminderSchema = z.object({
     .optional(),
 });
 
-export type CreateReminderPayload = z.infer<typeof createReminderSchema>;
-export type UpdateReminderPayload = z.infer<typeof updateReminderSchema>;
 
 export function reminderToForm(reminder: Reminder): ReminderForm {
   const due = new Date(reminder.dueAt);
@@ -115,12 +113,3 @@ export function parseReminderForm(
   return { ok: false, errors: toFieldErrors(result.error) };
 }
 
-export function parseUpdateReminderPayload(
-  input: unknown,
-): { ok: true; data: UpdateReminderPayload } | { ok: false; errors: FieldErrors } {
-  const result = updateReminderSchema.safeParse(input);
-  if (result.success) {
-    return { ok: true, data: result.data };
-  }
-  return { ok: false, errors: toFieldErrors(result.error) };
-}

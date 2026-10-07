@@ -5,9 +5,8 @@ import {
   createVehicleService,
   deleteVehicleService,
   getVehicleServices,
-  updateVehicleService,
 } from "../service";
-import type { CreateServiceInput, UpdateServiceInput } from "../types";
+import type { CreateServiceInput } from "../types";
 import { vehicleKeys } from "./vehicle-query-keys";
 
 function toMessage(error: unknown, fallback: string): string {
@@ -41,30 +40,6 @@ export function useCreateVehicleService() {
     },
     onError: (error: unknown) => {
       toast.error(toMessage(error, "ثبت سرویس ناموفق بود"));
-    },
-  });
-}
-
-export function useUpdateVehicleService() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({
-      vehicleId,
-      serviceId,
-      input,
-    }: {
-      vehicleId: string;
-      serviceId: string;
-      input: UpdateServiceInput;
-    }) => updateVehicleService(vehicleId, serviceId, input),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: vehicleKeys.services(variables.vehicleId),
-      });
-      toast.success("سرویس به‌روزرسانی شد");
-    },
-    onError: (error: unknown) => {
-      toast.error(toMessage(error, "به‌روزرسانی سرویس ناموفق بود"));
     },
   });
 }

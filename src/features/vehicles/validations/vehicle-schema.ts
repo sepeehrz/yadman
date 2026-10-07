@@ -11,7 +11,6 @@ export const createVehicleSchema = z.object({
 export const updateVehicleSchema = createVehicleSchema.partial();
 
 export type CreateVehicleForm = z.infer<typeof createVehicleSchema>;
-export type UpdateVehicleForm = z.infer<typeof updateVehicleSchema>;
 
 export function parseVehicleForm(
   input: unknown,

@@ -1,30 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { AppIcon } from "@/components/ui/app-icon";
 import { faNum } from "@/lib/format";
-import { useChecklists } from "../hooks/use-checklists";
-import { useReminders } from "../hooks/use-reminders";
+import { useTasksView } from "../hooks/use-tasks-view";
 import { ChecklistsSection } from "../components/checklists-section";
 import { RemindersSection } from "../components/reminders-section";
 
-type MainTab = "reminders" | "checklists";
-
 export function TasksView() {
-  const [mainTab, setMainTab] = useState<MainTab>("reminders");
-  const [search, setSearch] = useState("");
-
-  const reminders = useReminders();
-  const checklists = useChecklists();
-
-  const remindersCount = (reminders.data ?? []).length;
-  const checklistsCount = (checklists.data ?? []).length;
-  const activeCount = (reminders.data ?? []).filter(
-    (reminder) => !reminder.done,
-  ).length;
+  const model = useTasksView();
 
   return (
-    <div className="flex flex-col w-full max-w-2xl mx-auto px-4 sm:px-6 pt-2 pb-28 space-y-4">
+    <div className="flex flex-col w-full max-w-2xl mx-auto px-4 sm:px-6 pt-1 pb-28 space-y-4">
       <div className="pt-1">
         <div className="flex items-center justify-between mb-2">
           <div className="flex flex-col">
@@ -36,7 +22,7 @@ export function TasksView() {
             </h1>
           </div>
           <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary/15 text-foreground">
-            {faNum(activeCount)} فعال
+            {faNum(model.activeCount)} فعال
           </span>
         </div>
 
@@ -45,16 +31,16 @@ export function TasksView() {
             <AppIcon name="search" className="text-muted-foreground size-[20px] ml-2" />
             <input
               type="text"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              value={model.search}
+              onChange={(event) => model.setSearch(event.target.value)}
               placeholder="جست‌وجوی یادآورها، اقلام، چک‌لیست‌ها..."
               aria-label="جست‌وجو"
               className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none font-medium"
             />
-            {search ? (
+            {model.search ? (
               <button
                 type="button"
-                onClick={() => setSearch("")}
+                onClick={() => model.setSearch("")}
                 aria-label="پاک کردن جست‌وجو"
                 className="text-xs text-muted-foreground hover:text-foreground"
               >
@@ -68,10 +54,10 @@ export function TasksView() {
       <div className="p-1 bg-primary/10 rounded-xl grid grid-cols-2">
         <button
           type="button"
-          onClick={() => setMainTab("reminders")}
-          aria-pressed={mainTab === "reminders"}
+          onClick={() => model.setMainTab("reminders")}
+          aria-pressed={model.showReminders}
           className={`py-2 px-3 rounded-lg text-xs font-semibold transition-all text-center flex items-center justify-center gap-1.5 ${
-            mainTab === "reminders"
+            model.showReminders
               ? "bg-card text-primary shadow-xs font-bold"
               : "text-muted-foreground hover:text-foreground"
           }`}
@@ -79,20 +65,20 @@ export function TasksView() {
           <span>یادآورها</span>
           <span
             className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-              mainTab === "reminders"
+              model.showReminders
                 ? "bg-primary/15 text-primary font-bold"
                 : "bg-primary/10 text-muted-foreground"
             }`}
           >
-            {faNum(remindersCount)}
+            {faNum(model.remindersCount)}
           </span>
         </button>
         <button
           type="button"
-          onClick={() => setMainTab("checklists")}
-          aria-pressed={mainTab === "checklists"}
+          onClick={() => model.setMainTab("checklists")}
+          aria-pressed={!model.showReminders}
           className={`py-2 px-3 rounded-lg text-xs font-semibold transition-all text-center flex items-center justify-center gap-1.5 ${
-            mainTab === "checklists"
+            !model.showReminders
               ? "bg-card text-primary shadow-xs font-bold"
               : "text-muted-foreground hover:text-foreground"
           }`}
@@ -100,20 +86,20 @@ export function TasksView() {
           <span>چک‌لیست‌ها</span>
           <span
             className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-              mainTab === "checklists"
+              !model.showReminders
                 ? "bg-primary/15 text-primary font-bold"
                 : "bg-primary/10 text-muted-foreground"
             }`}
           >
-            {faNum(checklistsCount)}
+            {faNum(model.checklistsCount)}
           </span>
         </button>
       </div>
 
-      {mainTab === "reminders" ? (
-        <RemindersSection search={search} />
+      {model.showReminders ? (
+        <RemindersSection search={model.search} />
       ) : (
-        <ChecklistsSection search={search} />
+        <ChecklistsSection search={model.search} />
       )}
     </div>
   );

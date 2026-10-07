@@ -36,15 +36,7 @@ export type CreateChecklistPayload = z.infer<typeof createChecklistSchema>;
 export type CreateChecklistItemPayload = z.infer<
   typeof createChecklistItemSchema
 >;
-export type UpdateChecklistItemPayload = z.infer<
-  typeof updateChecklistItemSchema
->;
 
-/** فرم دیالوگ ساخت چک‌لیست — اقلام به‌صورت پویا اضافه می‌شوند */
-export interface ChecklistForm {
-  title: string;
-  items: string[];
-}
 
 export function parseChecklistForm(
   input: unknown,

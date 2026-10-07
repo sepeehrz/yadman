@@ -104,7 +104,11 @@ export function RemindersSection({ search }: IProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between px-1">
-        <ReminderFilters active={period} counts={counts} onChange={changePeriod} />
+        <ReminderFilters
+          active={period}
+          counts={counts}
+          onChange={changePeriod}
+        />
       </div>
 
       {reminders.isPending ? <LoadingSkeleton rows={3} /> : null}
@@ -118,7 +122,11 @@ export function RemindersSection({ search }: IProps) {
       {reminders.data && sorted.length === 0 ? (
         <EmptyState
           icon="alarm"
-          title={search ? "یادآوری مطابق جست‌وجو پیدا نشد" : "یادآوری در این بازه ندارید"}
+          title={
+            search
+              ? "یادآوری مطابق جست‌وجو پیدا نشد"
+              : "یادآوری در این بازه ندارید"
+          }
           hint="با دکمه پایین صفحه اولین یادآور را بسازید"
         />
       ) : null}
@@ -152,18 +160,20 @@ export function RemindersSection({ search }: IProps) {
       {remainingCount > 0 ? (
         <ShowMoreButton
           remaining={remainingCount}
-          onClick={() => setVisibleCount((count) => count + REMINDERS_PAGE_SIZE)}
+          onClick={() =>
+            setVisibleCount((count) => count + REMINDERS_PAGE_SIZE)
+          }
         />
       ) : null}
 
       {/* دکمه باید همیشه در دسترس باشد، حتی وقتی فهرست یادآورها طولانی است. */}
-      <div className="sticky bottom-24 z-20 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-2 pb-2 bg-gradient-to-t from-background via-background to-transparent">
+      <div className="sticky bottom-24 z-20 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-2 pb-2 bg-linear-to-t from-background via-background to-transparent">
         <button
           type="button"
           onClick={openCreate}
           className="w-full flex items-center justify-center gap-2 h-12 rounded-full bg-primary text-primary-foreground text-xs sm:text-sm font-bold shadow-lg shadow-primary/25 hover:bg-primary active:scale-95 transition-all"
         >
-          <AppIcon name="add" className="size-[20px] flex-shrink-0" />
+          <AppIcon name="add" className="size-5 shrink-0" />
           <span>یادآور جدید</span>
         </button>
       </div>

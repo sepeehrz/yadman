@@ -16,7 +16,6 @@ export const createServiceSchema = z.object({
 export const updateServiceSchema = createServiceSchema.partial();
 
 export type CreateServiceForm = z.infer<typeof createServiceSchema>;
-export type UpdateServiceForm = z.infer<typeof updateServiceSchema>;
 
 export function parseServiceForm(
   input: unknown,

@@ -33,7 +33,7 @@ function normalizeError(error: unknown): ApiError {
 }
 
 export const apiClient = axios.create({
-  baseURL: "/api/service-request",
+  baseURL: "/api",
   timeout: 15000,
   headers: { "Content-Type": "application/json" },
   withCredentials: true,

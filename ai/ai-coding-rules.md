@@ -138,7 +138,7 @@ Services must never:
 - Contain DOM access
 - Contain form validation
 - Call APIs directly from UI components
-- Bypass the service-request abstraction
+- Bypass the internal API route layer (call the backend directly)
 
 Service files must follow the repository standard structure.
 Never create ad-hoc HTTP logic inside components, hooks, or feature files.

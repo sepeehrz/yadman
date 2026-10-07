@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { ResetPasswordView } from "@/features/auth/views/reset-password-view";
 
 export const metadata: Metadata = {
-  title: "تعیین رمز جدید | لایف‌هاب",
+  title: "تعیین رمز جدید | یادمان",
   description: "تعیین رمز عبور جدید با توکن بازیابی",
 };
 

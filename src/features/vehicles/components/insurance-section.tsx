@@ -47,7 +47,7 @@ export function InsuranceSection({ vehicleId }: IProps) {
           onClick={() => setDialogOpen(true)}
           className="flex items-center gap-1 text-xs font-bold text-primary hover:underline"
         >
-          <AppIcon name="add_circle" className="size-[16px]" />
+          <AppIcon name="add_circle" className="size-4" />
           بیمه جدید
         </button>
       </div>
@@ -83,8 +83,8 @@ export function InsuranceSection({ vehicleId }: IProps) {
           >
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2.5">
-                <span className="w-10 h-10 rounded-xl bg-primary/15 text-foreground flex items-center justify-center flex-shrink-0">
-                  <AppIcon name="security" className="size-[22px]" />
+                <span className="w-10 h-10 rounded-xl bg-primary/15 text-foreground flex items-center justify-center shrink-0">
+                  <AppIcon name="security" className="size-5.5" />
                 </span>
                 <div>
                   <h4 className="font-bold text-sm text-foreground">

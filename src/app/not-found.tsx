@@ -8,7 +8,7 @@ export default function NotFound() {
       <AppIcon name="wrong_location" className="size-10 text-muted-foreground" />
       <h1 className="text-xl font-bold text-foreground">صفحه پیدا نشد</h1>
       <p className="text-xs text-muted-foreground">
-        آدرس موردنظر در لایف‌هاب وجود ندارد.
+        آدرس موردنظر در یادمان وجود ندارد.
       </p>
       <Link
         href="/"

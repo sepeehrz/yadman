@@ -4,7 +4,6 @@ import { isApiError } from "@/lib/api";
 import {
   createVehicle,
   deleteVehicle,
-  getVehicle,
   getVehicles,
   updateVehicle,
 } from "../service";
@@ -19,14 +18,6 @@ export function useVehicles() {
   return useQuery({
     queryKey: vehicleKeys.lists(),
     queryFn: getVehicles,
-  });
-}
-
-export function useVehicle(vehicleId: string | null) {
-  return useQuery({
-    queryKey: vehicleKeys.detail(vehicleId ?? "none"),
-    queryFn: () => getVehicle(vehicleId as string),
-    enabled: vehicleId !== null,
   });
 }
 

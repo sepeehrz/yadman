@@ -1,7 +1,7 @@
 import { index, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 /**
- * کاربران لایف‌هاب — احراز هویت با username/password.
+ * کاربران یادمان — احراز هویت با username/password.
  * پاسخ سوال امنیتی هم مثل پسورد هش می‌شود تا لو رفتن دیتابیس آسیب‌پذیری نسازد.
  */
 export const users = pgTable("users", {

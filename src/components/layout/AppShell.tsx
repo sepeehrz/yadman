@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { Header } from "@/components/layout/Header";
 import { NavigationDock } from "@/components/layout/NavigationDock";
-import { ROUTE_TITLES } from "@/lib/mock-data";
+import { ROUTE_TITLES } from "@/constant";
 import { Toaster } from "@/components/ui/sonner";
 
 export function AppShell({ children }: { children: ReactNode }) {

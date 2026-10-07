@@ -2,7 +2,6 @@
 
 import { ReactNode } from "react";
 import { ThemeProvider } from "./theme-provider";
-import { LifeHubProvider } from "@/store/LifeHubContext";
 import { getQueryClient } from "@/lib/query-client";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -23,8 +22,7 @@ export default function Providers({ children }: IProps) {
       storageKey="life-hub-theme"
     >
       <QueryClientProvider client={queryClient}>
-        <LifeHubProvider>{children}</LifeHubProvider>
-
+        {children}
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </ThemeProvider>

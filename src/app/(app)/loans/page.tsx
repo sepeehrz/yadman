@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { LoansScreen } from "@/features/loans/components/LoansScreen";
+import { LoansView } from "@/features/loans/views/loans-view";
 
 export const metadata: Metadata = {
-  title: "وام‌ها و اقساط | لایف‌هاب",
+  title: "وام‌ها و اقساط | یادمان",
   description: "مدیریت وام‌ها، اقساط و بازپرداخت‌ها",
 };
 
 export default function LoansPage() {
-  return <LoansScreen />;
+  return <LoansView />;
 }

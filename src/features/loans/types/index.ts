@@ -1,4 +1,4 @@
-import type { LoanItem } from "@/lib/types";
+import type { LoanItem } from "@/types";
 import type { CreateLoanRequest } from "../validations/loan-schema";
 import type { UpdateLoanRequest } from "../validations/loan-schema";
 

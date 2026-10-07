@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
-const APP_NAME = "لایف‌هاب | مدیر لجستیک شخصی";
-const SHORT_NAME = "لایف‌هاب";
+const APP_NAME = "یادمان | مدیر لجستیک شخصی";
+const SHORT_NAME = "یادمان";
 const DESCRIPTION =
   "مدیر لجستیک شخصی آرام و قابل‌اعتماد: خودرو، وام و اقساط، یادآورهای هوشمند و چک‌لیست‌های آماده.";
 

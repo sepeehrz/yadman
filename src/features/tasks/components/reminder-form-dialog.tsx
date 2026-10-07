@@ -4,7 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { BaseDialog } from "@/components/ui/dialog";
 import { AppIcon } from "@/components/ui/app-icon";
 import { toISODateOnly } from "@/utils";
-import type { CreateReminderInput, Reminder, ReminderPriority, ReminderRecurrence } from "../types";
+import type {
+  CreateReminderInput,
+  Reminder,
+  ReminderPriority,
+  ReminderRecurrence,
+} from "../types";
 import {
   parseReminderForm,
   reminderToForm,
@@ -41,7 +46,9 @@ function FieldError({ message }: { message?: string }) {
   if (!message) {
     return null;
   }
-  return <p className="text-[11px] text-destructive font-semibold">{message}</p>;
+  return (
+    <p className="text-[11px] text-destructive font-semibold">{message}</p>
+  );
 }
 
 function emptyForm(): ReminderForm {
@@ -70,12 +77,17 @@ export function ReminderFormDialog({
 
   useEffect(() => {
     if (open) {
-      setForm(initialRef.current ? reminderToForm(initialRef.current) : emptyForm());
+      setForm(
+        initialRef.current ? reminderToForm(initialRef.current) : emptyForm(),
+      );
       setErrors({});
     }
   }, [open]);
 
-  function set<K extends keyof ReminderForm>(key: K, value: ReminderForm[K]): void {
+  function set<K extends keyof ReminderForm>(
+    key: K,
+    value: ReminderForm[K],
+  ): void {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
@@ -114,7 +126,10 @@ export function ReminderFormDialog({
 
         <form onSubmit={handleSubmit} className="space-y-3 pt-4">
           <div className="space-y-1">
-            <label className="text-xs font-bold text-muted-foreground" htmlFor="reminder-title">
+            <label
+              className="text-xs font-bold text-muted-foreground"
+              htmlFor="reminder-title"
+            >
               نام یادآور
             </label>
             <input
@@ -129,7 +144,10 @@ export function ReminderFormDialog({
 
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-muted-foreground" htmlFor="reminder-date">
+              <label
+                className="text-xs font-bold text-muted-foreground"
+                htmlFor="reminder-date"
+              >
                 تاریخ یادآور
               </label>
               <input
@@ -142,7 +160,10 @@ export function ReminderFormDialog({
               <FieldError message={errors.dueDate} />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-muted-foreground" htmlFor="reminder-time">
+              <label
+                className="text-xs font-bold text-muted-foreground"
+                htmlFor="reminder-time"
+              >
                 ساعت یادآور
               </label>
               <input
@@ -158,13 +179,18 @@ export function ReminderFormDialog({
 
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <label className="text-xs font-bold text-muted-foreground" htmlFor="reminder-priority">
+              <label
+                className="text-xs font-bold text-muted-foreground"
+                htmlFor="reminder-priority"
+              >
                 سطح اولویت
               </label>
               <select
                 id="reminder-priority"
                 value={form.priority}
-                onChange={(e) => set("priority", e.target.value as ReminderPriority)}
+                onChange={(e) =>
+                  set("priority", e.target.value as ReminderPriority)
+                }
                 className={inputClass}
               >
                 {PRIORITY_OPTIONS.map((option) => (
@@ -175,7 +201,10 @@ export function ReminderFormDialog({
               </select>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-muted-foreground" htmlFor="reminder-recurrence">
+              <label
+                className="text-xs font-bold text-muted-foreground"
+                htmlFor="reminder-recurrence"
+              >
                 تکرار
               </label>
               <select
