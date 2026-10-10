@@ -5,13 +5,6 @@ const SHORT_NAME = "یادمان";
 const DESCRIPTION =
   "مدیر لجستیک شخصی آرام و قابل‌اعتماد: خودرو، وام و اقساط، یادآورهای هوشمند و چک‌لیست‌های آماده.";
 
-/**
- * مانیفست PWA بر اساس مستندات Next.js (app/manifest.ts).
- * این فایل در مسیر /manifest.webmanifest سرو می‌شود و
- * لینک <link rel="manifest"> به‌صورت خودکار به head اضافه می‌شود.
- *
- * آیکون‌ها باید بعداً به‌صورت دستی در public/icons/ قرار بگیرند.
- */
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/",

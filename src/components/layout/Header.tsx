@@ -8,6 +8,7 @@ import { useNotificationsContext } from "@/features/notifications/providers/noti
 import { AppIcon } from "@/components/ui/app-icon";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { UserProfile } from "@/components/common/user-profile";
+import { User, User2 } from "lucide-react";
 
 export function Header({ title }: { title: string }) {
   const { openDialog, closeDialog } = useDialog();
@@ -54,11 +55,7 @@ export function Header({ title }: { title: string }) {
             aria-label="باز کردن پروفایل"
             className="ml-1 p-0.5 rounded-full ring-2 ring-transparent hover:ring-primary/40 focus:ring-primary transition-all active:scale-95"
           >
-            <img
-              alt="پروفایل کاربر"
-              className="w-8 h-8 rounded-full object-cover shadow-xs border border-card/60"
-              src={ASSETS.avatar}
-            />
+            <User className="" />
           </button>
         </div>
       </div>
